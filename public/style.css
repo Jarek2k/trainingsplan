@@ -563,6 +563,12 @@ p {
   background: var(--surface-2);
 }
 
+.exercise-list li.current {
+  background: var(--surface-2);
+  outline: 1px solid var(--accent);
+  outline-offset: -1px;
+}
+
 .exercise-list li .mg {
   color: var(--muted);
   font-size: 0.85rem;
@@ -1439,6 +1445,26 @@ p {
 .exercise-box-titles {
   flex: 1;
   min-width: 0;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 2px 6px;
+  margin: -2px -6px;
+  border-radius: 6px;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.exercise-box-titles:hover {
+  background: var(--box-icon-bg);
+}
+
+.exercise-box-titles:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
 }
 
 .exercise-box-name {

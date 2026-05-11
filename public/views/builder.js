@@ -374,13 +374,24 @@ function renderExerciseBox(plan, day, ex, rerender) {
 
   const head = document.createElement("div");
   head.className = "exercise-box-head";
-  head.innerHTML = `
-    <span class="drag-handle" aria-hidden="true">⋮⋮</span>
-    <div class="exercise-box-titles">
-      <div class="exercise-box-name">${escape(ex.name)}</div>
-      <div class="exercise-box-mg">${escape(ex.muscleGroup || "—")}</div>
-    </div>
+  const handle = document.createElement("span");
+  handle.className = "drag-handle";
+  handle.setAttribute("aria-hidden", "true");
+  handle.textContent = "⋮⋮";
+  head.appendChild(handle);
+
+  const titles = document.createElement("button");
+  titles.type = "button";
+  titles.className = "exercise-box-titles";
+  titles.title = "Übung ersetzen";
+  titles.setAttribute("aria-label", `${ex.name} ersetzen`);
+  titles.innerHTML = `
+    <div class="exercise-box-name">${escape(ex.name)}</div>
+    <div class="exercise-box-mg">${escape(ex.muscleGroup || "—")}</div>
   `;
+  titles.onclick = () => openReplaceExerciseModal(plan, day, ex, rerender);
+  head.appendChild(titles);
+
   const remove = document.createElement("button");
   remove.className = "icon-btn";
   remove.title = "Übung entfernen";
@@ -678,8 +689,8 @@ function openRenameDayModal(day, rerender) {
   setTimeout(() => inp.select(), 0);
 }
 
-function openAddExerciseModal(plan, day, rerender) {
-  let activeFilter = null; // muscleGroup name or null
+function openExercisePickerModal({ title, currentName, initialFilter, onPick, onPickCustom }) {
+  let activeFilter = initialFilter || null; // muscleGroup name or null
   const body = document.createElement("div");
   body.innerHTML = `
     <input type="text" id="ex-search" placeholder="Suchen…" autocomplete="off" />
@@ -731,14 +742,14 @@ function openAddExerciseModal(plan, day, rerender) {
     }
     for (const e of items) {
       const li = document.createElement("li");
+      if (currentName && e.name === currentName) li.className = "current";
       li.innerHTML = `
         <span>${escape(e.name)}</span>
         <span class="mg-badge" data-mg="${escape(e.muscleGroup || "")}">${escape(e.muscleGroup || "")}</span>
       `;
       li.onclick = () => {
-        addLibraryExercise(plan, day, e);
         m.close();
-        rerender();
+        onPick(e);
       };
       list.appendChild(li);
     }
@@ -748,11 +759,11 @@ function openAddExerciseModal(plan, day, rerender) {
 
   customBtn.onclick = () => {
     m.close();
-    openCustomExerciseModal(plan, day, rerender);
+    onPickCustom();
   };
 
   const m = openModal({
-    title: "Übung hinzufügen",
+    title,
     body,
     confirmLabel: "Schließen",
     confirmDisabled: false,
@@ -768,7 +779,38 @@ function openAddExerciseModal(plan, day, rerender) {
   search.focus();
 }
 
-function openCustomExerciseModal(plan, day, rerender) {
+function openAddExerciseModal(plan, day, rerender) {
+  openExercisePickerModal({
+    title: "Übung hinzufügen",
+    onPick: (entry) => {
+      addLibraryExercise(plan, day, entry);
+      rerender();
+    },
+    onPickCustom: () => openCustomExerciseModal(plan, day, rerender),
+  });
+}
+
+function openReplaceExerciseModal(plan, day, ex, rerender) {
+  openExercisePickerModal({
+    title: "Übung ersetzen",
+    currentName: ex.name,
+    initialFilter: ex.muscleGroup || null,
+    onPick: (entry) => {
+      ex.name = entry.name;
+      ex.muscleGroup = entry.muscleGroup || null;
+      plan.updatedAt = new Date().toISOString();
+      scheduleSavePlans();
+      rerender();
+    },
+    onPickCustom: () =>
+      openCustomExerciseModal(plan, day, rerender, {
+        replaceExercise: ex,
+      }),
+  });
+}
+
+function openCustomExerciseModal(plan, day, rerender, opts = {}) {
+  const { replaceExercise } = opts;
   const body = document.createElement("div");
   body.innerHTML = `
     <p class="modal-hint">Erstelle eine eigene Übung. Sie wird in deine Bibliothek aufgenommen.</p>
@@ -793,9 +835,9 @@ function openCustomExerciseModal(plan, day, rerender) {
   const nameInp = body.querySelector("#cex-name");
 
   const m = openModal({
-    title: "Eigene Übung",
+    title: replaceExercise ? "Eigene Übung als Ersatz" : "Eigene Übung",
     body,
-    confirmLabel: "Erstellen",
+    confirmLabel: replaceExercise ? "Ersetzen" : "Erstellen",
     confirmDisabled: true,
     onConfirm: () => {
       const name = nameInp.value.trim();
@@ -804,7 +846,14 @@ function openCustomExerciseModal(plan, day, rerender) {
       if (!state.plans.exerciseLibrary.find((e) => e.name === name)) {
         state.plans.exerciseLibrary.push({ name, muscleGroup: mg });
       }
-      addLibraryExercise(plan, day, { name, muscleGroup: mg });
+      if (replaceExercise) {
+        replaceExercise.name = name;
+        replaceExercise.muscleGroup = mg;
+        plan.updatedAt = new Date().toISOString();
+        scheduleSavePlans();
+      } else {
+        addLibraryExercise(plan, day, { name, muscleGroup: mg });
+      }
       rerender();
     },
   });
