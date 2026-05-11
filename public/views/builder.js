@@ -345,13 +345,21 @@ function renderExerciseBox(plan, day, ex, rerender) {
     } catch {
       // Some browsers throw on unusual MIME — non-fatal.
     }
+    startDragAutoScroll();
   });
   box.addEventListener("dragend", () => {
     state.builderDragging = null;
+    stopDragAutoScroll();
     document.querySelectorAll(".dragging").forEach((el) => el.classList.remove("dragging"));
     document.querySelectorAll(".drop-target").forEach((el) => el.classList.remove("drop-target"));
     document.querySelectorAll(".drop-before, .drop-after").forEach((el) => {
       el.classList.remove("drop-before", "drop-after");
+    });
+  });
+  box.addEventListener("dragenter", () => {
+    // Claim the indicator: clear any other box's drop classes so only one shows.
+    document.querySelectorAll(".drop-before, .drop-after").forEach((el) => {
+      if (el !== box) el.classList.remove("drop-before", "drop-after");
     });
   });
   box.addEventListener("dragover", (e) => {
@@ -361,9 +369,6 @@ function renderExerciseBox(plan, day, ex, rerender) {
     const before = e.clientY < rect.top + rect.height / 2;
     box.classList.toggle("drop-before", before);
     box.classList.toggle("drop-after", !before);
-  });
-  box.addEventListener("dragleave", () => {
-    box.classList.remove("drop-before", "drop-after");
   });
   box.addEventListener("drop", (e) => {
     e.preventDefault();
@@ -877,4 +882,92 @@ function addLibraryExercise(plan, day, libEntry) {
 
 function currentPlan() {
   return (state.plans.plans || []).find((p) => p.id === state.activePlanId);
+}
+
+// --- Drag auto-scroll -------------------------------------------------------
+// Native HTML5 DnD only auto-scrolls the viewport edge, not internally scrollable
+// containers. Each day column scrolls independently, and the horizontal board
+// also scrolls, so we drive a small RAF loop while dragging that nudges
+// whichever scrollable element the pointer is hovering near the edge of.
+
+const AUTOSCROLL_EDGE = 64; // px from edge to start scrolling
+const AUTOSCROLL_MAX = 20;  // max px per frame at the very edge
+
+const dragPointer = { x: 0, y: 0 };
+let dragScrollRaf = null;
+
+document.addEventListener("dragover", (e) => {
+  if (!state.builderDragging) return;
+  dragPointer.x = e.clientX;
+  dragPointer.y = e.clientY;
+});
+
+function startDragAutoScroll() {
+  if (dragScrollRaf != null) return;
+  const tick = () => {
+    stepDragAutoScroll();
+    dragScrollRaf = requestAnimationFrame(tick);
+  };
+  dragScrollRaf = requestAnimationFrame(tick);
+}
+
+function stopDragAutoScroll() {
+  if (dragScrollRaf != null) cancelAnimationFrame(dragScrollRaf);
+  dragScrollRaf = null;
+}
+
+function stepDragAutoScroll() {
+  const { x, y } = dragPointer;
+  if (!x && !y) return;
+  // Walk the elements under the pointer and scroll the first scrollable one
+  // whose edge we're near. This handles both .builder-day-body (vertical) and
+  // .builder-board (horizontal) naturally.
+  const stack = document.elementsFromPoint(x, y);
+  for (const el of stack) {
+    if (!(el instanceof Element)) continue;
+    if (scrollIfNeeded(el, x, y)) return;
+  }
+}
+
+function scrollIfNeeded(el, x, y) {
+  const cs = getComputedStyle(el);
+  const canY =
+    (cs.overflowY === "auto" || cs.overflowY === "scroll") &&
+    el.scrollHeight > el.clientHeight;
+  const canX =
+    (cs.overflowX === "auto" || cs.overflowX === "scroll") &&
+    el.scrollWidth > el.clientWidth;
+  if (!canY && !canX) return false;
+  const r = el.getBoundingClientRect();
+  if (canY) {
+    const top = y - r.top;
+    const bot = r.bottom - y;
+    if (top < AUTOSCROLL_EDGE && el.scrollTop > 0) {
+      el.scrollTop -= speedFor(top);
+      return true;
+    }
+    if (bot < AUTOSCROLL_EDGE && el.scrollTop + el.clientHeight < el.scrollHeight) {
+      el.scrollTop += speedFor(bot);
+      return true;
+    }
+  }
+  if (canX) {
+    const left = x - r.left;
+    const right = r.right - x;
+    if (left < AUTOSCROLL_EDGE && el.scrollLeft > 0) {
+      el.scrollLeft -= speedFor(left);
+      return true;
+    }
+    if (right < AUTOSCROLL_EDGE && el.scrollLeft + el.clientWidth < el.scrollWidth) {
+      el.scrollLeft += speedFor(right);
+      return true;
+    }
+  }
+  return false;
+}
+
+function speedFor(dist) {
+  const t = Math.max(0, 1 - dist / AUTOSCROLL_EDGE);
+  // Ease the ramp so the very edge scrolls faster but mid-zone is gentle.
+  return Math.ceil(t * t * AUTOSCROLL_MAX) || 1;
 }
