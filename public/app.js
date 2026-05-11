@@ -1,6 +1,6 @@
 // Bootstrap. The app is the Builder — no routing, no other views.
 
-import { loadPlans, onSaveStatus } from "./state.js";
+import { getTheme, loadPlans, onSaveStatus, setTheme } from "./state.js";
 import { escape } from "./util.js";
 import * as builderView from "./views/builder.js";
 
@@ -11,6 +11,27 @@ function wireSaveStatus() {
     el.className = `save-status ${cls || ""}`;
   });
 }
+
+function wireThemeToggle() {
+  const btn = document.getElementById("theme-toggle");
+  const refresh = () => {
+    const light = getTheme() === "light";
+    // Glyph shows the *target* mode: sun when current is dark, moon when light.
+    btn.textContent = light ? "☾" : "☀";
+    btn.setAttribute(
+      "aria-label",
+      light ? "Zu Dunkelmodus wechseln" : "Zu Hellmodus wechseln",
+    );
+    btn.title = btn.getAttribute("aria-label");
+  };
+  btn.addEventListener("click", () => {
+    setTheme(getTheme() === "light" ? "dark" : "light");
+    refresh();
+  });
+  refresh();
+}
+
+wireThemeToggle();
 
 loadPlans()
   .then(() => {

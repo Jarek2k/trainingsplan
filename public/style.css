@@ -45,6 +45,56 @@
     0 1px 2px rgba(0, 0, 0, 0.4);
 
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* Surfaces with alpha, themed (header backdrop, exercise-box border,
+     internal input chrome). Overridden by light theme below. */
+  --header-bg: rgba(11, 17, 32, 0.85);
+  --box-border: rgba(255, 255, 255, 0.06);
+  --box-input-bg: rgba(0, 0, 0, 0.25);
+  --box-input-border: rgba(255, 255, 255, 0.08);
+  --box-input-placeholder: rgba(255, 255, 255, 0.35);
+  --box-icon-color: rgba(255, 255, 255, 0.7);
+  --box-icon-bg: rgba(0, 0, 0, 0.2);
+  --box-icon-color-hover: #fff;
+  --box-icon-bg-hover: rgba(0, 0, 0, 0.4);
+  --box-handle: rgba(255, 255, 255, 0.4);
+}
+
+/* ---------------- Light theme ----------------
+   Set on <html data-theme="light">. Dark is the default (no attribute). */
+:root[data-theme="light"] {
+  --bg: #f1f5f9;
+  --surface: #ffffff;
+  --surface-2: #e2e8f0;
+  --surface-3: #cbd5e1;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+
+  --text: #1e293b;
+  --text-strong: #0f172a;
+  --muted: #64748b;
+  --dim: #94a3b8;
+
+  --accent: #0891b2;
+  --accent-ink: #ffffff;
+  --good: #047857;
+  --warn: #b45309;
+  --bad: #dc2626;
+  --info: #2563eb;
+
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 1px 3px rgba(15, 23, 42, 0.08);
+
+  --header-bg: rgba(248, 250, 252, 0.85);
+  --box-border: rgba(15, 23, 42, 0.08);
+  --box-input-bg: rgba(255, 255, 255, 0.7);
+  --box-input-border: rgba(15, 23, 42, 0.08);
+  --box-input-placeholder: rgba(15, 23, 42, 0.35);
+  --box-icon-color: rgba(15, 23, 42, 0.55);
+  --box-icon-bg: rgba(255, 255, 255, 0.5);
+  --box-icon-color-hover: #0f172a;
+  --box-icon-bg-hover: rgba(255, 255, 255, 0.85);
+  --box-handle: rgba(15, 23, 42, 0.4);
 }
 
 * {
@@ -109,7 +159,7 @@ p {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(11, 17, 32, 0.85);
+  background: var(--header-bg);
   backdrop-filter: saturate(140%) blur(14px);
   border-bottom: 1px solid var(--border);
   padding: var(--s-3) var(--s-4);
@@ -117,9 +167,40 @@ p {
 
 .app-header-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: var(--s-4);
+}
+
+.app-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  transition: color 0.12s ease, background 0.12s ease, border-color 0.12s ease,
+    transform 0.12s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--text-strong);
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
 }
 
 .app-title {
@@ -929,6 +1010,44 @@ p {
 .mg-badge[data-mg="Waden"], .mg-pill[data-mg="Waden"]                         { background: #3d551f; color: #d6f0a8; }
 .mg-badge[data-mg="Bauch"], .mg-pill[data-mg="Bauch"]                         { background: #553a1f; color: #ffd6a8; }
 
+/* Muscle-group palette — light theme. Pastel tints with the dark hue from
+   the dark palette as foreground, so colors read as the same "Brust" /
+   "Rücken" identities, just inverted in luminance. */
+:root[data-theme="light"] .exercise-box[data-mg="Brust"]              { --mg-bg: #fce0ea; --mg-fg: #7a1c3a; }
+:root[data-theme="light"] .exercise-box[data-mg="Rücken"]             { --mg-bg: #d8e8fa; --mg-fg: #0c3c66; }
+:root[data-theme="light"] .exercise-box[data-mg="Mittlere Schulter"]  { --mg-bg: #fbeec1; --mg-fg: #6b5410; }
+:root[data-theme="light"] .exercise-box[data-mg="Hintere Schulter"]   { --mg-bg: #fbe5b8; --mg-fg: #6b440e; }
+:root[data-theme="light"] .exercise-box[data-mg="Trapez"]             { --mg-bg: #e6dcfb; --mg-fg: #3f2c7a; }
+:root[data-theme="light"] .exercise-box[data-mg="Bizeps"]             { --mg-bg: #f3dafc; --mg-fg: #5a1e7a; }
+:root[data-theme="light"] .exercise-box[data-mg="Trizeps"]            { --mg-bg: #fcdaee; --mg-fg: #7a1e57; }
+:root[data-theme="light"] .exercise-box[data-mg="Quads"]              { --mg-bg: #d3f1de; --mg-fg: #0e5a30; }
+:root[data-theme="light"] .exercise-box[data-mg="Hamstrings"]         { --mg-bg: #cdedd8; --mg-fg: #0a5028; }
+:root[data-theme="light"] .exercise-box[data-mg="Waden"]              { --mg-bg: #e7f1c5; --mg-fg: #3d550e; }
+:root[data-theme="light"] .exercise-box[data-mg="Bauch"]              { --mg-bg: #fbe2c4; --mg-fg: #6b3a0a; }
+
+:root[data-theme="light"] .mg-badge[data-mg="Brust"],
+:root[data-theme="light"] .mg-pill[data-mg="Brust"]                         { background: #fce0ea; color: #7a1c3a; }
+:root[data-theme="light"] .mg-badge[data-mg="Rücken"],
+:root[data-theme="light"] .mg-pill[data-mg="Rücken"]                        { background: #d8e8fa; color: #0c3c66; }
+:root[data-theme="light"] .mg-badge[data-mg="Mittlere Schulter"],
+:root[data-theme="light"] .mg-pill[data-mg="Mittlere Schulter"]             { background: #fbeec1; color: #6b5410; }
+:root[data-theme="light"] .mg-badge[data-mg="Hintere Schulter"],
+:root[data-theme="light"] .mg-pill[data-mg="Hintere Schulter"]              { background: #fbe5b8; color: #6b440e; }
+:root[data-theme="light"] .mg-badge[data-mg="Trapez"],
+:root[data-theme="light"] .mg-pill[data-mg="Trapez"]                        { background: #e6dcfb; color: #3f2c7a; }
+:root[data-theme="light"] .mg-badge[data-mg="Bizeps"],
+:root[data-theme="light"] .mg-pill[data-mg="Bizeps"]                        { background: #f3dafc; color: #5a1e7a; }
+:root[data-theme="light"] .mg-badge[data-mg="Trizeps"],
+:root[data-theme="light"] .mg-pill[data-mg="Trizeps"]                       { background: #fcdaee; color: #7a1e57; }
+:root[data-theme="light"] .mg-badge[data-mg="Quads"],
+:root[data-theme="light"] .mg-pill[data-mg="Quads"]                         { background: #d3f1de; color: #0e5a30; }
+:root[data-theme="light"] .mg-badge[data-mg="Hamstrings"],
+:root[data-theme="light"] .mg-pill[data-mg="Hamstrings"]                    { background: #cdedd8; color: #0a5028; }
+:root[data-theme="light"] .mg-badge[data-mg="Waden"],
+:root[data-theme="light"] .mg-pill[data-mg="Waden"]                         { background: #e7f1c5; color: #3d550e; }
+:root[data-theme="light"] .mg-badge[data-mg="Bauch"],
+:root[data-theme="light"] .mg-pill[data-mg="Bauch"]                         { background: #fbe2c4; color: #6b3a0a; }
+
 /* Builder layout: app-style sidebar (flush left) + flexible main pane.
    The pane fills the viewport below the sticky header. */
 .builder-layout {
@@ -1275,7 +1394,7 @@ p {
   position: relative;
   background: var(--mg-bg, var(--mg-default-bg));
   color: var(--mg-fg, var(--mg-default-fg));
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--box-border);
   border-radius: var(--radius-sm);
   padding: var(--s-2) var(--s-3);
   display: flex;
@@ -1310,7 +1429,7 @@ p {
 }
 
 .drag-handle {
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--box-handle);
   font-weight: 700;
   letter-spacing: -2px;
   cursor: grab;
@@ -1339,13 +1458,13 @@ p {
 }
 
 .exercise-box-head .icon-btn {
-  color: rgba(255, 255, 255, 0.7);
-  background: rgba(0, 0, 0, 0.2);
+  color: var(--box-icon-color);
+  background: var(--box-icon-bg);
 }
 
 .exercise-box-head .icon-btn:hover {
-  color: #fff;
-  background: rgba(0, 0, 0, 0.4);
+  color: var(--box-icon-color-hover);
+  background: var(--box-icon-bg-hover);
 }
 
 .exercise-box-inputs {
@@ -1371,8 +1490,8 @@ p {
 
 .exercise-box-field input {
   width: 100%;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--box-input-bg);
+  border: 1px solid var(--box-input-border);
   border-radius: 6px;
   padding: 4px 6px;
   font-size: 13px;
@@ -1387,7 +1506,7 @@ p {
 }
 
 .exercise-box-field input::placeholder {
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--box-input-placeholder);
 }
 
 /* Modals — additions: pill rows, hints, divider, form rows, mg badges */

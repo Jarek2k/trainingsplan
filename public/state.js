@@ -32,6 +32,22 @@ export function setCompactView(on) {
   }
 }
 
+// --- Theme (light / dark) --------------------------------------------------
+
+export function getTheme() {
+  return document.documentElement.dataset.theme === "light" ? "light" : "dark";
+}
+
+export function setTheme(theme) {
+  const t = theme === "light" ? "light" : "dark";
+  document.documentElement.dataset.theme = t;
+  try {
+    localStorage.setItem("theme", t);
+  } catch {
+    // ignore — non-fatal
+  }
+}
+
 // --- Save status pub/sub ---------------------------------------------------
 
 const listeners = new Set();
