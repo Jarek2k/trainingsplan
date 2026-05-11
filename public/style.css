@@ -1471,3 +1471,100 @@ p {
   outline: none;
   border-color: var(--accent);
 }
+
+/* =========================================================================
+   Builder — Compact view toggle
+   ========================================================================= */
+
+/* Toggle button in plan header. Two-row icon glyph (≡-style) inside,
+   followed by the "Kompakt" label. */
+.compact-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+}
+
+.compact-toggle .compact-icon {
+  display: inline-block;
+  width: 18px;
+  height: 12px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.compact-toggle .compact-icon::before,
+.compact-toggle .compact-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+.compact-toggle .compact-icon::before { top: 2px; }
+.compact-toggle .compact-icon::after  { bottom: 2px; }
+
+.compact-toggle.active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(34, 211, 238, 0.08);
+}
+
+.compact-toggle.active:hover {
+  background: rgba(34, 211, 238, 0.14);
+}
+
+/* Compact mode: hide meta + inputs, tile-style boxes with comfortable
+   padding so they read as cards, not list rows. Muscle group remains
+   encoded via the background color. */
+.builder-board.compact .exercise-box {
+  padding: 10px var(--s-3);
+  gap: 0;
+  min-height: 44px;
+  justify-content: center;
+}
+
+.builder-board.compact .exercise-box-mg,
+.builder-board.compact .exercise-box-inputs {
+  display: none;
+}
+
+.builder-board.compact .exercise-box-head {
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.builder-board.compact .drag-handle {
+  font-size: 12px;
+  padding-top: 0;
+  opacity: 0.5;
+}
+
+.builder-board.compact .exercise-box-name {
+  font-size: 14px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Delete-Button nur bei Hover/Focus — der Überblick soll nicht von X-en
+   zerlegt werden. */
+.builder-board.compact .exercise-box-head .icon-btn {
+  min-width: 0;
+  min-height: 0;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.12s ease, background 0.12s ease;
+}
+
+.builder-board.compact .exercise-box:hover .icon-btn,
+.builder-board.compact .exercise-box-head .icon-btn:focus-visible {
+  opacity: 1;
+}

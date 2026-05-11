@@ -8,11 +8,29 @@ export const state = {
   plans: null,
   activePlanId: null, // string | null
   builderDragging: null, // transient: { fromDayId, exerciseId } | null
+  compactView: readCompactView(), // UI-only, persisted in localStorage
 
   saveTimer: null,
   saving: false,
   pendingSave: false,
 };
+
+function readCompactView() {
+  try {
+    return localStorage.getItem("builder.compact") === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function setCompactView(on) {
+  state.compactView = !!on;
+  try {
+    localStorage.setItem("builder.compact", on ? "1" : "0");
+  } catch {
+    // ignore — non-fatal
+  }
+}
 
 // --- Save status pub/sub ---------------------------------------------------
 

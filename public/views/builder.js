@@ -5,6 +5,7 @@
 import {
   state,
   scheduleSavePlans,
+  setCompactView,
   shortId,
 } from "../state.js";
 import { escape } from "../util.js";
@@ -208,6 +209,21 @@ function renderEditor(root, plan, rerender) {
 
   const actions = document.createElement("div");
   actions.className = "builder-plan-actions";
+
+  const compactBtn = document.createElement("button");
+  compactBtn.className =
+    "btn ghost compact-toggle" + (state.compactView ? " active" : "");
+  compactBtn.setAttribute("aria-pressed", state.compactView ? "true" : "false");
+  compactBtn.title = state.compactView
+    ? "Detailansicht zeigen"
+    : "Kompakte Ansicht zeigen";
+  compactBtn.innerHTML = `<span class="compact-icon" aria-hidden="true"></span><span>Kompakt</span>`;
+  compactBtn.onclick = () => {
+    setCompactView(!state.compactView);
+    rerender();
+  };
+  actions.appendChild(compactBtn);
+
   const copyBtn = document.createElement("button");
   copyBtn.className = "btn secondary";
   copyBtn.textContent = "Kopieren";
@@ -224,7 +240,7 @@ function renderEditor(root, plan, rerender) {
   root.appendChild(header);
 
   const board = document.createElement("div");
-  board.className = "builder-board";
+  board.className = "builder-board" + (state.compactView ? " compact" : "");
 
   for (const day of plan.days) {
     board.appendChild(renderDayColumn(plan, day, rerender));
