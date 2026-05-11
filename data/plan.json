@@ -1,0 +1,1669 @@
+{
+  "progress": {
+    "weekIndex": 0,
+    "dayIndex": 3
+  },
+  "weeks": [
+    {
+      "name": "WOCHE 1",
+      "phase": "INTRO WEEK"
+    },
+    {
+      "name": "WOCHE 2",
+      "phase": "AKKUMULATION 1"
+    },
+    {
+      "name": "WOCHE 3",
+      "phase": "AKKUMULATION 2"
+    },
+    {
+      "name": "WOCHE 4",
+      "phase": "OVERREACHING"
+    },
+    {
+      "name": "WOCHE 5",
+      "phase": "DELOAD"
+    }
+  ],
+  "days": [
+    {
+      "name": "Push A1",
+      "exercises": [
+        {
+          "name": "Brustpresse",
+          "muscleGroup": "Brust",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "80"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "90"
+            },
+            {
+              "sets": 4,
+              "reps": "8",
+              "weight": "90"
+            },
+            {
+              "sets": 4,
+              "reps": "8",
+              "weight": "100"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Dips",
+          "muscleGroup": "Brust",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "10"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "20"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "20"
+            },
+            {
+              "sets": 3,
+              "reps": "12",
+              "weight": "20"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Butterfly",
+          "muscleGroup": "Brust",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "45"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "50"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "50"
+            },
+            {
+              "sets": 3,
+              "reps": "12",
+              "weight": "50"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Maschine",
+          "muscleGroup": "Bauch",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "21"
+            },
+            {
+              "sets": 3,
+              "reps": "11",
+              "weight": "21"
+            },
+            {
+              "sets": 3,
+              "reps": "12",
+              "weight": "21"
+            },
+            {
+              "sets": 3,
+              "reps": "15",
+              "weight": "21"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Leg Raise",
+          "muscleGroup": "Bauch",
+          "weeks": [
+            {
+              "sets": 2,
+              "reps": "10",
+              "weight": null
+            },
+            {
+              "sets": 2,
+              "reps": "11",
+              "weight": null
+            },
+            {
+              "sets": 2,
+              "reps": "12",
+              "weight": null
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": null
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Seitheben Hantel",
+          "muscleGroup": "Mittlere Schulter",
+          "weeks": [
+            {
+              "sets": 5,
+              "reps": "8",
+              "weight": "15"
+            },
+            {
+              "sets": 5,
+              "reps": "9",
+              "weight": "15"
+            },
+            {
+              "sets": 6,
+              "reps": "9",
+              "weight": "17,5"
+            },
+            {
+              "sets": 6,
+              "reps": "10",
+              "weight": "17,5"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Trizepsstrecken",
+          "muscleGroup": "Trizeps",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "60"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "65"
+            },
+            {
+              "sets": 4,
+              "reps": "12",
+              "weight": "70"
+            },
+            {
+              "sets": 4,
+              "reps": "13",
+              "weight": "70"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Katana Extensions",
+          "muscleGroup": "Trizeps",
+          "weeks": [
+            {
+              "sets": 2,
+              "reps": "9",
+              "weight": "15"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "15"
+            },
+            {
+              "sets": 3,
+              "reps": "11",
+              "weight": "15"
+            },
+            {
+              "sets": 3,
+              "reps": "12",
+              "weight": "15"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pull A1",
+      "exercises": [
+        {
+          "name": "Highrows",
+          "muscleGroup": "Rücken",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "50"
+            },
+            {
+              "sets": 3,
+              "reps": "9",
+              "weight": "50"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "60"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "65"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Latzug Breit",
+          "muscleGroup": "Rücken",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "80"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "85"
+            },
+            {
+              "sets": 4,
+              "reps": "8",
+              "weight": "85"
+            },
+            {
+              "sets": 4,
+              "reps": "10",
+              "weight": "90"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Rudern zum Bauch (V)",
+          "muscleGroup": "Rücken",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "70"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "75"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "80"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "85"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Butterfly Reverse",
+          "muscleGroup": "Hintere Schulter",
+          "weeks": [
+            {
+              "sets": 5,
+              "reps": "8",
+              "weight": "60"
+            },
+            {
+              "sets": 5,
+              "reps": "8",
+              "weight": "70"
+            },
+            {
+              "sets": 6,
+              "reps": "11",
+              "weight": "75"
+            },
+            {
+              "sets": 6,
+              "reps": "12",
+              "weight": "75"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Shruggs",
+          "muscleGroup": "Trapez",
+          "weeks": [
+            {
+              "sets": 5,
+              "reps": "8",
+              "weight": "90"
+            },
+            {
+              "sets": 5,
+              "reps": "8",
+              "weight": "100"
+            },
+            {
+              "sets": 6,
+              "reps": "10",
+              "weight": "100"
+            },
+            {
+              "sets": 6,
+              "reps": "12",
+              "weight": "100"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Hammer Curls",
+          "muscleGroup": "Bizeps",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "15"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "17"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "17,5"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "20"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Preacher Curls",
+          "muscleGroup": "Bizeps",
+          "weeks": [
+            {
+              "sets": 2,
+              "reps": "8",
+              "weight": "Poser-3"
+            },
+            {
+              "sets": 2,
+              "reps": "8",
+              "weight": "Poser-2"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "Poser-1"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "Poser"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Bizeps Curls Seil",
+          "muscleGroup": "Bizeps",
+          "weeks": [
+            {
+              "sets": 2,
+              "reps": "8",
+              "weight": "20"
+            },
+            {
+              "sets": 2,
+              "reps": "10",
+              "weight": "20"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "25"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "30"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Beine",
+      "exercises": [
+        {
+          "name": "Abduktor",
+          "muscleGroup": null,
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": null
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": null
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": null
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": null
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Adduktor",
+          "muscleGroup": null,
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": null
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": null
+            },
+            {
+              "sets": 3,
+              "reps": "9",
+              "weight": null
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": null
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Beinbeuger (sitzend)",
+          "muscleGroup": "Hamstrings",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "85"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "90"
+            },
+            {
+              "sets": 4,
+              "reps": "10",
+              "weight": "95"
+            },
+            {
+              "sets": 4,
+              "reps": "10",
+              "weight": "100"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Beinstrecker",
+          "muscleGroup": "Quads",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "80"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "80"
+            },
+            {
+              "sets": 4,
+              "reps": "10",
+              "weight": "85"
+            },
+            {
+              "sets": 4,
+              "reps": "10",
+              "weight": "90"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Rumänisches Kreuzheben",
+          "muscleGroup": "Hamstrings",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "60"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "80"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "90"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "100"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Kniebeuge",
+          "muscleGroup": "Quads",
+          "weeks": [
+            {
+              "sets": 2,
+              "reps": "8",
+              "weight": "60"
+            },
+            {
+              "sets": 2,
+              "reps": "10",
+              "weight": "60"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "80"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "80"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Beinpresse Panata",
+          "muscleGroup": "Quads",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": null
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": null
+            },
+            {
+              "sets": 4,
+              "reps": "10",
+              "weight": null
+            },
+            {
+              "sets": 4,
+              "reps": "10",
+              "weight": null
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Wadenheben",
+          "muscleGroup": "Waden",
+          "weeks": [
+            {
+              "sets": 6,
+              "reps": "10",
+              "weight": "145"
+            },
+            {
+              "sets": 6,
+              "reps": "10",
+              "weight": "155"
+            },
+            {
+              "sets": 6,
+              "reps": "10",
+              "weight": "165"
+            },
+            {
+              "sets": 6,
+              "reps": "10",
+              "weight": "175"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Push A2",
+      "exercises": [
+        {
+          "name": "Brustpresse (Positiv)",
+          "muscleGroup": "Brust",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "80"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "90"
+            },
+            {
+              "sets": 4,
+              "reps": "8",
+              "weight": "90"
+            },
+            {
+              "sets": 4,
+              "reps": "8",
+              "weight": "100"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Dips",
+          "muscleGroup": "Brust",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "10"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "20"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "20"
+            },
+            {
+              "sets": 3,
+              "reps": "12",
+              "weight": "20"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Butterfly",
+          "muscleGroup": "Brust",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "45"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "50"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "50"
+            },
+            {
+              "sets": 3,
+              "reps": "12",
+              "weight": "50"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Military Press",
+          "muscleGroup": "Mittlere Schulter",
+          "weeks": [
+            {
+              "sets": 5,
+              "reps": "8",
+              "weight": "40"
+            },
+            {
+              "sets": 5,
+              "reps": "9",
+              "weight": "40"
+            },
+            {
+              "sets": 6,
+              "reps": "8",
+              "weight": "45"
+            },
+            {
+              "sets": 6,
+              "reps": "8",
+              "weight": "50"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Maschine",
+          "muscleGroup": "Bauch",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "21"
+            },
+            {
+              "sets": 3,
+              "reps": "11",
+              "weight": "21"
+            },
+            {
+              "sets": 3,
+              "reps": "12",
+              "weight": "21"
+            },
+            {
+              "sets": 3,
+              "reps": "15",
+              "weight": "21"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Leg Raise",
+          "muscleGroup": "Bauch",
+          "weeks": [
+            {
+              "sets": 2,
+              "reps": "10",
+              "weight": null
+            },
+            {
+              "sets": 2,
+              "reps": "11",
+              "weight": null
+            },
+            {
+              "sets": 2,
+              "reps": "12",
+              "weight": null
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": null
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Seitheben Maschine",
+          "muscleGroup": "Mittlere Schulter",
+          "weeks": [
+            {
+              "sets": 5,
+              "reps": "8",
+              "weight": "25"
+            },
+            {
+              "sets": 5,
+              "reps": "8",
+              "weight": "30"
+            },
+            {
+              "sets": 6,
+              "reps": "8",
+              "weight": "30"
+            },
+            {
+              "sets": 6,
+              "reps": "8",
+              "weight": "35"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Trizepsstrecken Seil",
+          "muscleGroup": "Trizeps",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "55"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "55"
+            },
+            {
+              "sets": 4,
+              "reps": "12",
+              "weight": "55"
+            },
+            {
+              "sets": 4,
+              "reps": "10",
+              "weight": "60"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Katana Extensions",
+          "muscleGroup": "Trizeps",
+          "weeks": [
+            {
+              "sets": 2,
+              "reps": "9",
+              "weight": "15"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "15"
+            },
+            {
+              "sets": 3,
+              "reps": "11",
+              "weight": "15"
+            },
+            {
+              "sets": 3,
+              "reps": "12",
+              "weight": "15"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pull A2",
+      "exercises": [
+        {
+          "name": "Highrows",
+          "muscleGroup": "Rücken",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "50"
+            },
+            {
+              "sets": 3,
+              "reps": "9",
+              "weight": "50"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "60"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "60"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Rudern zur Brust Stange",
+          "muscleGroup": "Rücken",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "55"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "60"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "65"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "75"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Latzug Eng",
+          "muscleGroup": "Rücken",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "70"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "80"
+            },
+            {
+              "sets": 4,
+              "reps": "10",
+              "weight": "90"
+            },
+            {
+              "sets": 4,
+              "reps": "8",
+              "weight": "100"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Butterfly Reverse",
+          "muscleGroup": "Hintere Schulter",
+          "weeks": [
+            {
+              "sets": 5,
+              "reps": "8",
+              "weight": "60"
+            },
+            {
+              "sets": 5,
+              "reps": "8",
+              "weight": "70"
+            },
+            {
+              "sets": 6,
+              "reps": "11",
+              "weight": "75"
+            },
+            {
+              "sets": 6,
+              "reps": "12",
+              "weight": "75"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Shruggs",
+          "muscleGroup": "Trapez",
+          "weeks": [
+            {
+              "sets": 5,
+              "reps": "8",
+              "weight": "90"
+            },
+            {
+              "sets": 5,
+              "reps": "8",
+              "weight": "100"
+            },
+            {
+              "sets": 6,
+              "reps": "10",
+              "weight": "100"
+            },
+            {
+              "sets": 6,
+              "reps": "12",
+              "weight": "100"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Hammer Curls",
+          "muscleGroup": "Bizeps",
+          "weeks": [
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "15"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "17"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "17,5"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "20"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Bizeps Curls MTS",
+          "muscleGroup": "Bizeps",
+          "weeks": [
+            {
+              "sets": 2,
+              "reps": "8",
+              "weight": "50"
+            },
+            {
+              "sets": 3,
+              "reps": null,
+              "weight": null
+            },
+            {
+              "sets": 3,
+              "reps": null,
+              "weight": null
+            },
+            {
+              "sets": 3,
+              "reps": null,
+              "weight": null
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "name": "Bizeps Curls Bank",
+          "muscleGroup": "Bizeps",
+          "weeks": [
+            {
+              "sets": 2,
+              "reps": "10",
+              "weight": "12,5"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "15"
+            },
+            {
+              "sets": 3,
+              "reps": "10",
+              "weight": "15"
+            },
+            {
+              "sets": 3,
+              "reps": "8",
+              "weight": "17,5"
+            },
+            {
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "muscleGroups": [
+    {
+      "name": "Brust",
+      "mavMin": 12,
+      "mavMax": 20
+    },
+    {
+      "name": "Rücken",
+      "mavMin": 14,
+      "mavMax": 22
+    },
+    {
+      "name": "Mittlere Schulter",
+      "mavMin": 16,
+      "mavMax": 22
+    },
+    {
+      "name": "Hintere Schulter",
+      "mavMin": 16,
+      "mavMax": 22
+    },
+    {
+      "name": "Trapez",
+      "mavMin": 12,
+      "mavMax": 20
+    },
+    {
+      "name": "Bizeps",
+      "mavMin": 14,
+      "mavMax": 20
+    },
+    {
+      "name": "Trizeps",
+      "mavMin": 10,
+      "mavMax": 14
+    },
+    {
+      "name": "Quads",
+      "mavMin": 12,
+      "mavMax": 18
+    },
+    {
+      "name": "Hamstrings",
+      "mavMin": 10,
+      "mavMax": 16
+    },
+    {
+      "name": "Waden",
+      "mavMin": 12,
+      "mavMax": 16
+    },
+    {
+      "name": "Bauch",
+      "mavMin": 16,
+      "mavMax": 20
+    }
+  ],
+  "exerciseLibrary": [
+    {
+      "name": "LH Bankdrücken",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "LH Bankdrücken (positiv)",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "LH Bankdrücken (negativ)",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "KH Bankdrücken",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "KH Bankdrücken (positiv)",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "KH Bankdrücken (negativ)",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Brustpresse",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Brustpresse (positiv)",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Brustpresse Hammer Strength",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Brustpresse Hammer Strength (positiv)",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Brustpresse Hammer Strength (negativ)",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Brustpresse Gym 80",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Butterfly",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Cable Cross",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Dips",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Rudern zur Brust MAG",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Rudern zur Brust Stange",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Rudern zur Griff",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Rudern zum Bauch (einzeln)",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Rudern zum Bauch (MAG)",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Rudern zum Bauch (V)",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Latzug Breit",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Latzug Breit (einzeln)",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Latzug Breit (MAG)",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Latzug Eng",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Latzug Eng (einzeln)",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Latzug Eng (MAG)",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Klimmzüge",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Überzüge",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Highrows",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Facepulls",
+      "muscleGroup": "Hintere Schulter"
+    },
+    {
+      "name": "Butterfly reverse",
+      "muscleGroup": "Hintere Schulter"
+    },
+    {
+      "name": "Seitheben Maschine",
+      "muscleGroup": "Mittlere Schulter"
+    },
+    {
+      "name": "Seitheben Seil",
+      "muscleGroup": "Mittlere Schulter"
+    },
+    {
+      "name": "Seitheben Bank",
+      "muscleGroup": "Mittlere Schulter"
+    },
+    {
+      "name": "Seitheben Hantel",
+      "muscleGroup": "Mittlere Schulter"
+    },
+    {
+      "name": "Military Press",
+      "muscleGroup": "Mittlere Schulter"
+    },
+    {
+      "name": "KH Schulterdrücken",
+      "muscleGroup": "Mittlere Schulter"
+    },
+    {
+      "name": "Schulterdrücken Maschine",
+      "muscleGroup": "Mittlere Schulter"
+    },
+    {
+      "name": "Shruggs",
+      "muscleGroup": "Trapez"
+    },
+    {
+      "name": "Shruggs Seil",
+      "muscleGroup": "Trapez"
+    },
+    {
+      "name": "Shruggs Hantel",
+      "muscleGroup": "Trapez"
+    },
+    {
+      "name": "Kniebeuge",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Kniebeuge (Maschine)",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Frontbeuge",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Hackenschmidt",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Beinpresse",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Beinpresse Panata",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Ausfallschritte",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Bulgarian Split Squats",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Beinstrecker",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Rumänisches Kreuzheben",
+      "muscleGroup": "Hamstrings"
+    },
+    {
+      "name": "Beinbeuger (sitzend)",
+      "muscleGroup": "Hamstrings"
+    },
+    {
+      "name": "Beinbeuger (liegend)",
+      "muscleGroup": "Hamstrings"
+    },
+    {
+      "name": "Trizepsstrecken",
+      "muscleGroup": "Trizeps"
+    },
+    {
+      "name": "Trizepsstrecken Seil",
+      "muscleGroup": "Trizeps"
+    },
+    {
+      "name": "Trizepsstrecken (einzeln)",
+      "muscleGroup": "Trizeps"
+    },
+    {
+      "name": "Trizepsstrecken Überkopf",
+      "muscleGroup": "Trizeps"
+    },
+    {
+      "name": "Katana Extensions",
+      "muscleGroup": "Trizeps"
+    },
+    {
+      "name": "Bizeps Curls",
+      "muscleGroup": "Bizeps"
+    },
+    {
+      "name": "Bizeps Curls Seil",
+      "muscleGroup": "Bizeps"
+    },
+    {
+      "name": "Bizeps Curls Bank",
+      "muscleGroup": "Bizeps"
+    },
+    {
+      "name": "Bizeps Curls MTS",
+      "muscleGroup": "Bizeps"
+    },
+    {
+      "name": "Hammer Curls",
+      "muscleGroup": "Bizeps"
+    },
+    {
+      "name": "Preacher Curls",
+      "muscleGroup": "Bizeps"
+    },
+    {
+      "name": "Wadenheben",
+      "muscleGroup": "Waden"
+    },
+    {
+      "name": "Maschine",
+      "muscleGroup": "Bauch"
+    },
+    {
+      "name": "Leg Raise",
+      "muscleGroup": "Bauch"
+    },
+    {
+      "name": "Kreuzheben",
+      "muscleGroup": "Hamstrings"
+    },
+    {
+      "name": "Abduktor",
+      "muscleGroup": null
+    },
+    {
+      "name": "Adduktor",
+      "muscleGroup": null
+    }
+  ]
+}

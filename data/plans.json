@@ -1,0 +1,743 @@
+{
+  "plans": [
+    {
+      "id": "p_88cf9c22",
+      "name": "Push/Pull/Beine",
+      "createdAt": "2026-05-08T08:02:13.086Z",
+      "updatedAt": "2026-05-08T08:03:20.917Z",
+      "days": [
+        {
+          "id": "d_bca51db8",
+          "name": "Push",
+          "exercises": [
+            {
+              "id": "e_b72d2724",
+              "name": "LH Bankdrücken",
+              "muscleGroup": "Brust",
+              "sets": null,
+              "reps": null,
+              "weight": null
+            },
+            {
+              "id": "e_d7f9b545",
+              "name": "Butterfly",
+              "muscleGroup": "Brust",
+              "sets": null,
+              "reps": null,
+              "weight": null
+            },
+            {
+              "id": "e_cbf47faf",
+              "name": "Seitheben Seil",
+              "muscleGroup": "Mittlere Schulter",
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        },
+        {
+          "id": "d_2efa877d",
+          "name": "Pull",
+          "exercises": [
+            {
+              "id": "e_875ea4bd",
+              "name": "Rudern zur Brust Stange",
+              "muscleGroup": "Rücken",
+              "sets": null,
+              "reps": null,
+              "weight": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p_de7ea1cc",
+      "name": "Current",
+      "createdAt": "2026-05-08T12:00:00.000Z",
+      "updatedAt": "2026-05-10T11:02:10.778Z",
+      "days": [
+        {
+          "id": "d_c7c61c9b",
+          "name": "Push A1",
+          "exercises": [
+            {
+              "id": "e_b5b5bb9e",
+              "name": "Brustpresse",
+              "muscleGroup": "Brust",
+              "sets": 4,
+              "reps": "8",
+              "weight": "100"
+            },
+            {
+              "id": "e_67d2b22a",
+              "name": "Dips",
+              "muscleGroup": "Brust",
+              "sets": 3,
+              "reps": "12",
+              "weight": "20"
+            },
+            {
+              "id": "e_3f9a45f5",
+              "name": "Butterfly",
+              "muscleGroup": "Brust",
+              "sets": 3,
+              "reps": "12",
+              "weight": "50"
+            },
+            {
+              "id": "e_3691635f",
+              "name": "Maschine",
+              "muscleGroup": "Bauch",
+              "sets": 3,
+              "reps": "15",
+              "weight": "21"
+            },
+            {
+              "id": "e_79385f63",
+              "name": "Leg Raise",
+              "muscleGroup": "Bauch",
+              "sets": 3,
+              "reps": "10",
+              "weight": null
+            },
+            {
+              "id": "e_0cd00bde",
+              "name": "Seitheben Hantel",
+              "muscleGroup": "Mittlere Schulter",
+              "sets": 6,
+              "reps": "10",
+              "weight": "17,5"
+            },
+            {
+              "id": "e_d91c24a3",
+              "name": "Trizepsstrecken",
+              "muscleGroup": "Trizeps",
+              "sets": 4,
+              "reps": "13",
+              "weight": "70"
+            },
+            {
+              "id": "e_65420da2",
+              "name": "Katana Extensions",
+              "muscleGroup": "Trizeps",
+              "sets": 3,
+              "reps": "12",
+              "weight": "15"
+            }
+          ]
+        },
+        {
+          "id": "d_00fd8227",
+          "name": "Pull A1",
+          "exercises": [
+            {
+              "id": "e_91b12bbd",
+              "name": "Highrows",
+              "muscleGroup": "Rücken",
+              "sets": 3,
+              "reps": "8",
+              "weight": "65"
+            },
+            {
+              "id": "e_af147792",
+              "name": "Latzug Breit",
+              "muscleGroup": "Rücken",
+              "sets": 4,
+              "reps": "10",
+              "weight": "90"
+            },
+            {
+              "id": "e_0f2a6109",
+              "name": "Rudern zum Bauch (V)",
+              "muscleGroup": "Rücken",
+              "sets": 3,
+              "reps": "8",
+              "weight": "85"
+            },
+            {
+              "id": "e_01b60d69",
+              "name": "Butterfly Reverse",
+              "muscleGroup": "Hintere Schulter",
+              "sets": 6,
+              "reps": "12",
+              "weight": "75"
+            },
+            {
+              "id": "e_6928851a",
+              "name": "Shruggs",
+              "muscleGroup": "Trapez",
+              "sets": 6,
+              "reps": "12",
+              "weight": "100"
+            },
+            {
+              "id": "e_502717bd",
+              "name": "Hammer Curls",
+              "muscleGroup": "Bizeps",
+              "sets": 3,
+              "reps": "10",
+              "weight": "20"
+            },
+            {
+              "id": "e_79005f1e",
+              "name": "Preacher Curls",
+              "muscleGroup": "Bizeps",
+              "sets": 3,
+              "reps": "8",
+              "weight": "Poser"
+            },
+            {
+              "id": "e_2c9eb09b",
+              "name": "Bizeps Curls Seil",
+              "muscleGroup": "Bizeps",
+              "sets": 3,
+              "reps": "8",
+              "weight": "30"
+            }
+          ]
+        },
+        {
+          "id": "d_205efe64",
+          "name": "Beine",
+          "exercises": [
+            {
+              "id": "e_955e1337",
+              "name": "Abduktor",
+              "muscleGroup": null,
+              "sets": 3,
+              "reps": "10",
+              "weight": null
+            },
+            {
+              "id": "e_fe6367a2",
+              "name": "Adduktor",
+              "muscleGroup": null,
+              "sets": 3,
+              "reps": "8",
+              "weight": null
+            },
+            {
+              "id": "e_04bc4d4c",
+              "name": "Beinbeuger (sitzend)",
+              "muscleGroup": "Hamstrings",
+              "sets": 4,
+              "reps": "10",
+              "weight": "100"
+            },
+            {
+              "id": "e_8a9ffdfb",
+              "name": "Beinstrecker",
+              "muscleGroup": "Quads",
+              "sets": 4,
+              "reps": "10",
+              "weight": "90"
+            },
+            {
+              "id": "e_fc978a74",
+              "name": "Rumänisches Kreuzheben",
+              "muscleGroup": "Hamstrings",
+              "sets": 3,
+              "reps": "8",
+              "weight": "100"
+            },
+            {
+              "id": "e_bce81b14",
+              "name": "Kniebeuge",
+              "muscleGroup": "Quads",
+              "sets": 3,
+              "reps": "10",
+              "weight": "80"
+            },
+            {
+              "id": "e_448a3be1",
+              "name": "Beinpresse Panata",
+              "muscleGroup": "Quads",
+              "sets": 4,
+              "reps": "10",
+              "weight": null
+            },
+            {
+              "id": "e_e1362532",
+              "name": "Wadenheben",
+              "muscleGroup": "Waden",
+              "sets": 6,
+              "reps": "10",
+              "weight": "175"
+            }
+          ]
+        },
+        {
+          "id": "d_b66d01b8",
+          "name": "Push A2",
+          "exercises": [
+            {
+              "id": "e_6a920c8c",
+              "name": "Brustpresse (Positiv)",
+              "muscleGroup": "Brust",
+              "sets": 4,
+              "reps": "8",
+              "weight": "100"
+            },
+            {
+              "id": "e_ac930422",
+              "name": "Dips",
+              "muscleGroup": "Brust",
+              "sets": 3,
+              "reps": "12",
+              "weight": "20"
+            },
+            {
+              "id": "e_32098eb4",
+              "name": "Butterfly",
+              "muscleGroup": "Brust",
+              "sets": 3,
+              "reps": "12",
+              "weight": "50"
+            },
+            {
+              "id": "e_8d0016c3",
+              "name": "Military Press",
+              "muscleGroup": "Mittlere Schulter",
+              "sets": 6,
+              "reps": "8",
+              "weight": "50"
+            },
+            {
+              "id": "e_852c371c",
+              "name": "Maschine",
+              "muscleGroup": "Bauch",
+              "sets": 3,
+              "reps": "15",
+              "weight": "21"
+            },
+            {
+              "id": "e_51c7cd2c",
+              "name": "Leg Raise",
+              "muscleGroup": "Bauch",
+              "sets": 3,
+              "reps": "10",
+              "weight": null
+            },
+            {
+              "id": "e_870c90f5",
+              "name": "Seitheben Maschine",
+              "muscleGroup": "Mittlere Schulter",
+              "sets": 6,
+              "reps": "8",
+              "weight": "35"
+            },
+            {
+              "id": "e_750e7ccb",
+              "name": "Trizepsstrecken Seil",
+              "muscleGroup": "Trizeps",
+              "sets": 4,
+              "reps": "10",
+              "weight": "60"
+            },
+            {
+              "id": "e_3d71d084",
+              "name": "Katana Extensions",
+              "muscleGroup": "Trizeps",
+              "sets": 3,
+              "reps": "12",
+              "weight": "15"
+            }
+          ]
+        },
+        {
+          "id": "d_378e991f",
+          "name": "Pull A2",
+          "exercises": [
+            {
+              "id": "e_b1c9bb01",
+              "name": "Highrows",
+              "muscleGroup": "Rücken",
+              "sets": 3,
+              "reps": "10",
+              "weight": "60"
+            },
+            {
+              "id": "e_3e827946",
+              "name": "Rudern zur Brust Stange",
+              "muscleGroup": "Rücken",
+              "sets": 3,
+              "reps": "10",
+              "weight": "75"
+            },
+            {
+              "id": "e_56b63e65",
+              "name": "Latzug Eng",
+              "muscleGroup": "Rücken",
+              "sets": 4,
+              "reps": "8",
+              "weight": "100"
+            },
+            {
+              "id": "e_90dfec7e",
+              "name": "Butterfly Reverse",
+              "muscleGroup": "Hintere Schulter",
+              "sets": 6,
+              "reps": "12",
+              "weight": "75"
+            },
+            {
+              "id": "e_078faf69",
+              "name": "Shruggs",
+              "muscleGroup": "Trapez",
+              "sets": 6,
+              "reps": "12",
+              "weight": "100"
+            },
+            {
+              "id": "e_0836b4f5",
+              "name": "Hammer Curls",
+              "muscleGroup": "Bizeps",
+              "sets": 3,
+              "reps": "10",
+              "weight": "20"
+            },
+            {
+              "id": "e_2bf17fe8",
+              "name": "Bizeps Curls MTS",
+              "muscleGroup": "Bizeps",
+              "sets": 3,
+              "reps": null,
+              "weight": null
+            },
+            {
+              "id": "e_9b7249d1",
+              "name": "Bizeps Curls Bank",
+              "muscleGroup": "Bizeps",
+              "sets": 3,
+              "reps": "8",
+              "weight": "17,5"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "exerciseLibrary": [
+    {
+      "name": "LH Bankdrücken",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "LH Bankdrücken (positiv)",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "LH Bankdrücken (negativ)",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "KH Bankdrücken",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "KH Bankdrücken (positiv)",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "KH Bankdrücken (negativ)",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Brustpresse",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Brustpresse (positiv)",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Brustpresse Hammer Strength",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Brustpresse Hammer Strength (positiv)",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Brustpresse Hammer Strength (negativ)",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Brustpresse Gym 80",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Butterfly",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Cable Cross",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Dips",
+      "muscleGroup": "Brust"
+    },
+    {
+      "name": "Rudern zur Brust MAG",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Rudern zur Brust Stange",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Rudern zur Griff",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Rudern zum Bauch (einzeln)",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Rudern zum Bauch (MAG)",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Rudern zum Bauch (V)",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Latzug Breit",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Latzug Breit (einzeln)",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Latzug Breit (MAG)",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Latzug Eng",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Latzug Eng (einzeln)",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Latzug Eng (MAG)",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Klimmzüge",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Überzüge",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Highrows",
+      "muscleGroup": "Rücken"
+    },
+    {
+      "name": "Facepulls",
+      "muscleGroup": "Hintere Schulter"
+    },
+    {
+      "name": "Butterfly reverse",
+      "muscleGroup": "Hintere Schulter"
+    },
+    {
+      "name": "Seitheben Maschine",
+      "muscleGroup": "Mittlere Schulter"
+    },
+    {
+      "name": "Seitheben Seil",
+      "muscleGroup": "Mittlere Schulter"
+    },
+    {
+      "name": "Seitheben Bank",
+      "muscleGroup": "Mittlere Schulter"
+    },
+    {
+      "name": "Seitheben Hantel",
+      "muscleGroup": "Mittlere Schulter"
+    },
+    {
+      "name": "Military Press",
+      "muscleGroup": "Mittlere Schulter"
+    },
+    {
+      "name": "KH Schulterdrücken",
+      "muscleGroup": "Mittlere Schulter"
+    },
+    {
+      "name": "Schulterdrücken Maschine",
+      "muscleGroup": "Mittlere Schulter"
+    },
+    {
+      "name": "Shruggs",
+      "muscleGroup": "Trapez"
+    },
+    {
+      "name": "Shruggs Seil",
+      "muscleGroup": "Trapez"
+    },
+    {
+      "name": "Shruggs Hantel",
+      "muscleGroup": "Trapez"
+    },
+    {
+      "name": "Kniebeuge",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Kniebeuge (Maschine)",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Frontbeuge",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Hackenschmidt",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Beinpresse",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Beinpresse Panata",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Ausfallschritte",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Bulgarian Split Squats",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Beinstrecker",
+      "muscleGroup": "Quads"
+    },
+    {
+      "name": "Rumänisches Kreuzheben",
+      "muscleGroup": "Hamstrings"
+    },
+    {
+      "name": "Beinbeuger (sitzend)",
+      "muscleGroup": "Hamstrings"
+    },
+    {
+      "name": "Beinbeuger (liegend)",
+      "muscleGroup": "Hamstrings"
+    },
+    {
+      "name": "Trizepsstrecken",
+      "muscleGroup": "Trizeps"
+    },
+    {
+      "name": "Trizepsstrecken Seil",
+      "muscleGroup": "Trizeps"
+    },
+    {
+      "name": "Trizepsstrecken (einzeln)",
+      "muscleGroup": "Trizeps"
+    },
+    {
+      "name": "Trizepsstrecken Überkopf",
+      "muscleGroup": "Trizeps"
+    },
+    {
+      "name": "Katana Extensions",
+      "muscleGroup": "Trizeps"
+    },
+    {
+      "name": "Bizeps Curls",
+      "muscleGroup": "Bizeps"
+    },
+    {
+      "name": "Bizeps Curls Seil",
+      "muscleGroup": "Bizeps"
+    },
+    {
+      "name": "Bizeps Curls Bank",
+      "muscleGroup": "Bizeps"
+    },
+    {
+      "name": "Bizeps Curls MTS",
+      "muscleGroup": "Bizeps"
+    },
+    {
+      "name": "Hammer Curls",
+      "muscleGroup": "Bizeps"
+    },
+    {
+      "name": "Preacher Curls",
+      "muscleGroup": "Bizeps"
+    },
+    {
+      "name": "Wadenheben",
+      "muscleGroup": "Waden"
+    },
+    {
+      "name": "Maschine",
+      "muscleGroup": "Bauch"
+    },
+    {
+      "name": "Leg Raise",
+      "muscleGroup": "Bauch"
+    },
+    {
+      "name": "Kreuzheben",
+      "muscleGroup": "Hamstrings"
+    },
+    {
+      "name": "Abduktor",
+      "muscleGroup": null
+    },
+    {
+      "name": "Adduktor",
+      "muscleGroup": null
+    }
+  ],
+  "muscleGroups": [
+    {
+      "name": "Brust"
+    },
+    {
+      "name": "Rücken"
+    },
+    {
+      "name": "Mittlere Schulter"
+    },
+    {
+      "name": "Hintere Schulter"
+    },
+    {
+      "name": "Trapez"
+    },
+    {
+      "name": "Bizeps"
+    },
+    {
+      "name": "Trizeps"
+    },
+    {
+      "name": "Quads"
+    },
+    {
+      "name": "Hamstrings"
+    },
+    {
+      "name": "Waden"
+    },
+    {
+      "name": "Bauch"
+    }
+  ]
+}
