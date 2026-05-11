@@ -1,0 +1,13 @@
+{
+  "name": "trainingsplan-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Backend für Trainingsplan: Auth-Gate + JSON-API + Static-Fileserver.",
+  "scripts": {
+    "dev": "node --env-file=.env --watch src/index.js",
+    "start": "node --env-file=.env src/index.js"
+  },
+  "dependencies": {
+    "arctic": "^3.7.0"
+  }
+}

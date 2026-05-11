@@ -7,13 +7,28 @@ Ein Plan besteht aus bis zu 7 Trainingstagen (nicht an Kalendertage gebunden). P
 ## Stack
 
 - **Frontend:** Vanilla HTML / CSS / JS (ES-Module). Kein Framework, kein Build-Step.
-- **Backend:** Node.js native `http`, zero dependencies.
-- **Speicher:** `data/plans.json`, atomar gespeichert via `PUT /api/plans`.
+- **Backend:** Node.js native `http`, einzige Dependency: `arctic` (Google OAuth).
+- **Speicher:** `server/data/plans.json`, atomar gespeichert via `PUT /api/plans`.
+- **Auth:** Google OAuth gated den Zugang; Allowlist per `ALLOWED_EMAILS` in `server/.env`.
+
+## Setup
+
+Alle Server-Kommandos laufen aus `server/`:
+
+```sh
+cd server
+cp .env.example .env
+# .env füllen: GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, SESSION_SECRET (z. B. openssl rand -hex 32), ALLOWED_EMAILS
+npm install
+```
+
+Google Cloud Console → OAuth-Client-ID (Web application), Redirect-URI `http://localhost:5173/auth/google/callback`.
 
 ## Run
 
 ```sh
-npm run dev      # node --watch — Auto-Reload bei Code-Änderung
+cd server
+npm run dev      # node --env-file=.env --watch — Auto-Reload bei Code-Änderung
 npm start        # einfach starten
 # -> http://localhost:5173
 ```
@@ -28,7 +43,7 @@ npm start        # einfach starten
 
 ## Datenmodell
 
-`data/plans.json`:
+`server/data/plans.json`:
 
 ```json
 {
@@ -55,23 +70,30 @@ npm start        # einfach starten
 }
 ```
 
-`data/plan.json` ist ein read-only Seed: fehlt `plans.json`, wird die Library + Muskelgruppen daraus initialisiert.
+`server/data/plan.json` ist ein read-only Seed: fehlt `plans.json`, wird die Library + Muskelgruppen daraus initialisiert.
 
 ## Layout
 
 ```
-server.js                Static-Fileserver + /api/plans
-data/plans.json          Live-Daten
-data/plan.json           Seed (read-only)
-public/
+public/                  Statisches Frontend (kein Build-Step)
 ├── index.html
 ├── style.css
 ├── app.js               Bootstrap
 ├── state.js             Globaler State + Save-Pattern
 ├── util.js              Helper
 └── views/builder.js     Builder-View (Sidebar + Editor + DnD)
+
+server/                  Autarkes Backend-Sub-Projekt
+├── src/
+│   ├── index.js         Auth-Gate + Static-Fileserver + /api/plans
+│   └── auth.js          Google OAuth + Session-Cookie + Cookie-Helper
+├── data/
+│   ├── plans.json       Live-Daten
+│   └── plan.json        Seed (read-only)
+├── .env                 Lokale Secrets (gitignored, siehe .env.example)
+└── package.json
 ```
 
 ## Stand
 
-Single-User, lokal. Kein Auth, kein Hosting, keine Mehrwochen-Pläne. Mobile-Bedienung ist nicht primärer Fokus — Desktop-First.
+Lokal, Single-User-Daten hinter Google-Login-Gate. Kein Hosting, keine Mehrwochen-Pläne. Mobile-Bedienung ist nicht primärer Fokus — Desktop-First.

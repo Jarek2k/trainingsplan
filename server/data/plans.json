@@ -1,62 +1,10 @@
 {
   "plans": [
     {
-      "id": "p_88cf9c22",
-      "name": "Push/Pull/Beine",
-      "createdAt": "2026-05-08T08:02:13.086Z",
-      "updatedAt": "2026-05-08T08:03:20.917Z",
-      "days": [
-        {
-          "id": "d_bca51db8",
-          "name": "Push",
-          "exercises": [
-            {
-              "id": "e_b72d2724",
-              "name": "LH Bankdrücken",
-              "muscleGroup": "Brust",
-              "sets": null,
-              "reps": null,
-              "weight": null
-            },
-            {
-              "id": "e_d7f9b545",
-              "name": "Butterfly",
-              "muscleGroup": "Brust",
-              "sets": null,
-              "reps": null,
-              "weight": null
-            },
-            {
-              "id": "e_cbf47faf",
-              "name": "Seitheben Seil",
-              "muscleGroup": "Mittlere Schulter",
-              "sets": null,
-              "reps": null,
-              "weight": null
-            }
-          ]
-        },
-        {
-          "id": "d_2efa877d",
-          "name": "Pull",
-          "exercises": [
-            {
-              "id": "e_875ea4bd",
-              "name": "Rudern zur Brust Stange",
-              "muscleGroup": "Rücken",
-              "sets": null,
-              "reps": null,
-              "weight": null
-            }
-          ]
-        }
-      ]
-    },
-    {
       "id": "p_de7ea1cc",
       "name": "Current",
       "createdAt": "2026-05-08T12:00:00.000Z",
-      "updatedAt": "2026-05-10T11:02:10.778Z",
+      "updatedAt": "2026-05-11T10:52:30.186Z",
       "days": [
         {
           "id": "d_c7c61c9b",
@@ -71,20 +19,20 @@
               "weight": "100"
             },
             {
-              "id": "e_67d2b22a",
-              "name": "Dips",
-              "muscleGroup": "Brust",
-              "sets": 3,
-              "reps": "12",
-              "weight": "20"
-            },
-            {
               "id": "e_3f9a45f5",
               "name": "Butterfly",
               "muscleGroup": "Brust",
               "sets": 3,
               "reps": "12",
               "weight": "50"
+            },
+            {
+              "id": "e_67d2b22a",
+              "name": "Dips",
+              "muscleGroup": "Brust",
+              "sets": 3,
+              "reps": "12",
+              "weight": "20"
             },
             {
               "id": "e_3691635f",
@@ -219,28 +167,12 @@
               "weight": null
             },
             {
-              "id": "e_04bc4d4c",
-              "name": "Beinbeuger (sitzend)",
-              "muscleGroup": "Hamstrings",
-              "sets": 4,
-              "reps": "10",
-              "weight": "100"
-            },
-            {
               "id": "e_8a9ffdfb",
               "name": "Beinstrecker",
               "muscleGroup": "Quads",
               "sets": 4,
               "reps": "10",
               "weight": "90"
-            },
-            {
-              "id": "e_fc978a74",
-              "name": "Rumänisches Kreuzheben",
-              "muscleGroup": "Hamstrings",
-              "sets": 3,
-              "reps": "8",
-              "weight": "100"
             },
             {
               "id": "e_bce81b14",
@@ -259,12 +191,28 @@
               "weight": null
             },
             {
+              "id": "e_fc978a74",
+              "name": "Rumänisches Kreuzheben",
+              "muscleGroup": "Hamstrings",
+              "sets": 3,
+              "reps": "8",
+              "weight": "100"
+            },
+            {
               "id": "e_e1362532",
               "name": "Wadenheben",
               "muscleGroup": "Waden",
               "sets": 6,
               "reps": "10",
               "weight": "175"
+            },
+            {
+              "id": "e_04bc4d4c",
+              "name": "Beinbeuger (sitzend)",
+              "muscleGroup": "Hamstrings",
+              "sets": 4,
+              "reps": "10",
+              "weight": "100"
             }
           ]
         },
@@ -281,14 +229,6 @@
               "weight": "100"
             },
             {
-              "id": "e_ac930422",
-              "name": "Dips",
-              "muscleGroup": "Brust",
-              "sets": 3,
-              "reps": "12",
-              "weight": "20"
-            },
-            {
               "id": "e_32098eb4",
               "name": "Butterfly",
               "muscleGroup": "Brust",
@@ -303,14 +243,6 @@
               "sets": 6,
               "reps": "8",
               "weight": "50"
-            },
-            {
-              "id": "e_852c371c",
-              "name": "Maschine",
-              "muscleGroup": "Bauch",
-              "sets": 3,
-              "reps": "15",
-              "weight": "21"
             },
             {
               "id": "e_51c7cd2c",
@@ -343,6 +275,22 @@
               "sets": 3,
               "reps": "12",
               "weight": "15"
+            },
+            {
+              "id": "e_852c371c",
+              "name": "Maschine",
+              "muscleGroup": "Bauch",
+              "sets": 3,
+              "reps": "15",
+              "weight": "21"
+            },
+            {
+              "id": "e_ac930422",
+              "name": "Dips",
+              "muscleGroup": "Brust",
+              "sets": 3,
+              "reps": "12",
+              "weight": "20"
             }
           ]
         },

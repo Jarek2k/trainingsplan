@@ -31,7 +31,21 @@ function wireThemeToggle() {
   refresh();
 }
 
+function wireLogout() {
+  const btn = document.getElementById("logout");
+  btn.addEventListener("click", async () => {
+    btn.disabled = true;
+    try {
+      await fetch("/auth/logout", { method: "POST" });
+    } catch {
+      // ignore — reload either way drops the session client-side.
+    }
+    window.location.assign("/?logged_out=1");
+  });
+}
+
 wireThemeToggle();
+wireLogout();
 
 loadPlans()
   .then(() => {
