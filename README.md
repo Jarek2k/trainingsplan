@@ -94,6 +94,10 @@ server/                  Autarkes Backend-Sub-Projekt
 └── package.json
 ```
 
+## Deploy
+
+Production läuft auf einem Hetzner-Server (geteilt mit elle-eats) hinter Caddy. Anleitung: [`deploy/setup.md`](deploy/setup.md). Live unter `https://trainingsplan.karateabfahrt.de`.
+
 ## Stand
 
-Lokal, Single-User-Daten hinter Google-Login-Gate. Kein Hosting, keine Mehrwochen-Pläne. Mobile-Bedienung ist nicht primärer Fokus — Desktop-First.
+Single-User-Daten hinter Google-Login-Gate. Mehrwochen-Pläne sind noch nicht abgebildet. Mobile-Bedienung ist nicht primärer Fokus — Desktop-First.

@@ -1,0 +1,26 @@
+[Unit]
+Description=trainingsplan web server
+After=network.target
+
+[Service]
+Type=simple
+User=trainingsplan
+Group=trainingsplan
+WorkingDirectory=/srv/trainingsplan/app/server
+EnvironmentFile=/srv/trainingsplan/app/server/.env
+ExecStart=/usr/bin/node src/index.js
+Restart=on-failure
+RestartSec=3
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+LockPersonality=true
+
+[Install]
+WantedBy=multi-user.target

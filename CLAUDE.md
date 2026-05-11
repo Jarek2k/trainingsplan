@@ -29,6 +29,11 @@ server/                      Autarkes Backend-Sub-Projekt (eigene package.json)
 │   └── plan.json           Read-only Seed für die initiale Library
 ├── .env                    Lokal, gitignored (siehe .env.example)
 └── package.json            Server-Deps (arctic)
+
+deploy/                      Production-Deploy-Artefakte (Hetzner + Caddy + systemd)
+├── setup.md                Schritt-für-Schritt-Anleitung
+├── Caddyfile               Reverse-Proxy-Block für trainingsplan.karateabfahrt.de
+└── trainingsplan.service   systemd-Unit
 ```
 
 Es gibt nur **eine** View (`builder`). Kein Router.
@@ -99,4 +104,7 @@ Google OAuth: in der Cloud Console eine OAuth-Client-ID (Web application) anlege
 - Mobile-optimiertes Drag & Drop (Touch)
 - Multi-User (Auth ist nur Zugangs-Gate, keine User-spezifischen Daten)
 - Build-Pipeline / Bundler
-- Hosting / Deployment
+
+## Deploy
+
+Hetzner-Server (geteilt mit elle-eats), Caddy als Reverse-Proxy, systemd als Service-Manager. Domain: `trainingsplan.karateabfahrt.de`. Anleitung: [`deploy/setup.md`](deploy/setup.md).
