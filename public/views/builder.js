@@ -5,6 +5,7 @@
 import {
   state,
   scheduleSavePlans,
+  setActivePlanId,
   setCompactView,
   shortId,
 } from "../state.js";
@@ -20,8 +21,10 @@ const SUGGESTED_DAY_NAMES = [
   "Ganzkörper",
 ];
 
-export function render(root) {
+export function render(root, ctx) {
   root.innerHTML = "";
+  renderModeActions(ctx);
+
   const layout = document.createElement("div");
   layout.className = "builder-layout";
 
@@ -35,22 +38,38 @@ export function render(root) {
 
   root.appendChild(layout);
 
-  const rerender = () => render(root);
+  const rerender = () => render(root, ctx);
 
-  // Ensure activePlanId is valid; fall back to most-recent plan or null.
+  // Resolve which plan is open in the builder. Prefer existing selection,
+  // then the active (training) plan, then most-recent.
   const plans = state.plans.plans || [];
-  if (state.activePlanId && !plans.find((p) => p.id === state.activePlanId)) {
-    state.activePlanId = null;
-  }
-  if (!state.activePlanId && plans.length > 0) {
-    state.activePlanId = mostRecent(plans).id;
+  let selectedId = state.builderSelectedPlanId;
+  if (!selectedId || !plans.find((p) => p.id === selectedId)) {
+    selectedId = state.activePlanId && plans.find((p) => p.id === state.activePlanId)
+      ? state.activePlanId
+      : plans.length
+        ? mostRecent(plans).id
+        : null;
+    state.builderSelectedPlanId = selectedId;
   }
 
   renderSidebar(sidebar, rerender);
 
-  const active = plans.find((p) => p.id === state.activePlanId);
-  if (!active) renderEmptyState(main, rerender);
-  else renderEditor(main, active, rerender);
+  const selected = plans.find((p) => p.id === selectedId);
+  if (!selected) renderEmptyState(main, rerender);
+  else renderEditor(main, selected, rerender);
+}
+
+function renderModeActions(ctx) {
+  if (!ctx || !ctx.modeActions) return;
+  ctx.modeActions.innerHTML = "";
+  const done = document.createElement("button");
+  done.type = "button";
+  done.className = "btn";
+  done.textContent = "Fertig";
+  done.title = "Zurück zur Trainingsansicht";
+  done.onclick = () => ctx.switchMode("view");
+  ctx.modeActions.appendChild(done);
 }
 
 function mostRecent(plans) {
@@ -90,14 +109,18 @@ function renderSidebar(root, rerender) {
 
 function renderPlanRow(plan, rerender) {
   const li = document.createElement("li");
-  li.className =
-    "builder-plan-row" + (plan.id === state.activePlanId ? " active" : "");
+  const isSelected = plan.id === state.builderSelectedPlanId;
+  const isActive = plan.id === state.activePlanId;
+  li.className = "builder-plan-row" + (isSelected ? " active" : "");
 
   const label = document.createElement("button");
   label.className = "builder-plan-label";
-  label.textContent = plan.name;
+  label.innerHTML = `
+    ${isActive ? `<span class="builder-plan-star" title="Aktiver Trainingsplan" aria-label="Aktiver Trainingsplan">★</span>` : ""}
+    <span class="builder-plan-label-text">${escape(plan.name)}</span>
+  `;
   label.onclick = () => {
-    state.activePlanId = plan.id;
+    state.builderSelectedPlanId = plan.id;
     rerender();
   };
   li.appendChild(label);
@@ -136,6 +159,12 @@ function openPlanMenu(anchor, plan, rerender) {
     return b;
   };
 
+  if (plan.id !== state.activePlanId) {
+    pop.appendChild(item("Als aktiven Plan setzen", () => {
+      setActivePlanId(plan.id);
+      rerender();
+    }));
+  }
   pop.appendChild(item("Umbenennen", () => renamePlanPrompt(plan, rerender)));
   pop.appendChild(item("Kopieren", () => copyPlan(plan, rerender)));
   pop.appendChild(item("Löschen", () => deletePlan(plan, rerender)));
@@ -498,7 +527,9 @@ function createPlan(name) {
     days: [],
   };
   state.plans.plans.push(plan);
-  state.activePlanId = plan.id;
+  state.builderSelectedPlanId = plan.id;
+  // First plan is auto-active so the viewer has something to show.
+  if (!state.activePlanId) setActivePlanId(plan.id);
   scheduleSavePlans();
   return plan;
 }
@@ -517,7 +548,7 @@ function copyPlan(src, rerender) {
     })),
   };
   state.plans.plans.push(copy);
-  state.activePlanId = copy.id;
+  state.builderSelectedPlanId = copy.id;
   scheduleSavePlans();
   rerender();
 }
@@ -525,7 +556,8 @@ function copyPlan(src, rerender) {
 function deletePlan(plan, rerender) {
   if (!confirm(`Plan „${plan.name}" wirklich löschen?`)) return;
   state.plans.plans = state.plans.plans.filter((p) => p.id !== plan.id);
-  if (state.activePlanId === plan.id) state.activePlanId = null;
+  if (state.builderSelectedPlanId === plan.id) state.builderSelectedPlanId = null;
+  if (state.activePlanId === plan.id) setActivePlanId(null);
   scheduleSavePlans();
   rerender();
 }
@@ -881,7 +913,9 @@ function addLibraryExercise(plan, day, libEntry) {
 }
 
 function currentPlan() {
-  return (state.plans.plans || []).find((p) => p.id === state.activePlanId);
+  return (state.plans.plans || []).find(
+    (p) => p.id === state.builderSelectedPlanId,
+  );
 }
 
 // --- Drag auto-scroll -------------------------------------------------------

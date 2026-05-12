@@ -1,8 +1,18 @@
-// Bootstrap. The app is the Builder — no routing, no other views.
+// Bootstrap. Renders either the read-only Viewer (default) or the Builder
+// (edit mode), based on state.mode. Mode is in-memory only — every reload
+// starts in "view" so the training screen is what's visible.
 
-import { getTheme, loadPlans, onSaveStatus, setTheme } from "./state.js";
+import {
+  getTheme,
+  loadPlans,
+  onSaveStatus,
+  setMode,
+  setTheme,
+  state,
+} from "./state.js";
 import { escape } from "./util.js";
 import * as builderView from "./views/builder.js";
+import * as viewerView from "./views/viewer.js";
 
 function wireSaveStatus() {
   const el = document.getElementById("save-status");
@@ -16,7 +26,6 @@ function wireThemeToggle() {
   const btn = document.getElementById("theme-toggle");
   const refresh = () => {
     const light = getTheme() === "light";
-    // Glyph shows the *target* mode: sun when current is dark, moon when light.
     btn.textContent = light ? "☾" : "☀";
     btn.setAttribute(
       "aria-label",
@@ -44,13 +53,34 @@ function wireLogout() {
   });
 }
 
+// Single render entry point. Views call this (via setMode + render) to swap
+// between viewer and builder. The view itself paints any mode-specific
+// header controls into #mode-actions.
+export function render() {
+  const main = document.getElementById("main");
+  const modeActions = document.getElementById("mode-actions");
+  modeActions.innerHTML = "";
+  if (state.mode === "edit") {
+    document.body.dataset.mode = "edit";
+    builderView.render(main, { modeActions, switchMode });
+  } else {
+    document.body.dataset.mode = "view";
+    viewerView.render(main, { modeActions, switchMode });
+  }
+}
+
+function switchMode(next) {
+  setMode(next);
+  render();
+}
+
 wireThemeToggle();
 wireLogout();
 
 loadPlans()
   .then(() => {
     wireSaveStatus();
-    builderView.render(document.getElementById("main"));
+    render();
   })
   .catch((err) => {
     console.error(err);

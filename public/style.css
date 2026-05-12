@@ -178,6 +178,40 @@ p {
   gap: var(--s-3);
 }
 
+.mode-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.mode-actions .btn {
+  min-height: 36px;
+  padding: var(--s-2) var(--s-3);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 540px) {
+  .mode-actions .hide-mobile {
+    display: none;
+  }
+}
+
+.plan-select {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--s-3);
+  height: 36px;
+  font-size: 0.9rem;
+  max-width: 200px;
+}
+
+.plan-select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
 .theme-toggle {
   width: 36px;
   height: 36px;
@@ -1712,4 +1746,283 @@ p {
 .builder-board.compact .exercise-box:hover .icon-btn,
 .builder-board.compact .exercise-box-head .icon-btn:focus-visible {
   opacity: 1;
+}
+
+/* =========================================================================
+   Builder — active-plan star + plan-label layout
+   ========================================================================= */
+
+.builder-plan-label {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.builder-plan-label-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.builder-plan-star {
+  color: var(--accent);
+  font-size: 14px;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+/* =========================================================================
+   Viewer — read-only training view
+   ========================================================================= */
+
+.viewer {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--s-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.viewer-plan-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-strong);
+  margin: var(--s-2) 0 0;
+}
+
+/* Day pills — horizontal scrollable tab row */
+.viewer-pills {
+  display: flex;
+  gap: var(--s-2);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--s-1) 0;
+  margin: 0 calc(var(--s-4) * -1);
+  padding-left: var(--s-4);
+  padding-right: var(--s-4);
+  scroll-snap-type: x proximity;
+}
+
+.viewer-pills::-webkit-scrollbar {
+  display: none;
+}
+
+.viewer-pill {
+  flex: 0 0 auto;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: var(--s-2) var(--s-4);
+  font-size: 0.95rem;
+  font-weight: 500;
+  min-height: 40px;
+  white-space: nowrap;
+  scroll-snap-align: start;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.viewer-pill:hover {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+}
+
+.viewer-pill.active {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+
+/* Day content */
+.viewer-day {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.viewer-day-empty {
+  color: var(--muted);
+  text-align: center;
+  padding: var(--s-6) var(--s-4);
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+}
+
+.viewer-exercise {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  background: var(--mg-bg, var(--surface));
+  color: var(--mg-fg, var(--text));
+  border: 1px solid var(--box-border);
+  border-radius: var(--radius);
+  padding: var(--s-3) var(--s-4);
+  box-shadow: var(--shadow-card);
+}
+
+.viewer-exercise-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.viewer-exercise-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: inherit;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.viewer-exercise-mg {
+  margin-top: 2px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
+}
+
+.viewer-exercise-vals {
+  display: flex;
+  gap: var(--s-2);
+  flex: 0 0 auto;
+}
+
+.viewer-val {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  padding: var(--s-1) var(--s-2);
+  background: var(--box-input-bg);
+  border: 1px solid var(--box-input-border);
+  border-radius: var(--radius-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.viewer-val-num {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: inherit;
+  line-height: 1.1;
+}
+
+.viewer-val-unit {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
+  margin-top: 2px;
+}
+
+/* Empty state in viewer (no plans yet) */
+.viewer-empty {
+  max-width: 480px;
+  margin: var(--s-10) auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--s-3);
+  padding: var(--s-8) var(--s-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.viewer-empty h2 {
+  font-size: 1.25rem;
+}
+
+.viewer-empty p {
+  color: var(--muted);
+}
+
+/* Plan picker (multiple plans, none active) */
+.viewer-picker {
+  max-width: 520px;
+  margin: var(--s-8) auto;
+  padding: var(--s-4);
+}
+
+.viewer-picker h2 {
+  font-size: 1.25rem;
+  margin-bottom: var(--s-1);
+}
+
+.viewer-picker-hint {
+  color: var(--muted);
+  margin-bottom: var(--s-4);
+}
+
+.viewer-picker-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.viewer-picker-row {
+  width: 100%;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--s-3) var(--s-4);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+
+.viewer-picker-row:hover {
+  border-color: var(--accent);
+  background: var(--surface-2);
+}
+
+.viewer-picker-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.viewer-picker-meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.viewer-no-days {
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  padding: var(--s-6);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  align-items: center;
+}
+
+/* Tighter exercise rows on small screens */
+@media (max-width: 480px) {
+  .viewer {
+    padding: var(--s-3);
+  }
+  .viewer-exercise {
+    padding: var(--s-2) var(--s-3);
+    gap: var(--s-2);
+  }
+  .viewer-val {
+    min-width: 44px;
+    padding: 2px var(--s-1);
+  }
+  .viewer-val-num {
+    font-size: 1rem;
+  }
 }

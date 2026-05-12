@@ -4,9 +4,19 @@
 const SAVE_DEBOUNCE_MS = 600;
 
 export const state = {
-  // Loaded from /api/plans. Shape: { plans: [...], exerciseLibrary: [...], muscleGroups: [...] }
+  // Loaded from /api/plans.
+  // Shape: { plans, exerciseLibrary, muscleGroups, activePlanId }
   plans: null,
-  activePlanId: null, // string | null
+  // Mirror of state.plans.activePlanId — kept in sync via setActivePlanId().
+  // "Active" = the plan currently being trained (shown in viewer by default).
+  activePlanId: null,
+  // The plan currently open in the builder. Transient, NOT persisted — picking
+  // a different plan to edit must not change which plan is "active" for training.
+  builderSelectedPlanId: null,
+  // "view" (default, read-only training view) | "edit" (builder)
+  mode: "view",
+  // Currently selected day in viewer (transient).
+  viewerDayId: null,
   builderDragging: null, // transient: { fromDayId, exerciseId } | null
   compactView: readCompactView(), // UI-only, persisted in localStorage
 
@@ -14,6 +24,20 @@ export const state = {
   saving: false,
   pendingSave: false,
 };
+
+// --- Active plan / mode ----------------------------------------------------
+
+export function setActivePlanId(id) {
+  state.activePlanId = id;
+  if (!state.plans) return;
+  if (state.plans.activePlanId === id) return;
+  state.plans.activePlanId = id;
+  scheduleSavePlans();
+}
+
+export function setMode(mode) {
+  state.mode = mode === "edit" ? "edit" : "view";
+}
 
 function readCompactView() {
   try {
@@ -68,6 +92,19 @@ export async function loadPlans() {
   if (!Array.isArray(state.plans.plans)) state.plans.plans = [];
   if (!Array.isArray(state.plans.exerciseLibrary)) state.plans.exerciseLibrary = [];
   if (!Array.isArray(state.plans.muscleGroups)) state.plans.muscleGroups = [];
+
+  // Resolve activePlanId: server is source of truth, but fall back gracefully.
+  const list = state.plans.plans;
+  const stored = state.plans.activePlanId || null;
+  if (stored && list.find((p) => p.id === stored)) {
+    state.activePlanId = stored;
+  } else if (list.length === 1) {
+    state.activePlanId = list[0].id;
+    state.plans.activePlanId = list[0].id;
+  } else {
+    state.activePlanId = null;
+    state.plans.activePlanId = null;
+  }
 }
 
 export function scheduleSavePlans() {

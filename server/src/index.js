@@ -99,7 +99,7 @@ async function readPlansFile() {
   } catch {
     // No seed available — start empty.
   }
-  const seed = { plans: [], exerciseLibrary, muscleGroups };
+  const seed = { plans: [], activePlanId: null, exerciseLibrary, muscleGroups };
   const pretty = JSON.stringify(seed, null, 2);
   await writeAtomic(PLANS_FILE, pretty);
   return pretty;
