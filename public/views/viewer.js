@@ -1,8 +1,17 @@
 // Read-only viewer for the active plan. Mobile-first: one day at a time,
-// switched via horizontal pill tabs. No editing, no inputs, no drag.
+// switched via horizontal pill tabs. Tapping an exercise opens an inline
+// tracking view (sets with planned values pre-filled, editable).
 
-import { setActivePlanId, state } from "../state.js";
+import { scheduleSavePlans, setActivePlanId, state } from "../state.js";
 import { escape, findMg } from "../util.js";
+import {
+  addSet,
+  attachLog,
+  findPreviousLog,
+  getOrCreateLogToday,
+  hasTodayLog,
+  removeLastSet,
+} from "../logs.js";
 
 export function render(root, ctx) {
   root.innerHTML = "";
@@ -10,6 +19,7 @@ export function render(root, ctx) {
 
   const plans = state.plans.plans || [];
   if (plans.length === 0) {
+    state.viewerExerciseId = null;
     renderEmpty(root, ctx);
     return;
   }
@@ -21,11 +31,31 @@ export function render(root, ctx) {
     active = plans[0];
   }
   if (!active) {
+    state.viewerExerciseId = null;
     renderPlanPicker(root, ctx);
     return;
   }
 
+  // Sub-routing: tracking detail vs. day overview.
+  if (state.viewerExerciseId) {
+    const { day, exercise } = resolveTrackingTarget(active);
+    if (exercise) {
+      renderTracking(root, active, day, exercise, ctx);
+      return;
+    }
+    // Stale ID — drop and fall through to day overview.
+    state.viewerExerciseId = null;
+  }
+
   renderPlan(root, active, ctx);
+}
+
+function resolveTrackingTarget(plan) {
+  for (const d of plan.days) {
+    const ex = d.exercises.find((e) => e.id === state.viewerExerciseId);
+    if (ex) return { day: d, exercise: ex };
+  }
+  return { day: null, exercise: null };
 }
 
 // --- Header (mode actions) -------------------------------------------------
@@ -36,6 +66,9 @@ function renderModeActions(ctx) {
   if (plans.length === 0) return;
 
   const active = plans.find((p) => p.id === state.activePlanId);
+
+  // In tracking detail, hide plan picker + edit button to keep the header tight.
+  if (state.viewerExerciseId && active) return;
 
   // Plan picker (only when there are 2+ plans)
   if (plans.length > 1 && active) {
@@ -52,6 +85,7 @@ function renderModeActions(ctx) {
     select.onchange = () => {
       setActivePlanId(select.value);
       state.viewerDayId = null;
+      state.viewerExerciseId = null;
       ctx.switchMode("view");
     };
     ctx.modeActions.appendChild(select);
@@ -189,7 +223,7 @@ function renderPlan(root, plan, ctx) {
     dayEl.appendChild(p);
   } else {
     for (const ex of day.exercises) {
-      dayEl.appendChild(renderExercise(ex));
+      dayEl.appendChild(renderExercise(ex, plan, day, root, ctx));
     }
   }
   wrap.appendChild(dayEl);
@@ -197,11 +231,16 @@ function renderPlan(root, plan, ctx) {
   root.appendChild(wrap);
 }
 
-function renderExercise(ex) {
+function renderExercise(ex, plan, day, root, ctx) {
   const mg = findMg(state.plans, ex.muscleGroupId);
-  const row = document.createElement("article");
+  const row = document.createElement("button");
+  row.type = "button";
   row.className = "viewer-exercise";
   if (mg) row.dataset.mgColor = mg.colorKey;
+  row.onclick = () => {
+    state.viewerExerciseId = ex.id;
+    render(root, ctx);
+  };
 
   const left = document.createElement("div");
   left.className = "viewer-exercise-main";
@@ -209,6 +248,14 @@ function renderExercise(ex) {
   const name = document.createElement("div");
   name.className = "viewer-exercise-name";
   name.textContent = ex.name;
+  if (hasTodayLog(plan.id, day.id, ex.id)) {
+    const mark = document.createElement("span");
+    mark.className = "viewer-exercise-done";
+    mark.setAttribute("aria-label", "Heute getrackt");
+    mark.title = "Heute getrackt";
+    mark.textContent = "✓";
+    name.appendChild(mark);
+  }
   left.appendChild(name);
 
   if (mg) {
@@ -238,4 +285,172 @@ function valChip(value, unit) {
     <span class="viewer-val-unit">${escape(unit)}</span>
   `;
   return chip;
+}
+
+// --- Tracking detail -------------------------------------------------------
+
+function renderTracking(root, plan, day, ex, ctx) {
+  const mg = findMg(state.plans, ex.muscleGroupId);
+  const log = getOrCreateLogToday(plan.id, day.id, ex);
+  const prev = findPreviousLog(plan.id, day.id, ex.id, log.id);
+  const persist = () => {
+    attachLog(log);
+    scheduleSavePlans();
+  };
+
+  const wrap = document.createElement("div");
+  wrap.className = "viewer tracking";
+  if (mg) wrap.dataset.mgColor = mg.colorKey;
+
+  // Header: back + exercise name + muscle group.
+  const header = document.createElement("div");
+  header.className = "tracking-header";
+
+  const back = document.createElement("button");
+  back.type = "button";
+  back.className = "tracking-back";
+  back.setAttribute("aria-label", "Zurück zur Tagesübersicht");
+  back.innerHTML = `<span aria-hidden="true">←</span><span>Zurück</span>`;
+  back.onclick = () => {
+    state.viewerExerciseId = null;
+    render(root, ctx);
+  };
+  header.appendChild(back);
+
+  const titleWrap = document.createElement("div");
+  titleWrap.className = "tracking-title";
+  const h = document.createElement("h1");
+  h.textContent = ex.name;
+  titleWrap.appendChild(h);
+  const sub = document.createElement("div");
+  sub.className = "tracking-sub";
+  const dayLabel = `${day.name}`;
+  sub.textContent = mg ? `${mg.name} · ${dayLabel}` : dayLabel;
+  titleWrap.appendChild(sub);
+  header.appendChild(titleWrap);
+
+  wrap.appendChild(header);
+
+  // Plan reference strip.
+  const planRef = document.createElement("div");
+  planRef.className = "tracking-planref";
+  planRef.innerHTML = `
+    <span class="tracking-planref-label">Plan</span>
+    <span>${escape(ex.sets == null ? "—" : String(ex.sets))} Sätze</span>
+    <span class="tracking-planref-sep" aria-hidden="true">·</span>
+    <span>${escape(ex.reps == null || ex.reps === "" ? "—" : String(ex.reps))} Wdh.</span>
+    <span class="tracking-planref-sep" aria-hidden="true">·</span>
+    <span>${escape(ex.weight == null || ex.weight === "" ? "—" : String(ex.weight))} kg</span>
+  `;
+  wrap.appendChild(planRef);
+
+  // Sets list.
+  const list = document.createElement("ol");
+  list.className = "tracking-sets";
+  for (let i = 0; i < log.sets.length; i++) {
+    list.appendChild(renderSetRow(log, i, prev, persist));
+  }
+  wrap.appendChild(list);
+
+  // Set controls (+ / − Satz).
+  const controls = document.createElement("div");
+  controls.className = "tracking-set-controls";
+
+  const addBtn = document.createElement("button");
+  addBtn.type = "button";
+  addBtn.className = "btn ghost";
+  addBtn.textContent = "+ Satz";
+  addBtn.onclick = () => {
+    addSet(log, ex);
+    persist();
+    render(root, ctx);
+  };
+  controls.appendChild(addBtn);
+
+  const rmBtn = document.createElement("button");
+  rmBtn.type = "button";
+  rmBtn.className = "btn ghost";
+  rmBtn.textContent = "− Satz";
+  rmBtn.disabled = log.sets.length <= 1;
+  rmBtn.onclick = () => {
+    removeLastSet(log);
+    persist();
+    render(root, ctx);
+  };
+  controls.appendChild(rmBtn);
+
+  wrap.appendChild(controls);
+
+  // Done button (just navigation — auto-save covers persistence).
+  const done = document.createElement("button");
+  done.type = "button";
+  done.className = "tracking-done";
+  done.textContent = "Fertig";
+  done.onclick = () => {
+    state.viewerExerciseId = null;
+    render(root, ctx);
+  };
+  wrap.appendChild(done);
+
+  root.appendChild(wrap);
+}
+
+function renderSetRow(log, idx, prev, persist) {
+  const row = document.createElement("li");
+  row.className = "tracking-set";
+
+  const num = document.createElement("div");
+  num.className = "tracking-set-num";
+  num.textContent = String(idx + 1);
+  row.appendChild(num);
+
+  const set = log.sets[idx];
+
+  const repsCell = document.createElement("label");
+  repsCell.className = "tracking-set-field";
+  repsCell.innerHTML = `<span class="tracking-set-label">Wdh.</span>`;
+  const repsInput = document.createElement("input");
+  repsInput.type = "text";
+  repsInput.inputMode = "numeric";
+  repsInput.autocomplete = "off";
+  repsInput.value = set.reps ?? "";
+  repsInput.oninput = () => {
+    set.reps = repsInput.value;
+    persist();
+  };
+  repsCell.appendChild(repsInput);
+  const prevReps = prev?.sets?.[idx]?.reps;
+  if (prevReps != null && prevReps !== "") {
+    const last = document.createElement("span");
+    last.className = "tracking-set-prev";
+    last.title = "Letztes Mal";
+    last.textContent = String(prevReps);
+    repsCell.appendChild(last);
+  }
+  row.appendChild(repsCell);
+
+  const wCell = document.createElement("label");
+  wCell.className = "tracking-set-field";
+  wCell.innerHTML = `<span class="tracking-set-label">kg</span>`;
+  const wInput = document.createElement("input");
+  wInput.type = "text";
+  wInput.inputMode = "decimal";
+  wInput.autocomplete = "off";
+  wInput.value = set.weight ?? "";
+  wInput.oninput = () => {
+    set.weight = wInput.value;
+    persist();
+  };
+  wCell.appendChild(wInput);
+  const prevWeight = prev?.sets?.[idx]?.weight;
+  if (prevWeight != null && prevWeight !== "") {
+    const last = document.createElement("span");
+    last.className = "tracking-set-prev";
+    last.title = "Letztes Mal";
+    last.textContent = String(prevWeight);
+    wCell.appendChild(last);
+  }
+  row.appendChild(wCell);
+
+  return row;
 }

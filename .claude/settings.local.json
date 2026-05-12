@@ -25,10 +25,20 @@
       "Read(/Users/jarek/.claude/**)",
       "Bash(gh auth *)",
       "Bash(git init *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(gh repo *)",
+      "Bash(find /Users/jarek/dev -maxdepth 4 -type d -iname \"*elle-eats*\" 2>/dev/null)",
+      "Read(//Users/jarek/dev/**)",
+      "Bash(git -C /Users/jarek/dev/claude/projects/trainingsplan status)",
+      "Bash(echo \"exit=$?\")",
+      "Bash(git restore *)",
+      "Bash(git push *)",
+      "Bash(cp /Users/jarek/dev/claude/projects/trainingsplan/server/data/plans.json /tmp/plans.json.bak && echo \"backup created\" && head -50 /Users/jarek/dev/claude/projects/trainingsplan/server/data/plans.json)"
     ],
     "additionalDirectories": [
-      "/Users/jarek/.claude"
+      "/Users/jarek/.claude",
+      "/tmp"
     ]
   }
 }

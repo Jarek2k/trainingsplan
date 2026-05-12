@@ -17,6 +17,8 @@ export const state = {
   mode: "view",
   // Currently selected day in viewer (transient).
   viewerDayId: null,
+  // When set, the viewer is in tracking-detail mode for this exercise.
+  viewerExerciseId: null,
   builderDragging: null, // transient: { fromDayId, exerciseId } | null
   compactView: readCompactView(), // UI-only, persisted in localStorage
 
@@ -93,6 +95,7 @@ export async function loadPlans() {
   if (!Array.isArray(state.plans.plans)) state.plans.plans = [];
   if (!Array.isArray(state.plans.exerciseLibrary)) state.plans.exerciseLibrary = [];
   if (!Array.isArray(state.plans.muscleGroups)) state.plans.muscleGroups = [];
+  if (!Array.isArray(state.plans.logs)) state.plans.logs = [];
 
   // Resolve activePlanId: server is source of truth, but fall back gracefully.
   const list = state.plans.plans;

@@ -67,9 +67,21 @@ Es gibt nur **eine** View (`builder`). Kein Router.
     }
   ],
   "exerciseLibrary": [{ "name": "...", "muscleGroup": "..." }],
-  "muscleGroups":    [{ "name": "Brust" }]
+  "muscleGroups":    [{ "name": "Brust" }],
+  "logs": [
+    {
+      "id": "l_<random>",
+      "planId": "p_...",
+      "dayId": "d_...",
+      "exerciseId": "e_...",
+      "date": "YYYY-MM-DD",
+      "sets": [{ "reps": "8", "weight": "80" }]
+    }
+  ]
 }
 ```
+
+`logs[]` speichert die tatsächlich ausgeführten Sätze pro Übung und Tag. Scope: `(planId, dayId, exerciseId, date)` — ein Eintrag pro Übung und Datum, wird bei wiederholtem Öffnen weiter editiert. Plan bleibt unangetastet; der Log ist additiv. Pre-Fill aus Plan-Werten, "letztes Mal" = jüngster älterer Log mit gleicher `(planId, dayId, exerciseId)`.
 
 Wenn `plans.json` fehlt, seedet der Server `exerciseLibrary` + `muscleGroups` aus `server/data/plan.json` und legt eine leere `plans`-Liste an.
 

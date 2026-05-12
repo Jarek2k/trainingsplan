@@ -109,6 +109,7 @@ function migratePlans(parsed) {
   if (!Array.isArray(data.plans)) { data.plans = []; changed = true; }
   if (!Array.isArray(data.exerciseLibrary)) { data.exerciseLibrary = []; changed = true; }
   if (!Array.isArray(data.muscleGroups)) { data.muscleGroups = []; changed = true; }
+  if (!Array.isArray(data.logs)) { data.logs = []; changed = true; }
   if (data.activePlanId === undefined) { data.activePlanId = null; changed = true; }
 
   // Muscle groups: add id + colorKey if missing.

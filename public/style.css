@@ -1027,17 +1027,17 @@ p {
 }
 
 /* Dark palette — applied via [data-mg-color="<key>"] on cards/badges/pills. */
-:where(.exercise-box, .viewer-exercise)[data-mg-color="rose"]    { --mg-bg: #5b1f3a; --mg-fg: #ffd1e0; }
-:where(.exercise-box, .viewer-exercise)[data-mg-color="blue"]    { --mg-bg: #173a55; --mg-fg: #c6e3ff; }
-:where(.exercise-box, .viewer-exercise)[data-mg-color="amber"]   { --mg-bg: #5a4a14; --mg-fg: #ffe9a8; }
-:where(.exercise-box, .viewer-exercise)[data-mg-color="ochre"]   { --mg-bg: #4a3a10; --mg-fg: #ffdf8a; }
-:where(.exercise-box, .viewer-exercise)[data-mg-color="violet"]  { --mg-bg: #3a2e57; --mg-fg: #d8c8ff; }
-:where(.exercise-box, .viewer-exercise)[data-mg-color="magenta"] { --mg-bg: #4a2255; --mg-fg: #efc6ff; }
-:where(.exercise-box, .viewer-exercise)[data-mg-color="pink"]    { --mg-bg: #55244a; --mg-fg: #ffc6ee; }
-:where(.exercise-box, .viewer-exercise)[data-mg-color="green"]   { --mg-bg: #1f5a3d; --mg-fg: #b6f0c8; }
-:where(.exercise-box, .viewer-exercise)[data-mg-color="mint"]    { --mg-bg: #145533; --mg-fg: #aeebbe; }
-:where(.exercise-box, .viewer-exercise)[data-mg-color="lime"]    { --mg-bg: #3d551f; --mg-fg: #d6f0a8; }
-:where(.exercise-box, .viewer-exercise)[data-mg-color="orange"]  { --mg-bg: #553a1f; --mg-fg: #ffd6a8; }
+:where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="rose"]    { --mg-bg: #5b1f3a; --mg-fg: #ffd1e0; }
+:where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="blue"]    { --mg-bg: #173a55; --mg-fg: #c6e3ff; }
+:where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="amber"]   { --mg-bg: #5a4a14; --mg-fg: #ffe9a8; }
+:where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="ochre"]   { --mg-bg: #4a3a10; --mg-fg: #ffdf8a; }
+:where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="violet"]  { --mg-bg: #3a2e57; --mg-fg: #d8c8ff; }
+:where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="magenta"] { --mg-bg: #4a2255; --mg-fg: #efc6ff; }
+:where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="pink"]    { --mg-bg: #55244a; --mg-fg: #ffc6ee; }
+:where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="green"]   { --mg-bg: #1f5a3d; --mg-fg: #b6f0c8; }
+:where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="mint"]    { --mg-bg: #145533; --mg-fg: #aeebbe; }
+:where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="lime"]    { --mg-bg: #3d551f; --mg-fg: #d6f0a8; }
+:where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="orange"]  { --mg-bg: #553a1f; --mg-fg: #ffd6a8; }
 
 :where(.mg-badge, .mg-pill)[data-mg-color="rose"]    { background: #5b1f3a; color: #ffd1e0; }
 :where(.mg-badge, .mg-pill)[data-mg-color="blue"]    { background: #173a55; color: #c6e3ff; }
@@ -1065,17 +1065,17 @@ p {
 .mg-swatch[data-mg-color="orange"]  { background: #ffd6a8; }
 
 /* Light theme — pastel tints, dark hue as foreground. */
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="rose"]    { --mg-bg: #fce0ea; --mg-fg: #7a1c3a; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="blue"]    { --mg-bg: #d8e8fa; --mg-fg: #0c3c66; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="amber"]   { --mg-bg: #fbeec1; --mg-fg: #6b5410; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="ochre"]   { --mg-bg: #fbe5b8; --mg-fg: #6b440e; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="violet"]  { --mg-bg: #e6dcfb; --mg-fg: #3f2c7a; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="magenta"] { --mg-bg: #f3dafc; --mg-fg: #5a1e7a; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="pink"]    { --mg-bg: #fcdaee; --mg-fg: #7a1e57; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="green"]   { --mg-bg: #d3f1de; --mg-fg: #0e5a30; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="mint"]    { --mg-bg: #cdedd8; --mg-fg: #0a5028; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="lime"]    { --mg-bg: #e7f1c5; --mg-fg: #3d550e; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="orange"]  { --mg-bg: #fbe2c4; --mg-fg: #6b3a0a; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="rose"]    { --mg-bg: #fce0ea; --mg-fg: #7a1c3a; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="blue"]    { --mg-bg: #d8e8fa; --mg-fg: #0c3c66; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="amber"]   { --mg-bg: #fbeec1; --mg-fg: #6b5410; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="ochre"]   { --mg-bg: #fbe5b8; --mg-fg: #6b440e; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="violet"]  { --mg-bg: #e6dcfb; --mg-fg: #3f2c7a; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="magenta"] { --mg-bg: #f3dafc; --mg-fg: #5a1e7a; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="pink"]    { --mg-bg: #fcdaee; --mg-fg: #7a1e57; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="green"]   { --mg-bg: #d3f1de; --mg-fg: #0e5a30; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="mint"]    { --mg-bg: #cdedd8; --mg-fg: #0a5028; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="lime"]    { --mg-bg: #e7f1c5; --mg-fg: #3d550e; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise, .tracking)[data-mg-color="orange"]  { --mg-bg: #fbe2c4; --mg-fg: #6b3a0a; }
 
 :root[data-theme="light"] :where(.mg-badge, .mg-pill)[data-mg-color="rose"]    { background: #fce0ea; color: #7a1c3a; }
 :root[data-theme="light"] :where(.mg-badge, .mg-pill)[data-mg-color="blue"]    { background: #d8e8fa; color: #0c3c66; }
@@ -1913,6 +1913,11 @@ p {
 }
 
 .viewer-exercise {
+  /* Renders as <button> — reset native chrome so the gradient card shows. */
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
   display: flex;
   align-items: center;
   gap: var(--s-3);
@@ -1932,9 +1937,33 @@ p {
     0 4px 12px color-mix(in srgb, black 24%, transparent);
 }
 
+.viewer-exercise:hover {
+  filter: brightness(1.04);
+}
+
+.viewer-exercise:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--mg-fg, var(--text)) 70%, transparent);
+  outline-offset: 2px;
+}
+
 .viewer-exercise-main {
   flex: 1;
   min-width: 0;
+}
+
+.viewer-exercise-done {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 8px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--mg-fg, var(--text)) 25%, transparent);
+  color: var(--mg-fg, var(--text));
+  font-size: 11px;
+  font-weight: 700;
+  vertical-align: middle;
 }
 
 .viewer-exercise-name {
@@ -2687,5 +2716,294 @@ p {
   }
   .manage-ex-toolbar .btn {
     flex: 1;
+  }
+}
+
+/* =========================================================================
+   Tracking detail — per-set inputs for the current training exercise
+   ========================================================================= */
+
+.tracking {
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  /* Derived shades — resolved at use-time, so they pick up the MG-specific
+     --mg-bg/--mg-fg set by :where(...)[data-mg-color="..."] above. */
+  --mg-tint: color-mix(in srgb, var(--mg-bg, var(--surface)) 55%, var(--surface));
+  --mg-soft: color-mix(in srgb, var(--mg-bg, var(--surface)) 25%, var(--surface));
+  --mg-line: color-mix(in srgb, var(--mg-fg, var(--text)) 35%, transparent);
+}
+
+/* Fallback when no muscle group is set on the exercise. Use :not() so the
+   MG-specific rule (same specificity as :where, plus an attribute selector)
+   wins whenever data-mg-color is present. */
+.tracking:not([data-mg-color]) {
+  --mg-bg: var(--surface);
+  --mg-fg: var(--text);
+}
+
+.tracking-header {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-1) 0 var(--s-2);
+}
+
+.tracking-back {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    transform 120ms ease;
+}
+
+.tracking-back:hover {
+  background: var(--surface-3);
+}
+
+.tracking-back:active {
+  transform: scale(0.97);
+}
+
+.tracking-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.tracking-title h1 {
+  font-size: 1.35rem;
+  line-height: 1.15;
+  margin: 0;
+  word-break: break-word;
+  color: var(--text-strong);
+}
+
+.tracking-sub {
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--mg-fg);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.tracking-sub::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--mg-fg);
+  opacity: 0.85;
+}
+
+.tracking-planref {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 10px var(--s-3);
+  background: var(--mg-soft);
+  border: 1px solid color-mix(in srgb, var(--mg-fg) 18%, transparent);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--mg-fg) 75%, var(--muted));
+  font-variant-numeric: tabular-nums;
+}
+
+.tracking-planref-label {
+  color: var(--mg-fg);
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.tracking-planref-sep {
+  opacity: 0.4;
+}
+
+.tracking-sets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.tracking-set {
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--mg-tint) 100%, white 4%) 0%,
+    var(--mg-tint) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--mg-fg) 14%, transparent);
+  border-radius: var(--radius);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 8%, transparent),
+    0 2px 8px color-mix(in srgb, black 18%, transparent);
+}
+
+.tracking-set-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--mg-fg) 22%, transparent);
+  color: var(--mg-fg);
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  justify-self: center;
+}
+
+.tracking-set-field {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "label prev"
+    "input input";
+  align-items: center;
+  gap: 4px 8px;
+  min-width: 0;
+}
+
+.tracking-set-label {
+  grid-area: label;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--mg-fg) 65%, var(--muted));
+}
+
+.tracking-set-field input {
+  grid-area: input;
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  background: color-mix(in srgb, black 30%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mg-fg) 20%, transparent);
+  border-radius: var(--radius-sm);
+  color: var(--mg-fg);
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.tracking-set-field input:focus {
+  outline: none;
+  border-color: var(--mg-fg);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mg-fg) 25%, transparent);
+}
+
+.tracking-set-prev {
+  grid-area: prev;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--mg-fg) 70%, var(--muted));
+  font-variant-numeric: tabular-nums;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+.tracking-set-prev::before {
+  content: "↶";
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.tracking-set-controls {
+  display: flex;
+  gap: var(--s-2);
+  justify-content: center;
+  margin-top: var(--s-1);
+}
+
+.tracking-set-controls .btn {
+  flex: 1;
+  max-width: 180px;
+}
+
+.tracking-done {
+  align-self: stretch;
+  padding: 14px 20px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: var(--text-strong);
+  color: var(--surface);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition:
+    filter 120ms ease,
+    transform 120ms ease;
+}
+
+.tracking-done:hover {
+  filter: brightness(0.92);
+}
+
+.tracking-done:active {
+  transform: scale(0.99);
+}
+
+@media (max-width: 480px) {
+  .tracking {
+    padding: 0 var(--s-2);
+    gap: var(--s-2);
+  }
+  .tracking-header {
+    gap: var(--s-2);
+  }
+  .tracking-title h1 {
+    font-size: 1.15rem;
+  }
+  .tracking-set {
+    grid-template-columns: 32px 1fr 1fr;
+    padding: 10px var(--s-2);
+    gap: 10px;
+  }
+  .tracking-set-num {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
+  .tracking-set-field input {
+    padding: 9px 10px;
+    font-size: 1.05rem;
+  }
+  .tracking-back {
+    padding: 7px 12px;
+    font-size: 0.85rem;
   }
 }

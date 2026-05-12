@@ -781,5 +781,1025 @@
       "colorKey": "orange"
     }
   ],
-  "activePlanId": "p_de7ea1cc"
+  "activePlanId": "p_de7ea1cc",
+  "logs": [
+    {
+      "id": "l_dff87034",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_b66d01b8",
+      "exerciseId": "e_6a920c8c",
+      "date": "2026-05-12",
+      "sets": [
+        {
+          "reps": "8",
+          "weight": "100"
+        },
+        {
+          "reps": "8",
+          "weight": "100"
+        },
+        {
+          "reps": "8",
+          "weight": "100"
+        },
+        {
+          "reps": "8",
+          "weight": "100"
+        }
+      ]
+    },
+    {
+      "id": "l_karpysc3",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_c7c61c9b",
+      "exerciseId": "e_b5b5bb9e",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "8",
+          "weight": "100"
+        },
+        {
+          "reps": "8",
+          "weight": "100"
+        },
+        {
+          "reps": "8",
+          "weight": "100"
+        },
+        {
+          "reps": "8",
+          "weight": "100"
+        }
+      ]
+    },
+    {
+      "id": "l_kpg3wxod",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_c7c61c9b",
+      "exerciseId": "e_3f9a45f5",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "12",
+          "weight": "50"
+        },
+        {
+          "reps": "12",
+          "weight": "50"
+        },
+        {
+          "reps": "12",
+          "weight": "50"
+        }
+      ]
+    },
+    {
+      "id": "l_l0prpgjt",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_c7c61c9b",
+      "exerciseId": "e_67d2b22a",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "12",
+          "weight": "20"
+        },
+        {
+          "reps": "12",
+          "weight": "20"
+        },
+        {
+          "reps": "12",
+          "weight": "20"
+        }
+      ]
+    },
+    {
+      "id": "l_2d81g730",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_c7c61c9b",
+      "exerciseId": "e_3691635f",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "15",
+          "weight": "21"
+        },
+        {
+          "reps": "15",
+          "weight": "21"
+        },
+        {
+          "reps": "15",
+          "weight": "21"
+        }
+      ]
+    },
+    {
+      "id": "l_37eq7mit",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_c7c61c9b",
+      "exerciseId": "e_79385f63",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "10",
+          "weight": ""
+        },
+        {
+          "reps": "10",
+          "weight": ""
+        },
+        {
+          "reps": "10",
+          "weight": ""
+        }
+      ]
+    },
+    {
+      "id": "l_ymy2u1i9",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_c7c61c9b",
+      "exerciseId": "e_0cd00bde",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "10",
+          "weight": "17,5"
+        },
+        {
+          "reps": "10",
+          "weight": "17,5"
+        },
+        {
+          "reps": "10",
+          "weight": "17,5"
+        },
+        {
+          "reps": "10",
+          "weight": "17,5"
+        },
+        {
+          "reps": "10",
+          "weight": "17,5"
+        },
+        {
+          "reps": "10",
+          "weight": "17,5"
+        }
+      ]
+    },
+    {
+      "id": "l_qb1uzunz",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_c7c61c9b",
+      "exerciseId": "e_d91c24a3",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "13",
+          "weight": "70"
+        },
+        {
+          "reps": "13",
+          "weight": "70"
+        },
+        {
+          "reps": "13",
+          "weight": "70"
+        },
+        {
+          "reps": "13",
+          "weight": "70"
+        }
+      ]
+    },
+    {
+      "id": "l_ses2gep9",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_c7c61c9b",
+      "exerciseId": "e_65420da2",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "12",
+          "weight": "15"
+        },
+        {
+          "reps": "12",
+          "weight": "15"
+        },
+        {
+          "reps": "12",
+          "weight": "15"
+        }
+      ]
+    },
+    {
+      "id": "l_8sn6q1s5",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_00fd8227",
+      "exerciseId": "e_91b12bbd",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "8",
+          "weight": "65"
+        },
+        {
+          "reps": "8",
+          "weight": "65"
+        },
+        {
+          "reps": "8",
+          "weight": "65"
+        }
+      ]
+    },
+    {
+      "id": "l_uh0zsmcc",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_00fd8227",
+      "exerciseId": "e_af147792",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "10",
+          "weight": "90"
+        },
+        {
+          "reps": "10",
+          "weight": "90"
+        },
+        {
+          "reps": "10",
+          "weight": "90"
+        },
+        {
+          "reps": "10",
+          "weight": "90"
+        }
+      ]
+    },
+    {
+      "id": "l_4huh90u1",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_00fd8227",
+      "exerciseId": "e_0f2a6109",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "8",
+          "weight": "85"
+        },
+        {
+          "reps": "8",
+          "weight": "85"
+        },
+        {
+          "reps": "8",
+          "weight": "85"
+        }
+      ]
+    },
+    {
+      "id": "l_as2ph8hl",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_00fd8227",
+      "exerciseId": "e_01b60d69",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "12",
+          "weight": "75"
+        },
+        {
+          "reps": "12",
+          "weight": "75"
+        },
+        {
+          "reps": "12",
+          "weight": "75"
+        },
+        {
+          "reps": "12",
+          "weight": "75"
+        },
+        {
+          "reps": "12",
+          "weight": "75"
+        },
+        {
+          "reps": "12",
+          "weight": "75"
+        }
+      ]
+    },
+    {
+      "id": "l_b6eubhz6",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_00fd8227",
+      "exerciseId": "e_6928851a",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "12",
+          "weight": "100"
+        },
+        {
+          "reps": "12",
+          "weight": "100"
+        },
+        {
+          "reps": "12",
+          "weight": "100"
+        },
+        {
+          "reps": "12",
+          "weight": "100"
+        },
+        {
+          "reps": "12",
+          "weight": "100"
+        },
+        {
+          "reps": "12",
+          "weight": "100"
+        }
+      ]
+    },
+    {
+      "id": "l_2o6x6ld8",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_00fd8227",
+      "exerciseId": "e_502717bd",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "10",
+          "weight": "20"
+        },
+        {
+          "reps": "10",
+          "weight": "20"
+        },
+        {
+          "reps": "10",
+          "weight": "20"
+        }
+      ]
+    },
+    {
+      "id": "l_c0r6inf5",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_00fd8227",
+      "exerciseId": "e_79005f1e",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "8",
+          "weight": "Poser"
+        },
+        {
+          "reps": "8",
+          "weight": "Poser"
+        },
+        {
+          "reps": "8",
+          "weight": "Poser"
+        }
+      ]
+    },
+    {
+      "id": "l_80r736i4",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_00fd8227",
+      "exerciseId": "e_2c9eb09b",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "8",
+          "weight": "30"
+        },
+        {
+          "reps": "8",
+          "weight": "30"
+        },
+        {
+          "reps": "8",
+          "weight": "30"
+        }
+      ]
+    },
+    {
+      "id": "l_bl6kddcr",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_205efe64",
+      "exerciseId": "e_955e1337",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "10",
+          "weight": ""
+        },
+        {
+          "reps": "10",
+          "weight": ""
+        },
+        {
+          "reps": "10",
+          "weight": ""
+        }
+      ]
+    },
+    {
+      "id": "l_loiv532g",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_205efe64",
+      "exerciseId": "e_fe6367a2",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "8",
+          "weight": ""
+        },
+        {
+          "reps": "8",
+          "weight": ""
+        },
+        {
+          "reps": "8",
+          "weight": ""
+        }
+      ]
+    },
+    {
+      "id": "l_hnaw5bbi",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_205efe64",
+      "exerciseId": "e_8a9ffdfb",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "10",
+          "weight": "90"
+        },
+        {
+          "reps": "10",
+          "weight": "90"
+        },
+        {
+          "reps": "10",
+          "weight": "90"
+        },
+        {
+          "reps": "10",
+          "weight": "90"
+        }
+      ]
+    },
+    {
+      "id": "l_phfhhjpr",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_205efe64",
+      "exerciseId": "e_bce81b14",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "10",
+          "weight": "80"
+        },
+        {
+          "reps": "10",
+          "weight": "80"
+        },
+        {
+          "reps": "10",
+          "weight": "80"
+        }
+      ]
+    },
+    {
+      "id": "l_p4l2i7wl",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_205efe64",
+      "exerciseId": "e_448a3be1",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "10",
+          "weight": ""
+        },
+        {
+          "reps": "10",
+          "weight": ""
+        },
+        {
+          "reps": "10",
+          "weight": ""
+        },
+        {
+          "reps": "10",
+          "weight": ""
+        }
+      ]
+    },
+    {
+      "id": "l_3qf25lu5",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_205efe64",
+      "exerciseId": "e_fc978a74",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "8",
+          "weight": "100"
+        },
+        {
+          "reps": "8",
+          "weight": "100"
+        },
+        {
+          "reps": "8",
+          "weight": "100"
+        }
+      ]
+    },
+    {
+      "id": "l_7apnid3l",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_205efe64",
+      "exerciseId": "e_e1362532",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "10",
+          "weight": "175"
+        },
+        {
+          "reps": "10",
+          "weight": "175"
+        },
+        {
+          "reps": "10",
+          "weight": "175"
+        },
+        {
+          "reps": "10",
+          "weight": "175"
+        },
+        {
+          "reps": "10",
+          "weight": "175"
+        },
+        {
+          "reps": "10",
+          "weight": "175"
+        }
+      ]
+    },
+    {
+      "id": "l_vpxmox3g",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_205efe64",
+      "exerciseId": "e_04bc4d4c",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "10",
+          "weight": "100"
+        },
+        {
+          "reps": "10",
+          "weight": "100"
+        },
+        {
+          "reps": "10",
+          "weight": "100"
+        },
+        {
+          "reps": "10",
+          "weight": "100"
+        }
+      ]
+    },
+    {
+      "id": "l_11yjsfio",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_b66d01b8",
+      "exerciseId": "e_6a920c8c",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "8",
+          "weight": "100"
+        },
+        {
+          "reps": "8",
+          "weight": "100"
+        },
+        {
+          "reps": "8",
+          "weight": "100"
+        },
+        {
+          "reps": "8",
+          "weight": "100"
+        }
+      ]
+    },
+    {
+      "id": "l_gooermb2",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_b66d01b8",
+      "exerciseId": "e_32098eb4",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "12",
+          "weight": "50"
+        },
+        {
+          "reps": "12",
+          "weight": "50"
+        },
+        {
+          "reps": "12",
+          "weight": "50"
+        }
+      ]
+    },
+    {
+      "id": "l_vs868g2q",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_b66d01b8",
+      "exerciseId": "e_8d0016c3",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "8",
+          "weight": "50"
+        },
+        {
+          "reps": "8",
+          "weight": "50"
+        },
+        {
+          "reps": "8",
+          "weight": "50"
+        },
+        {
+          "reps": "8",
+          "weight": "50"
+        },
+        {
+          "reps": "8",
+          "weight": "50"
+        },
+        {
+          "reps": "8",
+          "weight": "50"
+        }
+      ]
+    },
+    {
+      "id": "l_pp0d7gal",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_b66d01b8",
+      "exerciseId": "e_51c7cd2c",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "10",
+          "weight": ""
+        },
+        {
+          "reps": "10",
+          "weight": ""
+        },
+        {
+          "reps": "10",
+          "weight": ""
+        }
+      ]
+    },
+    {
+      "id": "l_hpsxflep",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_b66d01b8",
+      "exerciseId": "e_870c90f5",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "8",
+          "weight": "35"
+        },
+        {
+          "reps": "8",
+          "weight": "35"
+        },
+        {
+          "reps": "8",
+          "weight": "35"
+        },
+        {
+          "reps": "8",
+          "weight": "35"
+        },
+        {
+          "reps": "8",
+          "weight": "35"
+        },
+        {
+          "reps": "8",
+          "weight": "35"
+        }
+      ]
+    },
+    {
+      "id": "l_bi7wiwg8",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_b66d01b8",
+      "exerciseId": "e_750e7ccb",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "10",
+          "weight": "60"
+        },
+        {
+          "reps": "10",
+          "weight": "60"
+        },
+        {
+          "reps": "10",
+          "weight": "60"
+        },
+        {
+          "reps": "10",
+          "weight": "60"
+        }
+      ]
+    },
+    {
+      "id": "l_j8od4a4h",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_b66d01b8",
+      "exerciseId": "e_3d71d084",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "12",
+          "weight": "15"
+        },
+        {
+          "reps": "12",
+          "weight": "15"
+        },
+        {
+          "reps": "12",
+          "weight": "15"
+        }
+      ]
+    },
+    {
+      "id": "l_9g6ofv9m",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_b66d01b8",
+      "exerciseId": "e_852c371c",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "15",
+          "weight": "21"
+        },
+        {
+          "reps": "15",
+          "weight": "21"
+        },
+        {
+          "reps": "15",
+          "weight": "21"
+        }
+      ]
+    },
+    {
+      "id": "l_eeu2go7l",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_b66d01b8",
+      "exerciseId": "e_ac930422",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "12",
+          "weight": "20"
+        },
+        {
+          "reps": "12",
+          "weight": "20"
+        },
+        {
+          "reps": "12",
+          "weight": "20"
+        }
+      ]
+    },
+    {
+      "id": "l_naany47p",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_378e991f",
+      "exerciseId": "e_b1c9bb01",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "10",
+          "weight": "60"
+        },
+        {
+          "reps": "10",
+          "weight": "60"
+        },
+        {
+          "reps": "10",
+          "weight": "60"
+        }
+      ]
+    },
+    {
+      "id": "l_grnz9kk5",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_378e991f",
+      "exerciseId": "e_3e827946",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "10",
+          "weight": "75"
+        },
+        {
+          "reps": "10",
+          "weight": "75"
+        },
+        {
+          "reps": "10",
+          "weight": "75"
+        }
+      ]
+    },
+    {
+      "id": "l_orc79zx2",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_378e991f",
+      "exerciseId": "e_56b63e65",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "8",
+          "weight": "100"
+        },
+        {
+          "reps": "8",
+          "weight": "100"
+        },
+        {
+          "reps": "8",
+          "weight": "100"
+        },
+        {
+          "reps": "8",
+          "weight": "100"
+        }
+      ]
+    },
+    {
+      "id": "l_vw3xwtwe",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_378e991f",
+      "exerciseId": "e_90dfec7e",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "12",
+          "weight": "75"
+        },
+        {
+          "reps": "12",
+          "weight": "75"
+        },
+        {
+          "reps": "12",
+          "weight": "75"
+        },
+        {
+          "reps": "12",
+          "weight": "75"
+        },
+        {
+          "reps": "12",
+          "weight": "75"
+        },
+        {
+          "reps": "12",
+          "weight": "75"
+        }
+      ]
+    },
+    {
+      "id": "l_s2vr82c7",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_378e991f",
+      "exerciseId": "e_078faf69",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "12",
+          "weight": "100"
+        },
+        {
+          "reps": "12",
+          "weight": "100"
+        },
+        {
+          "reps": "12",
+          "weight": "100"
+        },
+        {
+          "reps": "12",
+          "weight": "100"
+        },
+        {
+          "reps": "12",
+          "weight": "100"
+        },
+        {
+          "reps": "12",
+          "weight": "100"
+        }
+      ]
+    },
+    {
+      "id": "l_6q7htpqn",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_378e991f",
+      "exerciseId": "e_0836b4f5",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "10",
+          "weight": "20"
+        },
+        {
+          "reps": "10",
+          "weight": "20"
+        },
+        {
+          "reps": "10",
+          "weight": "20"
+        }
+      ]
+    },
+    {
+      "id": "l_j5hdv5b0",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_378e991f",
+      "exerciseId": "e_2bf17fe8",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "",
+          "weight": ""
+        },
+        {
+          "reps": "",
+          "weight": ""
+        },
+        {
+          "reps": "",
+          "weight": ""
+        }
+      ]
+    },
+    {
+      "id": "l_ic0lvstk",
+      "planId": "p_de7ea1cc",
+      "dayId": "d_378e991f",
+      "exerciseId": "e_9b7249d1",
+      "date": "2026-05-05",
+      "sets": [
+        {
+          "reps": "8",
+          "weight": "17,5"
+        },
+        {
+          "reps": "8",
+          "weight": "17,5"
+        },
+        {
+          "reps": "8",
+          "weight": "17,5"
+        }
+      ]
+    }
+  ]
 }
