@@ -244,7 +244,8 @@ function renderMgHeader(mg, rerender) {
 
   const del = document.createElement("button");
   del.className = "btn ghost danger";
-  del.textContent = "Muskelgruppe löschen";
+  del.textContent = "Löschen";
+  del.title = "Muskelgruppe löschen";
   del.onclick = () => deleteMg(mg, rerender);
   top.appendChild(del);
   header.appendChild(top);

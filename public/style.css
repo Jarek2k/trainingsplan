@@ -1157,6 +1157,45 @@ p {
     padding: var(--s-4);
     height: auto;
   }
+
+  /* Stack day columns vertically — no more horizontal scroll on phones. */
+  .builder-board {
+    flex-direction: column;
+    overflow-x: visible;
+    overflow-y: visible;
+  }
+  .builder-day {
+    flex: 1 1 auto;
+    max-height: none;
+    width: 100%;
+  }
+  .builder-day-body {
+    overflow-y: visible;
+  }
+  /* Plan-header on mobile: title on one row, actions wrap below. */
+  .builder-plan-header {
+    flex-wrap: wrap;
+  }
+  .builder-plan-name {
+    flex: 1 1 100%;
+    font-size: 18px;
+  }
+  .builder-plan-actions {
+    flex: 1 1 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--s-2);
+  }
+  .builder-plan-actions .btn,
+  .builder-plan-actions .compact-toggle {
+    width: 100%;
+    justify-content: center;
+    padding: var(--s-2);
+  }
+  /* "+ Trainingstag" placeholder column reads as a full-width card. */
+  .builder-add-day {
+    width: 100%;
+  }
 }
 
 .builder-sidebar-head .btn {
@@ -2064,6 +2103,9 @@ p {
   display: flex;
   flex-direction: column;
   gap: var(--s-3);
+  padding: var(--s-4);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .manage-layout {
@@ -2320,10 +2362,12 @@ p {
   display: flex;
   gap: var(--s-2);
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .manage-mg-name {
   flex: 1;
+  min-width: 0;
   background: transparent;
   border: 1px solid transparent;
   color: var(--text-strong);
@@ -2383,10 +2427,12 @@ p {
   display: flex;
   gap: var(--s-2);
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .manage-ex-search {
   flex: 1;
+  min-width: 0;
   background: var(--surface);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
@@ -2616,10 +2662,30 @@ p {
 }
 
 @media (max-width: 720px) {
+  .manage {
+    padding: var(--s-3);
+  }
   .manage-layout {
     grid-template-columns: 1fr;
+    gap: var(--s-3);
   }
   .manage-color-grid {
     grid-template-columns: repeat(6, 1fr);
+  }
+  .manage-mg-header::before {
+    width: 3px;
+  }
+  .manage-mg-color {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-1);
+  }
+  .manage-color-grid.inline .manage-color-slot {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+  }
+  .manage-ex-toolbar .btn {
+    flex: 1;
   }
 }
