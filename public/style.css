@@ -1379,9 +1379,11 @@ p {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  /* Subtle margin so the scrollbar doesn't touch the column edge. */
-  margin-right: calc(var(--s-1) * -1);
-  padding-right: var(--s-1);
+  scrollbar-width: none;
+}
+
+.builder-day-body::-webkit-scrollbar {
+  display: none;
 }
 
 .builder-drop-tail {
@@ -1435,12 +1437,13 @@ p {
   position: relative;
   background:
     linear-gradient(
-      135deg,
-      color-mix(in oklch, var(--mg-bg, var(--mg-default-bg)) 92%, white 10%) 0%,
+      180deg,
+      color-mix(in oklch, var(--mg-bg, var(--mg-default-bg)) 97%, white 5%) 0%,
+      var(--mg-bg, var(--mg-default-bg)) 60%,
       color-mix(in oklch, var(--mg-bg, var(--mg-default-bg)) 96%, black 6%) 100%
     );
   color: var(--mg-fg, var(--mg-default-fg));
-  border: 1px solid color-mix(in srgb, var(--mg-fg, var(--mg-default-fg)) 25%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mg-fg, var(--mg-default-fg)) 22%, transparent);
   border-radius: var(--radius-sm);
   padding: var(--s-2) var(--s-3);
   display: flex;
@@ -1449,9 +1452,8 @@ p {
   cursor: grab;
   user-select: none;
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 18%, transparent),
-    inset 0 -1px 0 color-mix(in srgb, black 14%, transparent),
-    0 6px 18px color-mix(in srgb, black 26%, transparent);
+    inset 0 1px 0 color-mix(in srgb, white 10%, transparent),
+    0 4px 12px color-mix(in srgb, black 24%, transparent);
   transition: transform 0.1s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
@@ -1864,18 +1866,18 @@ p {
   gap: var(--s-3);
   background:
     linear-gradient(
-      135deg,
-      color-mix(in oklch, var(--mg-bg, var(--surface)) 92%, white 10%) 0%,
+      180deg,
+      color-mix(in oklch, var(--mg-bg, var(--surface)) 97%, white 5%) 0%,
+      var(--mg-bg, var(--surface)) 60%,
       color-mix(in oklch, var(--mg-bg, var(--surface)) 96%, black 6%) 100%
     );
   color: var(--mg-fg, var(--text));
-  border: 1px solid color-mix(in srgb, var(--mg-fg, var(--text)) 25%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mg-fg, var(--text)) 22%, transparent);
   border-radius: 14px;
   padding: var(--s-3) var(--s-4);
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 18%, transparent),
-    inset 0 -1px 0 color-mix(in srgb, black 14%, transparent),
-    0 6px 18px color-mix(in srgb, black 26%, transparent);
+    inset 0 1px 0 color-mix(in srgb, white 10%, transparent),
+    0 4px 12px color-mix(in srgb, black 24%, transparent);
 }
 
 .viewer-exercise-main {
