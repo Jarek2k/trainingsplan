@@ -2,7 +2,7 @@
 // switched via horizontal pill tabs. No editing, no inputs, no drag.
 
 import { setActivePlanId, state } from "../state.js";
-import { escape } from "../util.js";
+import { escape, findMg } from "../util.js";
 
 export function render(root, ctx) {
   root.innerHTML = "";
@@ -198,9 +198,10 @@ function renderPlan(root, plan, ctx) {
 }
 
 function renderExercise(ex) {
+  const mg = findMg(state.plans, ex.muscleGroupId);
   const row = document.createElement("article");
   row.className = "viewer-exercise";
-  row.dataset.mg = ex.muscleGroup || "";
+  if (mg) row.dataset.mgColor = mg.colorKey;
 
   const left = document.createElement("div");
   left.className = "viewer-exercise-main";
@@ -210,11 +211,11 @@ function renderExercise(ex) {
   name.textContent = ex.name;
   left.appendChild(name);
 
-  if (ex.muscleGroup) {
-    const mg = document.createElement("div");
-    mg.className = "viewer-exercise-mg";
-    mg.textContent = ex.muscleGroup;
-    left.appendChild(mg);
+  if (mg) {
+    const mgEl = document.createElement("div");
+    mgEl.className = "viewer-exercise-mg";
+    mgEl.textContent = mg.name;
+    left.appendChild(mgEl);
   }
   row.appendChild(left);
 

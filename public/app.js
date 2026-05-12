@@ -12,6 +12,7 @@ import {
 } from "./state.js";
 import { escape } from "./util.js";
 import * as builderView from "./views/builder.js";
+import * as manageView from "./views/manage.js";
 import * as viewerView from "./views/viewer.js";
 
 function wireSaveStatus() {
@@ -63,6 +64,9 @@ export function render() {
   if (state.mode === "edit") {
     document.body.dataset.mode = "edit";
     builderView.render(main, { modeActions, switchMode });
+  } else if (state.mode === "manage") {
+    document.body.dataset.mode = "manage";
+    manageView.render(main, { modeActions, switchMode });
   } else {
     document.body.dataset.mode = "view";
     viewerView.render(main, { modeActions, switchMode });

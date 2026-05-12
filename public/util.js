@@ -46,3 +46,10 @@ export function fmt(v) {
   if (v == null || v === "") return "—";
   return String(v);
 }
+
+// Resolve a muscleGroupId to its muscle-group object (or null if unknown).
+// `plans` is the full state.plans payload.
+export function findMg(plans, id) {
+  if (!id || !plans) return null;
+  return (plans.muscleGroups || []).find((m) => m.id === id) || null;
+}

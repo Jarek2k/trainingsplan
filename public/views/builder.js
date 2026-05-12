@@ -9,7 +9,8 @@ import {
   setCompactView,
   shortId,
 } from "../state.js";
-import { escape } from "../util.js";
+import { openModal } from "../modal.js";
+import { escape, findMg } from "../util.js";
 
 const MAX_DAYS = 7;
 const SUGGESTED_DAY_NAMES = [
@@ -63,6 +64,16 @@ export function render(root, ctx) {
 function renderModeActions(ctx) {
   if (!ctx || !ctx.modeActions) return;
   ctx.modeActions.innerHTML = "";
+
+  const manage = document.createElement("button");
+  manage.type = "button";
+  manage.className = "btn ghost";
+  manage.title = "Muskelgruppen und Übungen verwalten";
+  manage.setAttribute("aria-label", "Muskelgruppen und Übungen verwalten");
+  manage.innerHTML = `<span aria-hidden="true">⚙</span><span class="hide-mobile">Verwaltung</span>`;
+  manage.onclick = () => ctx.switchMode("manage");
+  ctx.modeActions.appendChild(manage);
+
   const done = document.createElement("button");
   done.type = "button";
   done.className = "btn";
@@ -357,9 +368,10 @@ function renderAddDayColumn(plan, rerender) {
 }
 
 function renderExerciseBox(plan, day, ex, rerender) {
+  const mg = findMg(state.plans, ex.muscleGroupId);
   const box = document.createElement("article");
   box.className = "exercise-box";
-  box.dataset.mg = ex.muscleGroup || "";
+  if (mg) box.dataset.mgColor = mg.colorKey;
   box.dataset.exerciseId = ex.id;
   box.dataset.dayId = day.id;
   box.draggable = true;
@@ -421,7 +433,7 @@ function renderExerciseBox(plan, day, ex, rerender) {
   titles.setAttribute("aria-label", `${ex.name} ersetzen`);
   titles.innerHTML = `
     <div class="exercise-box-name">${escape(ex.name)}</div>
-    <div class="exercise-box-mg">${escape(ex.muscleGroup || "—")}</div>
+    <div class="exercise-box-mg">${escape(mg ? mg.name : "—")}</div>
   `;
   titles.onclick = () => openReplaceExerciseModal(plan, day, ex, rerender);
   head.appendChild(titles);
@@ -575,50 +587,6 @@ function renamePlanPrompt(plan, rerender) {
 
 // --- Modals -----------------------------------------------------------------
 
-function openModal({ title, body, onConfirm, confirmLabel = "OK", confirmDisabled = true }) {
-  const backdrop = document.createElement("div");
-  backdrop.className = "modal-backdrop";
-  backdrop.addEventListener("click", (e) => {
-    if (e.target === backdrop) close();
-  });
-
-  const modal = document.createElement("div");
-  modal.className = "modal";
-  modal.innerHTML = `
-    <h2>${escape(title)}</h2>
-    <div class="modal-body"></div>
-    <div class="modal-actions">
-      <button class="btn secondary" data-cancel>Abbrechen</button>
-      <button class="btn" data-confirm ${confirmDisabled ? "disabled" : ""}>${escape(confirmLabel)}</button>
-    </div>
-  `;
-  modal.querySelector(".modal-body").appendChild(body);
-  backdrop.appendChild(modal);
-  document.body.appendChild(backdrop);
-
-  const confirmBtn = modal.querySelector("[data-confirm]");
-  const setConfirmEnabled = (enabled) => {
-    confirmBtn.disabled = !enabled;
-  };
-
-  confirmBtn.onclick = () => {
-    if (onConfirm() !== false) close();
-  };
-  modal.querySelector("[data-cancel]").onclick = close;
-
-  const escClose = (e) => {
-    if (e.key === "Escape") close();
-  };
-  document.addEventListener("keydown", escClose);
-
-  function close() {
-    backdrop.remove();
-    document.removeEventListener("keydown", escClose);
-  }
-
-  return { close, setConfirmEnabled, modal };
-}
-
 function openCreatePlanModal(rerender) {
   const body = document.createElement("div");
   body.innerHTML = `
@@ -727,7 +695,7 @@ function openRenameDayModal(day, rerender) {
 }
 
 function openExercisePickerModal({ title, currentName, initialFilter, onPick, onPickCustom }) {
-  let activeFilter = initialFilter || null; // muscleGroup name or null
+  let activeFilter = initialFilter || null; // muscleGroup id or null
   const body = document.createElement("div");
   body.innerHTML = `
     <input type="text" id="ex-search" placeholder="Suchen…" autocomplete="off" />
@@ -747,11 +715,11 @@ function openExercisePickerModal({ title, currentName, initialFilter, onPick, on
     const mgs = state.plans.muscleGroups || [];
     for (const mg of mgs) {
       const pill = document.createElement("button");
-      pill.className = "pill mg-pill" + (activeFilter === mg.name ? " active" : "");
-      pill.dataset.mg = mg.name;
+      pill.className = "pill mg-pill" + (activeFilter === mg.id ? " active" : "");
+      pill.dataset.mgColor = mg.colorKey;
       pill.textContent = mg.name;
       pill.onclick = () => {
-        activeFilter = activeFilter === mg.name ? null : mg.name;
+        activeFilter = activeFilter === mg.id ? null : mg.id;
         refreshFilters();
         renderList();
       };
@@ -763,11 +731,12 @@ function openExercisePickerModal({ title, currentName, initialFilter, onPick, on
     const q = search.value.trim().toLowerCase();
     list.innerHTML = "";
     const items = (state.plans.exerciseLibrary || []).filter((e) => {
-      if (activeFilter && e.muscleGroup !== activeFilter) return false;
+      if (activeFilter && e.muscleGroupId !== activeFilter) return false;
       if (!q) return true;
+      const mg = findMg(state.plans, e.muscleGroupId);
       return (
         e.name.toLowerCase().includes(q) ||
-        (e.muscleGroup || "").toLowerCase().includes(q)
+        (mg ? mg.name.toLowerCase().includes(q) : false)
       );
     });
     if (items.length === 0) {
@@ -778,11 +747,12 @@ function openExercisePickerModal({ title, currentName, initialFilter, onPick, on
       return;
     }
     for (const e of items) {
+      const mg = findMg(state.plans, e.muscleGroupId);
       const li = document.createElement("li");
       if (currentName && e.name === currentName) li.className = "current";
       li.innerHTML = `
         <span>${escape(e.name)}</span>
-        <span class="mg-badge" data-mg="${escape(e.muscleGroup || "")}">${escape(e.muscleGroup || "")}</span>
+        <span class="mg-badge"${mg ? ` data-mg-color="${escape(mg.colorKey)}"` : ""}>${escape(mg ? mg.name : "")}</span>
       `;
       li.onclick = () => {
         m.close();
@@ -831,10 +801,10 @@ function openReplaceExerciseModal(plan, day, ex, rerender) {
   openExercisePickerModal({
     title: "Übung ersetzen",
     currentName: ex.name,
-    initialFilter: ex.muscleGroup || null,
+    initialFilter: ex.muscleGroupId || null,
     onPick: (entry) => {
       ex.name = entry.name;
-      ex.muscleGroup = entry.muscleGroup || null;
+      ex.muscleGroupId = entry.muscleGroupId || null;
       plan.updatedAt = new Date().toISOString();
       scheduleSavePlans();
       rerender();
@@ -865,7 +835,7 @@ function openCustomExerciseModal(plan, day, rerender, opts = {}) {
   const sel = body.querySelector("#cex-mg");
   for (const mg of state.plans.muscleGroups || []) {
     const opt = document.createElement("option");
-    opt.value = mg.name;
+    opt.value = mg.id;
     opt.textContent = mg.name;
     sel.appendChild(opt);
   }
@@ -878,18 +848,22 @@ function openCustomExerciseModal(plan, day, rerender, opts = {}) {
     confirmDisabled: true,
     onConfirm: () => {
       const name = nameInp.value.trim();
-      const mg = sel.value || null;
+      const mgId = sel.value || null;
       if (!name) return false;
       if (!state.plans.exerciseLibrary.find((e) => e.name === name)) {
-        state.plans.exerciseLibrary.push({ name, muscleGroup: mg });
+        state.plans.exerciseLibrary.push({
+          id: shortId("le_"),
+          name,
+          muscleGroupId: mgId,
+        });
       }
       if (replaceExercise) {
         replaceExercise.name = name;
-        replaceExercise.muscleGroup = mg;
+        replaceExercise.muscleGroupId = mgId;
         plan.updatedAt = new Date().toISOString();
         scheduleSavePlans();
       } else {
-        addLibraryExercise(plan, day, { name, muscleGroup: mg });
+        addLibraryExercise(plan, day, { name, muscleGroupId: mgId });
       }
       rerender();
     },
@@ -903,7 +877,7 @@ function addLibraryExercise(plan, day, libEntry) {
   day.exercises.push({
     id: shortId("e_"),
     name: libEntry.name,
-    muscleGroup: libEntry.muscleGroup || null,
+    muscleGroupId: libEntry.muscleGroupId || null,
     sets: null,
     reps: null,
     weight: null,

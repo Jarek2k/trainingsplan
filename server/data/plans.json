@@ -13,66 +13,66 @@
             {
               "id": "e_b5b5bb9e",
               "name": "Brustpresse",
-              "muscleGroup": "Brust",
               "sets": 4,
               "reps": "8",
-              "weight": "100"
+              "weight": "100",
+              "muscleGroupId": "mg_i6dlfeve"
             },
             {
               "id": "e_3f9a45f5",
               "name": "Butterfly",
-              "muscleGroup": "Brust",
               "sets": 3,
               "reps": "12",
-              "weight": "50"
+              "weight": "50",
+              "muscleGroupId": "mg_i6dlfeve"
             },
             {
               "id": "e_67d2b22a",
               "name": "Dips",
-              "muscleGroup": "Brust",
               "sets": 3,
               "reps": "12",
-              "weight": "20"
+              "weight": "20",
+              "muscleGroupId": "mg_i6dlfeve"
             },
             {
               "id": "e_3691635f",
               "name": "Maschine",
-              "muscleGroup": "Bauch",
               "sets": 3,
               "reps": "15",
-              "weight": "21"
+              "weight": "21",
+              "muscleGroupId": "mg_3mf114vy"
             },
             {
               "id": "e_79385f63",
               "name": "Leg Raise",
-              "muscleGroup": "Bauch",
               "sets": 3,
               "reps": "10",
-              "weight": null
+              "weight": null,
+              "muscleGroupId": "mg_3mf114vy"
             },
             {
               "id": "e_0cd00bde",
               "name": "Seitheben Hantel",
-              "muscleGroup": "Mittlere Schulter",
               "sets": 6,
               "reps": "10",
-              "weight": "17,5"
+              "weight": "17,5",
+              "muscleGroupId": "mg_xij5fz17"
             },
             {
               "id": "e_d91c24a3",
               "name": "Trizepsstrecken",
-              "muscleGroup": "Trizeps",
               "sets": 4,
               "reps": "13",
-              "weight": "70"
+              "weight": "70",
+              "muscleGroupId": "mg_6hvradmu"
             },
             {
               "id": "e_65420da2",
               "name": "Katana Extensions",
-              "muscleGroup": "Trizeps",
               "sets": 3,
               "reps": "12",
-              "weight": "15"
+              "weight": "15",
+              "muscleGroupId": "mg_6hvradmu"
             }
           ]
         },
@@ -83,66 +83,66 @@
             {
               "id": "e_91b12bbd",
               "name": "Highrows",
-              "muscleGroup": "Rücken",
               "sets": 3,
               "reps": "8",
-              "weight": "65"
+              "weight": "65",
+              "muscleGroupId": "mg_gei2e5q3"
             },
             {
               "id": "e_af147792",
               "name": "Latzug Breit",
-              "muscleGroup": "Rücken",
               "sets": 4,
               "reps": "10",
-              "weight": "90"
+              "weight": "90",
+              "muscleGroupId": "mg_gei2e5q3"
             },
             {
               "id": "e_0f2a6109",
               "name": "Rudern zum Bauch (V)",
-              "muscleGroup": "Rücken",
               "sets": 3,
               "reps": "8",
-              "weight": "85"
+              "weight": "85",
+              "muscleGroupId": "mg_gei2e5q3"
             },
             {
               "id": "e_01b60d69",
               "name": "Butterfly Reverse",
-              "muscleGroup": "Hintere Schulter",
               "sets": 6,
               "reps": "12",
-              "weight": "75"
+              "weight": "75",
+              "muscleGroupId": "mg_r9ox1dvr"
             },
             {
               "id": "e_6928851a",
               "name": "Shruggs",
-              "muscleGroup": "Trapez",
               "sets": 6,
               "reps": "12",
-              "weight": "100"
+              "weight": "100",
+              "muscleGroupId": "mg_vic8uxve"
             },
             {
               "id": "e_502717bd",
               "name": "Hammer Curls",
-              "muscleGroup": "Bizeps",
               "sets": 3,
               "reps": "10",
-              "weight": "20"
+              "weight": "20",
+              "muscleGroupId": "mg_urb9dxcz"
             },
             {
               "id": "e_79005f1e",
               "name": "Preacher Curls",
-              "muscleGroup": "Bizeps",
               "sets": 3,
               "reps": "8",
-              "weight": "Poser"
+              "weight": "Poser",
+              "muscleGroupId": "mg_urb9dxcz"
             },
             {
               "id": "e_2c9eb09b",
               "name": "Bizeps Curls Seil",
-              "muscleGroup": "Bizeps",
               "sets": 3,
               "reps": "8",
-              "weight": "30"
+              "weight": "30",
+              "muscleGroupId": "mg_urb9dxcz"
             }
           ]
         },
@@ -153,66 +153,66 @@
             {
               "id": "e_955e1337",
               "name": "Abduktor",
-              "muscleGroup": null,
               "sets": 3,
               "reps": "10",
-              "weight": null
+              "weight": null,
+              "muscleGroupId": null
             },
             {
               "id": "e_fe6367a2",
               "name": "Adduktor",
-              "muscleGroup": null,
               "sets": 3,
               "reps": "8",
-              "weight": null
+              "weight": null,
+              "muscleGroupId": null
             },
             {
               "id": "e_8a9ffdfb",
               "name": "Beinstrecker",
-              "muscleGroup": "Quads",
               "sets": 4,
               "reps": "10",
-              "weight": "90"
+              "weight": "90",
+              "muscleGroupId": "mg_amxz3xez"
             },
             {
               "id": "e_bce81b14",
               "name": "Kniebeuge",
-              "muscleGroup": "Quads",
               "sets": 3,
               "reps": "10",
-              "weight": "80"
+              "weight": "80",
+              "muscleGroupId": "mg_amxz3xez"
             },
             {
               "id": "e_448a3be1",
               "name": "Beinpresse Panata",
-              "muscleGroup": "Quads",
               "sets": 4,
               "reps": "10",
-              "weight": null
+              "weight": null,
+              "muscleGroupId": "mg_amxz3xez"
             },
             {
               "id": "e_fc978a74",
               "name": "Rumänisches Kreuzheben",
-              "muscleGroup": "Hamstrings",
               "sets": 3,
               "reps": "8",
-              "weight": "100"
+              "weight": "100",
+              "muscleGroupId": "mg_0ohiva84"
             },
             {
               "id": "e_e1362532",
               "name": "Wadenheben",
-              "muscleGroup": "Waden",
               "sets": 6,
               "reps": "10",
-              "weight": "175"
+              "weight": "175",
+              "muscleGroupId": "mg_wfp36s67"
             },
             {
               "id": "e_04bc4d4c",
               "name": "Beinbeuger (sitzend)",
-              "muscleGroup": "Hamstrings",
               "sets": 4,
               "reps": "10",
-              "weight": "100"
+              "weight": "100",
+              "muscleGroupId": "mg_0ohiva84"
             }
           ]
         },
@@ -223,74 +223,74 @@
             {
               "id": "e_6a920c8c",
               "name": "Brustpresse (Positiv)",
-              "muscleGroup": "Brust",
               "sets": 4,
               "reps": "8",
-              "weight": "100"
+              "weight": "100",
+              "muscleGroupId": "mg_i6dlfeve"
             },
             {
               "id": "e_32098eb4",
               "name": "Butterfly",
-              "muscleGroup": "Brust",
               "sets": 3,
               "reps": "12",
-              "weight": "50"
+              "weight": "50",
+              "muscleGroupId": "mg_i6dlfeve"
             },
             {
               "id": "e_8d0016c3",
               "name": "Military Press",
-              "muscleGroup": "Mittlere Schulter",
               "sets": 6,
               "reps": "8",
-              "weight": "50"
+              "weight": "50",
+              "muscleGroupId": "mg_xij5fz17"
             },
             {
               "id": "e_51c7cd2c",
               "name": "Leg Raise",
-              "muscleGroup": "Bauch",
               "sets": 3,
               "reps": "10",
-              "weight": null
+              "weight": null,
+              "muscleGroupId": "mg_3mf114vy"
             },
             {
               "id": "e_870c90f5",
               "name": "Seitheben Maschine",
-              "muscleGroup": "Mittlere Schulter",
               "sets": 6,
               "reps": "8",
-              "weight": "35"
+              "weight": "35",
+              "muscleGroupId": "mg_xij5fz17"
             },
             {
               "id": "e_750e7ccb",
               "name": "Trizepsstrecken Seil",
-              "muscleGroup": "Trizeps",
               "sets": 4,
               "reps": "10",
-              "weight": "60"
+              "weight": "60",
+              "muscleGroupId": "mg_6hvradmu"
             },
             {
               "id": "e_3d71d084",
               "name": "Katana Extensions",
-              "muscleGroup": "Trizeps",
               "sets": 3,
               "reps": "12",
-              "weight": "15"
+              "weight": "15",
+              "muscleGroupId": "mg_6hvradmu"
             },
             {
               "id": "e_852c371c",
               "name": "Maschine",
-              "muscleGroup": "Bauch",
               "sets": 3,
               "reps": "15",
-              "weight": "21"
+              "weight": "21",
+              "muscleGroupId": "mg_3mf114vy"
             },
             {
               "id": "e_ac930422",
               "name": "Dips",
-              "muscleGroup": "Brust",
               "sets": 3,
               "reps": "12",
-              "weight": "20"
+              "weight": "20",
+              "muscleGroupId": "mg_i6dlfeve"
             }
           ]
         },
@@ -301,66 +301,66 @@
             {
               "id": "e_b1c9bb01",
               "name": "Highrows",
-              "muscleGroup": "Rücken",
               "sets": 3,
               "reps": "10",
-              "weight": "60"
+              "weight": "60",
+              "muscleGroupId": "mg_gei2e5q3"
             },
             {
               "id": "e_3e827946",
               "name": "Rudern zur Brust Stange",
-              "muscleGroup": "Rücken",
               "sets": 3,
               "reps": "10",
-              "weight": "75"
+              "weight": "75",
+              "muscleGroupId": "mg_gei2e5q3"
             },
             {
               "id": "e_56b63e65",
               "name": "Latzug Eng",
-              "muscleGroup": "Rücken",
               "sets": 4,
               "reps": "8",
-              "weight": "100"
+              "weight": "100",
+              "muscleGroupId": "mg_gei2e5q3"
             },
             {
               "id": "e_90dfec7e",
               "name": "Butterfly Reverse",
-              "muscleGroup": "Hintere Schulter",
               "sets": 6,
               "reps": "12",
-              "weight": "75"
+              "weight": "75",
+              "muscleGroupId": "mg_r9ox1dvr"
             },
             {
               "id": "e_078faf69",
               "name": "Shruggs",
-              "muscleGroup": "Trapez",
               "sets": 6,
               "reps": "12",
-              "weight": "100"
+              "weight": "100",
+              "muscleGroupId": "mg_vic8uxve"
             },
             {
               "id": "e_0836b4f5",
               "name": "Hammer Curls",
-              "muscleGroup": "Bizeps",
               "sets": 3,
               "reps": "10",
-              "weight": "20"
+              "weight": "20",
+              "muscleGroupId": "mg_urb9dxcz"
             },
             {
               "id": "e_2bf17fe8",
               "name": "Bizeps Curls MTS",
-              "muscleGroup": "Bizeps",
               "sets": 3,
               "reps": null,
-              "weight": null
+              "weight": null,
+              "muscleGroupId": "mg_urb9dxcz"
             },
             {
               "id": "e_9b7249d1",
               "name": "Bizeps Curls Bank",
-              "muscleGroup": "Bizeps",
               "sets": 3,
               "reps": "8",
-              "weight": "17,5"
+              "weight": "17,5",
+              "muscleGroupId": "mg_urb9dxcz"
             }
           ]
         }
@@ -370,322 +370,416 @@
   "exerciseLibrary": [
     {
       "name": "LH Bankdrücken",
-      "muscleGroup": "Brust"
+      "id": "le_ket7zbqo",
+      "muscleGroupId": "mg_i6dlfeve"
     },
     {
       "name": "LH Bankdrücken (positiv)",
-      "muscleGroup": "Brust"
+      "id": "le_t7otc8gt",
+      "muscleGroupId": "mg_i6dlfeve"
     },
     {
       "name": "LH Bankdrücken (negativ)",
-      "muscleGroup": "Brust"
+      "id": "le_w0urphv0",
+      "muscleGroupId": "mg_i6dlfeve"
     },
     {
       "name": "KH Bankdrücken",
-      "muscleGroup": "Brust"
+      "id": "le_r4f9ngux",
+      "muscleGroupId": "mg_i6dlfeve"
     },
     {
       "name": "KH Bankdrücken (positiv)",
-      "muscleGroup": "Brust"
+      "id": "le_zdgsfj53",
+      "muscleGroupId": "mg_i6dlfeve"
     },
     {
       "name": "KH Bankdrücken (negativ)",
-      "muscleGroup": "Brust"
+      "id": "le_8rf6v5cg",
+      "muscleGroupId": "mg_i6dlfeve"
     },
     {
       "name": "Brustpresse",
-      "muscleGroup": "Brust"
+      "id": "le_vgizgun3",
+      "muscleGroupId": "mg_i6dlfeve"
     },
     {
       "name": "Brustpresse (positiv)",
-      "muscleGroup": "Brust"
+      "id": "le_scrz4p05",
+      "muscleGroupId": "mg_i6dlfeve"
     },
     {
       "name": "Brustpresse Hammer Strength",
-      "muscleGroup": "Brust"
+      "id": "le_1b0g56k4",
+      "muscleGroupId": "mg_i6dlfeve"
     },
     {
       "name": "Brustpresse Hammer Strength (positiv)",
-      "muscleGroup": "Brust"
+      "id": "le_8gy9cqtw",
+      "muscleGroupId": "mg_i6dlfeve"
     },
     {
       "name": "Brustpresse Hammer Strength (negativ)",
-      "muscleGroup": "Brust"
+      "id": "le_nrs7n8nc",
+      "muscleGroupId": "mg_i6dlfeve"
     },
     {
       "name": "Brustpresse Gym 80",
-      "muscleGroup": "Brust"
+      "id": "le_kr50ipsg",
+      "muscleGroupId": "mg_i6dlfeve"
     },
     {
       "name": "Butterfly",
-      "muscleGroup": "Brust"
+      "id": "le_icgjr995",
+      "muscleGroupId": "mg_i6dlfeve"
     },
     {
       "name": "Cable Cross",
-      "muscleGroup": "Brust"
+      "id": "le_67cobtsi",
+      "muscleGroupId": "mg_i6dlfeve"
     },
     {
       "name": "Dips",
-      "muscleGroup": "Brust"
+      "id": "le_a87r7lud",
+      "muscleGroupId": "mg_i6dlfeve"
     },
     {
       "name": "Rudern zur Brust MAG",
-      "muscleGroup": "Rücken"
+      "id": "le_912vendv",
+      "muscleGroupId": "mg_gei2e5q3"
     },
     {
       "name": "Rudern zur Brust Stange",
-      "muscleGroup": "Rücken"
+      "id": "le_4n0xs0qb",
+      "muscleGroupId": "mg_gei2e5q3"
     },
     {
       "name": "Rudern zur Griff",
-      "muscleGroup": "Rücken"
+      "id": "le_gnua80lh",
+      "muscleGroupId": "mg_gei2e5q3"
     },
     {
       "name": "Rudern zum Bauch (einzeln)",
-      "muscleGroup": "Rücken"
+      "id": "le_dl5e8vj1",
+      "muscleGroupId": "mg_gei2e5q3"
     },
     {
       "name": "Rudern zum Bauch (MAG)",
-      "muscleGroup": "Rücken"
+      "id": "le_mf4oifzn",
+      "muscleGroupId": "mg_gei2e5q3"
     },
     {
       "name": "Rudern zum Bauch (V)",
-      "muscleGroup": "Rücken"
+      "id": "le_w4phm4ef",
+      "muscleGroupId": "mg_gei2e5q3"
     },
     {
       "name": "Latzug Breit",
-      "muscleGroup": "Rücken"
+      "id": "le_6cra1rlu",
+      "muscleGroupId": "mg_gei2e5q3"
     },
     {
       "name": "Latzug Breit (einzeln)",
-      "muscleGroup": "Rücken"
+      "id": "le_garftzds",
+      "muscleGroupId": "mg_gei2e5q3"
     },
     {
       "name": "Latzug Breit (MAG)",
-      "muscleGroup": "Rücken"
+      "id": "le_tz0mqmwn",
+      "muscleGroupId": "mg_gei2e5q3"
     },
     {
       "name": "Latzug Eng",
-      "muscleGroup": "Rücken"
+      "id": "le_iotlwru5",
+      "muscleGroupId": "mg_gei2e5q3"
     },
     {
       "name": "Latzug Eng (einzeln)",
-      "muscleGroup": "Rücken"
+      "id": "le_djqte0kg",
+      "muscleGroupId": "mg_gei2e5q3"
     },
     {
       "name": "Latzug Eng (MAG)",
-      "muscleGroup": "Rücken"
+      "id": "le_ach2e30d",
+      "muscleGroupId": "mg_gei2e5q3"
     },
     {
       "name": "Klimmzüge",
-      "muscleGroup": "Rücken"
+      "id": "le_szfslsab",
+      "muscleGroupId": "mg_gei2e5q3"
     },
     {
       "name": "Überzüge",
-      "muscleGroup": "Rücken"
+      "id": "le_j3xayk6o",
+      "muscleGroupId": "mg_gei2e5q3"
     },
     {
       "name": "Highrows",
-      "muscleGroup": "Rücken"
+      "id": "le_n2rkqn6j",
+      "muscleGroupId": "mg_gei2e5q3"
     },
     {
       "name": "Facepulls",
-      "muscleGroup": "Hintere Schulter"
+      "id": "le_94p6ch5j",
+      "muscleGroupId": "mg_r9ox1dvr"
     },
     {
       "name": "Butterfly reverse",
-      "muscleGroup": "Hintere Schulter"
+      "id": "le_pk61wdj6",
+      "muscleGroupId": "mg_r9ox1dvr"
     },
     {
       "name": "Seitheben Maschine",
-      "muscleGroup": "Mittlere Schulter"
+      "id": "le_agaaksd4",
+      "muscleGroupId": "mg_xij5fz17"
     },
     {
       "name": "Seitheben Seil",
-      "muscleGroup": "Mittlere Schulter"
+      "id": "le_rwa4mqux",
+      "muscleGroupId": "mg_xij5fz17"
     },
     {
       "name": "Seitheben Bank",
-      "muscleGroup": "Mittlere Schulter"
+      "id": "le_8sxk7i60",
+      "muscleGroupId": "mg_xij5fz17"
     },
     {
       "name": "Seitheben Hantel",
-      "muscleGroup": "Mittlere Schulter"
+      "id": "le_aslvdnt9",
+      "muscleGroupId": "mg_xij5fz17"
     },
     {
       "name": "Military Press",
-      "muscleGroup": "Mittlere Schulter"
+      "id": "le_iculdcxh",
+      "muscleGroupId": "mg_xij5fz17"
     },
     {
       "name": "KH Schulterdrücken",
-      "muscleGroup": "Mittlere Schulter"
+      "id": "le_hgn98yv7",
+      "muscleGroupId": "mg_xij5fz17"
     },
     {
       "name": "Schulterdrücken Maschine",
-      "muscleGroup": "Mittlere Schulter"
+      "id": "le_y26650mk",
+      "muscleGroupId": "mg_xij5fz17"
     },
     {
       "name": "Shruggs",
-      "muscleGroup": "Trapez"
+      "id": "le_5lnypo67",
+      "muscleGroupId": "mg_vic8uxve"
     },
     {
       "name": "Shruggs Seil",
-      "muscleGroup": "Trapez"
+      "id": "le_w1wtjpu7",
+      "muscleGroupId": "mg_vic8uxve"
     },
     {
       "name": "Shruggs Hantel",
-      "muscleGroup": "Trapez"
+      "id": "le_7dfq6my3",
+      "muscleGroupId": "mg_vic8uxve"
     },
     {
       "name": "Kniebeuge",
-      "muscleGroup": "Quads"
+      "id": "le_2861yb87",
+      "muscleGroupId": "mg_amxz3xez"
     },
     {
       "name": "Kniebeuge (Maschine)",
-      "muscleGroup": "Quads"
+      "id": "le_ajf0ajnw",
+      "muscleGroupId": "mg_amxz3xez"
     },
     {
       "name": "Frontbeuge",
-      "muscleGroup": "Quads"
+      "id": "le_iqh61vjh",
+      "muscleGroupId": "mg_amxz3xez"
     },
     {
       "name": "Hackenschmidt",
-      "muscleGroup": "Quads"
+      "id": "le_wyupaamb",
+      "muscleGroupId": "mg_amxz3xez"
     },
     {
       "name": "Beinpresse",
-      "muscleGroup": "Quads"
+      "id": "le_0hdxwec7",
+      "muscleGroupId": "mg_amxz3xez"
     },
     {
       "name": "Beinpresse Panata",
-      "muscleGroup": "Quads"
+      "id": "le_lg9hbt4m",
+      "muscleGroupId": "mg_amxz3xez"
     },
     {
       "name": "Ausfallschritte",
-      "muscleGroup": "Quads"
+      "id": "le_hwgaskg5",
+      "muscleGroupId": "mg_amxz3xez"
     },
     {
       "name": "Bulgarian Split Squats",
-      "muscleGroup": "Quads"
+      "id": "le_v0vn0ptu",
+      "muscleGroupId": "mg_amxz3xez"
     },
     {
       "name": "Beinstrecker",
-      "muscleGroup": "Quads"
+      "id": "le_dmcupyo1",
+      "muscleGroupId": "mg_amxz3xez"
     },
     {
       "name": "Rumänisches Kreuzheben",
-      "muscleGroup": "Hamstrings"
+      "id": "le_y6y5rwds",
+      "muscleGroupId": "mg_0ohiva84"
     },
     {
       "name": "Beinbeuger (sitzend)",
-      "muscleGroup": "Hamstrings"
+      "id": "le_ioijgaat",
+      "muscleGroupId": "mg_0ohiva84"
     },
     {
       "name": "Beinbeuger (liegend)",
-      "muscleGroup": "Hamstrings"
+      "id": "le_8wrtt3bc",
+      "muscleGroupId": "mg_0ohiva84"
     },
     {
       "name": "Trizepsstrecken",
-      "muscleGroup": "Trizeps"
+      "id": "le_b2xarfq6",
+      "muscleGroupId": "mg_6hvradmu"
     },
     {
       "name": "Trizepsstrecken Seil",
-      "muscleGroup": "Trizeps"
+      "id": "le_2erhp7s6",
+      "muscleGroupId": "mg_6hvradmu"
     },
     {
       "name": "Trizepsstrecken (einzeln)",
-      "muscleGroup": "Trizeps"
+      "id": "le_u6ay6szx",
+      "muscleGroupId": "mg_6hvradmu"
     },
     {
       "name": "Trizepsstrecken Überkopf",
-      "muscleGroup": "Trizeps"
+      "id": "le_4xql6mod",
+      "muscleGroupId": "mg_6hvradmu"
     },
     {
       "name": "Katana Extensions",
-      "muscleGroup": "Trizeps"
+      "id": "le_ey32uy7v",
+      "muscleGroupId": "mg_6hvradmu"
     },
     {
       "name": "Bizeps Curls",
-      "muscleGroup": "Bizeps"
+      "id": "le_43q67as9",
+      "muscleGroupId": "mg_urb9dxcz"
     },
     {
       "name": "Bizeps Curls Seil",
-      "muscleGroup": "Bizeps"
+      "id": "le_2zpxc18i",
+      "muscleGroupId": "mg_urb9dxcz"
     },
     {
       "name": "Bizeps Curls Bank",
-      "muscleGroup": "Bizeps"
+      "id": "le_e12hrami",
+      "muscleGroupId": "mg_urb9dxcz"
     },
     {
       "name": "Bizeps Curls MTS",
-      "muscleGroup": "Bizeps"
+      "id": "le_03r7drba",
+      "muscleGroupId": "mg_urb9dxcz"
     },
     {
       "name": "Hammer Curls",
-      "muscleGroup": "Bizeps"
+      "id": "le_djnjtjac",
+      "muscleGroupId": "mg_urb9dxcz"
     },
     {
       "name": "Preacher Curls",
-      "muscleGroup": "Bizeps"
+      "id": "le_xzev0dxm",
+      "muscleGroupId": "mg_urb9dxcz"
     },
     {
       "name": "Wadenheben",
-      "muscleGroup": "Waden"
+      "id": "le_hi6ixthk",
+      "muscleGroupId": "mg_wfp36s67"
     },
     {
       "name": "Maschine",
-      "muscleGroup": "Bauch"
+      "id": "le_penwfnxt",
+      "muscleGroupId": "mg_3mf114vy"
     },
     {
       "name": "Leg Raise",
-      "muscleGroup": "Bauch"
+      "id": "le_r2i3v5m7",
+      "muscleGroupId": "mg_3mf114vy"
     },
     {
       "name": "Kreuzheben",
-      "muscleGroup": "Hamstrings"
+      "id": "le_vghr4q5s",
+      "muscleGroupId": "mg_0ohiva84"
     },
     {
       "name": "Abduktor",
-      "muscleGroup": null
+      "id": "le_2ld9382y",
+      "muscleGroupId": null
     },
     {
       "name": "Adduktor",
-      "muscleGroup": null
+      "id": "le_00eejn6o",
+      "muscleGroupId": null
     }
   ],
   "muscleGroups": [
     {
-      "name": "Brust"
+      "name": "Brust",
+      "id": "mg_i6dlfeve",
+      "colorKey": "rose"
     },
     {
-      "name": "Rücken"
+      "name": "Rücken",
+      "id": "mg_gei2e5q3",
+      "colorKey": "blue"
     },
     {
-      "name": "Mittlere Schulter"
+      "name": "Mittlere Schulter",
+      "id": "mg_xij5fz17",
+      "colorKey": "amber"
     },
     {
-      "name": "Hintere Schulter"
+      "name": "Hintere Schulter",
+      "id": "mg_r9ox1dvr",
+      "colorKey": "ochre"
     },
     {
-      "name": "Trapez"
+      "name": "Trapez",
+      "id": "mg_vic8uxve",
+      "colorKey": "violet"
     },
     {
-      "name": "Bizeps"
+      "name": "Bizeps",
+      "id": "mg_urb9dxcz",
+      "colorKey": "magenta"
     },
     {
-      "name": "Trizeps"
+      "name": "Trizeps",
+      "id": "mg_6hvradmu",
+      "colorKey": "pink"
     },
     {
-      "name": "Quads"
+      "name": "Quads",
+      "id": "mg_amxz3xez",
+      "colorKey": "green"
     },
     {
-      "name": "Hamstrings"
+      "name": "Hamstrings",
+      "id": "mg_0ohiva84",
+      "colorKey": "mint"
     },
     {
-      "name": "Waden"
+      "name": "Waden",
+      "id": "mg_wfp36s67",
+      "colorKey": "lime"
     },
     {
-      "name": "Bauch"
+      "name": "Bauch",
+      "id": "mg_3mf114vy",
+      "colorKey": "orange"
     }
-  ]
+  ],
+  "activePlanId": "p_de7ea1cc"
 }

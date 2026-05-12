@@ -81,26 +81,112 @@ async function writeAtomic(file, contents) {
   await fsp.rename(tmp, file);
 }
 
+// Default color-key mapping for the historic 11 muscle-group names. New groups
+// fall back to "rose" — the user picks a different slot in the CMS.
+const DEFAULT_MG_COLOR = {
+  "Brust": "rose",
+  "Rücken": "blue",
+  "Mittlere Schulter": "amber",
+  "Hintere Schulter": "ochre",
+  "Trapez": "violet",
+  "Bizeps": "magenta",
+  "Trizeps": "pink",
+  "Quads": "green",
+  "Hamstrings": "mint",
+  "Waden": "lime",
+  "Bauch": "orange",
+};
+
+function rid(prefix) {
+  return prefix + Math.random().toString(36).slice(2, 10);
+}
+
+// One-shot, idempotent migration so old plans.json files keep working.
+// Returns { data, changed }.
+function migratePlans(parsed) {
+  let changed = false;
+  const data = { ...parsed };
+  if (!Array.isArray(data.plans)) { data.plans = []; changed = true; }
+  if (!Array.isArray(data.exerciseLibrary)) { data.exerciseLibrary = []; changed = true; }
+  if (!Array.isArray(data.muscleGroups)) { data.muscleGroups = []; changed = true; }
+  if (data.activePlanId === undefined) { data.activePlanId = null; changed = true; }
+
+  // Muscle groups: add id + colorKey if missing.
+  for (const mg of data.muscleGroups) {
+    if (!mg.id) { mg.id = rid("mg_"); changed = true; }
+    if (!mg.colorKey) { mg.colorKey = DEFAULT_MG_COLOR[mg.name] || "rose"; changed = true; }
+  }
+
+  // Build name → id map for resolving legacy `muscleGroup: "Brust"` references.
+  const mgByName = new Map(data.muscleGroups.map((m) => [m.name, m.id]));
+
+  // Exercise library: add id + muscleGroupId, drop legacy `muscleGroup` name.
+  for (const ex of data.exerciseLibrary) {
+    if (!ex.id) { ex.id = rid("le_"); changed = true; }
+    if (!("muscleGroupId" in ex)) {
+      ex.muscleGroupId = ex.muscleGroup ? mgByName.get(ex.muscleGroup) || null : null;
+      changed = true;
+    }
+    if ("muscleGroup" in ex) { delete ex.muscleGroup; changed = true; }
+  }
+
+  // Plan exercises: same — replace `muscleGroup` name with `muscleGroupId`.
+  for (const plan of data.plans) {
+    if (!Array.isArray(plan.days)) continue;
+    for (const day of plan.days) {
+      if (!Array.isArray(day.exercises)) continue;
+      for (const ex of day.exercises) {
+        if (!("muscleGroupId" in ex)) {
+          ex.muscleGroupId = ex.muscleGroup ? mgByName.get(ex.muscleGroup) || null : null;
+          changed = true;
+        }
+        if ("muscleGroup" in ex) { delete ex.muscleGroup; changed = true; }
+      }
+    }
+  }
+
+  return { data, changed };
+}
+
 async function readPlansFile() {
+  let raw;
   try {
-    return await fsp.readFile(PLANS_FILE, "utf8");
+    raw = await fsp.readFile(PLANS_FILE, "utf8");
   } catch (err) {
     if (err.code !== "ENOENT") throw err;
   }
+
+  if (raw) {
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      // Corrupt file — better to fail loud than silently overwrite.
+      throw new Error("plans.json is not valid JSON");
+    }
+    const { data, changed } = migratePlans(parsed);
+    if (!changed) return raw;
+    const pretty = JSON.stringify(data, null, 2);
+    await writeAtomic(PLANS_FILE, pretty);
+    return pretty;
+  }
+
+  // No file yet — seed from data/plan.json.
   let exerciseLibrary = [];
   let muscleGroups = [];
   try {
-    const raw = await fsp.readFile(DATA_FILE, "utf8");
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed.exerciseLibrary)) exerciseLibrary = parsed.exerciseLibrary;
-    if (Array.isArray(parsed.muscleGroups)) {
-      muscleGroups = parsed.muscleGroups.map((m) => ({ name: m.name }));
+    const seedRaw = await fsp.readFile(DATA_FILE, "utf8");
+    const seedParsed = JSON.parse(seedRaw);
+    if (Array.isArray(seedParsed.exerciseLibrary)) exerciseLibrary = seedParsed.exerciseLibrary;
+    if (Array.isArray(seedParsed.muscleGroups)) {
+      muscleGroups = seedParsed.muscleGroups.map((m) => ({ name: m.name }));
     }
   } catch {
     // No seed available — start empty.
   }
   const seed = { plans: [], activePlanId: null, exerciseLibrary, muscleGroups };
-  const pretty = JSON.stringify(seed, null, 2);
+  const { data } = migratePlans(seed);
+  const pretty = JSON.stringify(data, null, 2);
   await writeAtomic(PLANS_FILE, pretty);
   return pretty;
 }

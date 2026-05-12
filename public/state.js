@@ -36,7 +36,8 @@ export function setActivePlanId(id) {
 }
 
 export function setMode(mode) {
-  state.mode = mode === "edit" ? "edit" : "view";
+  if (mode === "edit" || mode === "manage") state.mode = mode;
+  else state.mode = "view";
 }
 
 function readCompactView() {

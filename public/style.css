@@ -1026,68 +1026,81 @@ p {
   --mg-default-fg: var(--text);
 }
 
-:where(.exercise-box, .viewer-exercise)[data-mg="Brust"]              { --mg-bg: #5b1f3a; --mg-fg: #ffd1e0; }
-:where(.exercise-box, .viewer-exercise)[data-mg="Rücken"]             { --mg-bg: #173a55; --mg-fg: #c6e3ff; }
-:where(.exercise-box, .viewer-exercise)[data-mg="Mittlere Schulter"]  { --mg-bg: #5a4a14; --mg-fg: #ffe9a8; }
-:where(.exercise-box, .viewer-exercise)[data-mg="Hintere Schulter"]   { --mg-bg: #4a3a10; --mg-fg: #ffdf8a; }
-:where(.exercise-box, .viewer-exercise)[data-mg="Trapez"]             { --mg-bg: #3a2e57; --mg-fg: #d8c8ff; }
-:where(.exercise-box, .viewer-exercise)[data-mg="Bizeps"]             { --mg-bg: #4a2255; --mg-fg: #efc6ff; }
-:where(.exercise-box, .viewer-exercise)[data-mg="Trizeps"]            { --mg-bg: #55244a; --mg-fg: #ffc6ee; }
-:where(.exercise-box, .viewer-exercise)[data-mg="Quads"]              { --mg-bg: #1f5a3d; --mg-fg: #b6f0c8; }
-:where(.exercise-box, .viewer-exercise)[data-mg="Hamstrings"]         { --mg-bg: #145533; --mg-fg: #aeebbe; }
-:where(.exercise-box, .viewer-exercise)[data-mg="Waden"]              { --mg-bg: #3d551f; --mg-fg: #d6f0a8; }
-:where(.exercise-box, .viewer-exercise)[data-mg="Bauch"]              { --mg-bg: #553a1f; --mg-fg: #ffd6a8; }
+/* Dark palette — applied via [data-mg-color="<key>"] on cards/badges/pills. */
+:where(.exercise-box, .viewer-exercise)[data-mg-color="rose"]    { --mg-bg: #5b1f3a; --mg-fg: #ffd1e0; }
+:where(.exercise-box, .viewer-exercise)[data-mg-color="blue"]    { --mg-bg: #173a55; --mg-fg: #c6e3ff; }
+:where(.exercise-box, .viewer-exercise)[data-mg-color="amber"]   { --mg-bg: #5a4a14; --mg-fg: #ffe9a8; }
+:where(.exercise-box, .viewer-exercise)[data-mg-color="ochre"]   { --mg-bg: #4a3a10; --mg-fg: #ffdf8a; }
+:where(.exercise-box, .viewer-exercise)[data-mg-color="violet"]  { --mg-bg: #3a2e57; --mg-fg: #d8c8ff; }
+:where(.exercise-box, .viewer-exercise)[data-mg-color="magenta"] { --mg-bg: #4a2255; --mg-fg: #efc6ff; }
+:where(.exercise-box, .viewer-exercise)[data-mg-color="pink"]    { --mg-bg: #55244a; --mg-fg: #ffc6ee; }
+:where(.exercise-box, .viewer-exercise)[data-mg-color="green"]   { --mg-bg: #1f5a3d; --mg-fg: #b6f0c8; }
+:where(.exercise-box, .viewer-exercise)[data-mg-color="mint"]    { --mg-bg: #145533; --mg-fg: #aeebbe; }
+:where(.exercise-box, .viewer-exercise)[data-mg-color="lime"]    { --mg-bg: #3d551f; --mg-fg: #d6f0a8; }
+:where(.exercise-box, .viewer-exercise)[data-mg-color="orange"]  { --mg-bg: #553a1f; --mg-fg: #ffd6a8; }
 
-/* Same palette as small badges/pills */
-.mg-badge[data-mg="Brust"], .mg-pill[data-mg="Brust"]                         { background: #5b1f3a; color: #ffd1e0; }
-.mg-badge[data-mg="Rücken"], .mg-pill[data-mg="Rücken"]                       { background: #173a55; color: #c6e3ff; }
-.mg-badge[data-mg="Mittlere Schulter"], .mg-pill[data-mg="Mittlere Schulter"] { background: #5a4a14; color: #ffe9a8; }
-.mg-badge[data-mg="Hintere Schulter"], .mg-pill[data-mg="Hintere Schulter"]   { background: #4a3a10; color: #ffdf8a; }
-.mg-badge[data-mg="Trapez"], .mg-pill[data-mg="Trapez"]                       { background: #3a2e57; color: #d8c8ff; }
-.mg-badge[data-mg="Bizeps"], .mg-pill[data-mg="Bizeps"]                       { background: #4a2255; color: #efc6ff; }
-.mg-badge[data-mg="Trizeps"], .mg-pill[data-mg="Trizeps"]                     { background: #55244a; color: #ffc6ee; }
-.mg-badge[data-mg="Quads"], .mg-pill[data-mg="Quads"]                         { background: #1f5a3d; color: #b6f0c8; }
-.mg-badge[data-mg="Hamstrings"], .mg-pill[data-mg="Hamstrings"]               { background: #145533; color: #aeebbe; }
-.mg-badge[data-mg="Waden"], .mg-pill[data-mg="Waden"]                         { background: #3d551f; color: #d6f0a8; }
-.mg-badge[data-mg="Bauch"], .mg-pill[data-mg="Bauch"]                         { background: #553a1f; color: #ffd6a8; }
+:where(.mg-badge, .mg-pill)[data-mg-color="rose"]    { background: #5b1f3a; color: #ffd1e0; }
+:where(.mg-badge, .mg-pill)[data-mg-color="blue"]    { background: #173a55; color: #c6e3ff; }
+:where(.mg-badge, .mg-pill)[data-mg-color="amber"]   { background: #5a4a14; color: #ffe9a8; }
+:where(.mg-badge, .mg-pill)[data-mg-color="ochre"]   { background: #4a3a10; color: #ffdf8a; }
+:where(.mg-badge, .mg-pill)[data-mg-color="violet"]  { background: #3a2e57; color: #d8c8ff; }
+:where(.mg-badge, .mg-pill)[data-mg-color="magenta"] { background: #4a2255; color: #efc6ff; }
+:where(.mg-badge, .mg-pill)[data-mg-color="pink"]    { background: #55244a; color: #ffc6ee; }
+:where(.mg-badge, .mg-pill)[data-mg-color="green"]   { background: #1f5a3d; color: #b6f0c8; }
+:where(.mg-badge, .mg-pill)[data-mg-color="mint"]    { background: #145533; color: #aeebbe; }
+:where(.mg-badge, .mg-pill)[data-mg-color="lime"]    { background: #3d551f; color: #d6f0a8; }
+:where(.mg-badge, .mg-pill)[data-mg-color="orange"]  { background: #553a1f; color: #ffd6a8; }
 
-/* Muscle-group palette — light theme. Pastel tints with the dark hue from
-   the dark palette as foreground, so colors read as the same "Brust" /
-   "Rücken" identities, just inverted in luminance. */
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Brust"]              { --mg-bg: #fce0ea; --mg-fg: #7a1c3a; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Rücken"]             { --mg-bg: #d8e8fa; --mg-fg: #0c3c66; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Mittlere Schulter"]  { --mg-bg: #fbeec1; --mg-fg: #6b5410; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Hintere Schulter"]   { --mg-bg: #fbe5b8; --mg-fg: #6b440e; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Trapez"]             { --mg-bg: #e6dcfb; --mg-fg: #3f2c7a; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Bizeps"]             { --mg-bg: #f3dafc; --mg-fg: #5a1e7a; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Trizeps"]            { --mg-bg: #fcdaee; --mg-fg: #7a1e57; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Quads"]              { --mg-bg: #d3f1de; --mg-fg: #0e5a30; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Hamstrings"]         { --mg-bg: #cdedd8; --mg-fg: #0a5028; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Waden"]              { --mg-bg: #e7f1c5; --mg-fg: #3d550e; }
-:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Bauch"]              { --mg-bg: #fbe2c4; --mg-fg: #6b3a0a; }
+/* Small swatches — use the bright variant so they're distinguishable at 16px. */
+.mg-swatch[data-mg-color="rose"]    { background: #ffd1e0; }
+.mg-swatch[data-mg-color="blue"]    { background: #c6e3ff; }
+.mg-swatch[data-mg-color="amber"]   { background: #ffe9a8; }
+.mg-swatch[data-mg-color="ochre"]   { background: #ffdf8a; }
+.mg-swatch[data-mg-color="violet"]  { background: #d8c8ff; }
+.mg-swatch[data-mg-color="magenta"] { background: #efc6ff; }
+.mg-swatch[data-mg-color="pink"]    { background: #ffc6ee; }
+.mg-swatch[data-mg-color="green"]   { background: #b6f0c8; }
+.mg-swatch[data-mg-color="mint"]    { background: #aeebbe; }
+.mg-swatch[data-mg-color="lime"]    { background: #d6f0a8; }
+.mg-swatch[data-mg-color="orange"]  { background: #ffd6a8; }
 
-:root[data-theme="light"] .mg-badge[data-mg="Brust"],
-:root[data-theme="light"] .mg-pill[data-mg="Brust"]                         { background: #fce0ea; color: #7a1c3a; }
-:root[data-theme="light"] .mg-badge[data-mg="Rücken"],
-:root[data-theme="light"] .mg-pill[data-mg="Rücken"]                        { background: #d8e8fa; color: #0c3c66; }
-:root[data-theme="light"] .mg-badge[data-mg="Mittlere Schulter"],
-:root[data-theme="light"] .mg-pill[data-mg="Mittlere Schulter"]             { background: #fbeec1; color: #6b5410; }
-:root[data-theme="light"] .mg-badge[data-mg="Hintere Schulter"],
-:root[data-theme="light"] .mg-pill[data-mg="Hintere Schulter"]              { background: #fbe5b8; color: #6b440e; }
-:root[data-theme="light"] .mg-badge[data-mg="Trapez"],
-:root[data-theme="light"] .mg-pill[data-mg="Trapez"]                        { background: #e6dcfb; color: #3f2c7a; }
-:root[data-theme="light"] .mg-badge[data-mg="Bizeps"],
-:root[data-theme="light"] .mg-pill[data-mg="Bizeps"]                        { background: #f3dafc; color: #5a1e7a; }
-:root[data-theme="light"] .mg-badge[data-mg="Trizeps"],
-:root[data-theme="light"] .mg-pill[data-mg="Trizeps"]                       { background: #fcdaee; color: #7a1e57; }
-:root[data-theme="light"] .mg-badge[data-mg="Quads"],
-:root[data-theme="light"] .mg-pill[data-mg="Quads"]                         { background: #d3f1de; color: #0e5a30; }
-:root[data-theme="light"] .mg-badge[data-mg="Hamstrings"],
-:root[data-theme="light"] .mg-pill[data-mg="Hamstrings"]                    { background: #cdedd8; color: #0a5028; }
-:root[data-theme="light"] .mg-badge[data-mg="Waden"],
-:root[data-theme="light"] .mg-pill[data-mg="Waden"]                         { background: #e7f1c5; color: #3d550e; }
-:root[data-theme="light"] .mg-badge[data-mg="Bauch"],
-:root[data-theme="light"] .mg-pill[data-mg="Bauch"]                         { background: #fbe2c4; color: #6b3a0a; }
+/* Light theme — pastel tints, dark hue as foreground. */
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="rose"]    { --mg-bg: #fce0ea; --mg-fg: #7a1c3a; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="blue"]    { --mg-bg: #d8e8fa; --mg-fg: #0c3c66; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="amber"]   { --mg-bg: #fbeec1; --mg-fg: #6b5410; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="ochre"]   { --mg-bg: #fbe5b8; --mg-fg: #6b440e; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="violet"]  { --mg-bg: #e6dcfb; --mg-fg: #3f2c7a; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="magenta"] { --mg-bg: #f3dafc; --mg-fg: #5a1e7a; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="pink"]    { --mg-bg: #fcdaee; --mg-fg: #7a1e57; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="green"]   { --mg-bg: #d3f1de; --mg-fg: #0e5a30; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="mint"]    { --mg-bg: #cdedd8; --mg-fg: #0a5028; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="lime"]    { --mg-bg: #e7f1c5; --mg-fg: #3d550e; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg-color="orange"]  { --mg-bg: #fbe2c4; --mg-fg: #6b3a0a; }
+
+:root[data-theme="light"] :where(.mg-badge, .mg-pill)[data-mg-color="rose"]    { background: #fce0ea; color: #7a1c3a; }
+:root[data-theme="light"] :where(.mg-badge, .mg-pill)[data-mg-color="blue"]    { background: #d8e8fa; color: #0c3c66; }
+:root[data-theme="light"] :where(.mg-badge, .mg-pill)[data-mg-color="amber"]   { background: #fbeec1; color: #6b5410; }
+:root[data-theme="light"] :where(.mg-badge, .mg-pill)[data-mg-color="ochre"]   { background: #fbe5b8; color: #6b440e; }
+:root[data-theme="light"] :where(.mg-badge, .mg-pill)[data-mg-color="violet"]  { background: #e6dcfb; color: #3f2c7a; }
+:root[data-theme="light"] :where(.mg-badge, .mg-pill)[data-mg-color="magenta"] { background: #f3dafc; color: #5a1e7a; }
+:root[data-theme="light"] :where(.mg-badge, .mg-pill)[data-mg-color="pink"]    { background: #fcdaee; color: #7a1e57; }
+:root[data-theme="light"] :where(.mg-badge, .mg-pill)[data-mg-color="green"]   { background: #d3f1de; color: #0e5a30; }
+:root[data-theme="light"] :where(.mg-badge, .mg-pill)[data-mg-color="mint"]    { background: #cdedd8; color: #0a5028; }
+:root[data-theme="light"] :where(.mg-badge, .mg-pill)[data-mg-color="lime"]    { background: #e7f1c5; color: #3d550e; }
+:root[data-theme="light"] :where(.mg-badge, .mg-pill)[data-mg-color="orange"]  { background: #fbe2c4; color: #6b3a0a; }
+
+/* Light theme — small swatches use the dark (saturated) variant for contrast. */
+:root[data-theme="light"] .mg-swatch[data-mg-color="rose"]    { background: #7a1c3a; }
+:root[data-theme="light"] .mg-swatch[data-mg-color="blue"]    { background: #0c3c66; }
+:root[data-theme="light"] .mg-swatch[data-mg-color="amber"]   { background: #6b5410; }
+:root[data-theme="light"] .mg-swatch[data-mg-color="ochre"]   { background: #6b440e; }
+:root[data-theme="light"] .mg-swatch[data-mg-color="violet"]  { background: #3f2c7a; }
+:root[data-theme="light"] .mg-swatch[data-mg-color="magenta"] { background: #5a1e7a; }
+:root[data-theme="light"] .mg-swatch[data-mg-color="pink"]    { background: #7a1e57; }
+:root[data-theme="light"] .mg-swatch[data-mg-color="green"]   { background: #0e5a30; }
+:root[data-theme="light"] .mg-swatch[data-mg-color="mint"]    { background: #0a5028; }
+:root[data-theme="light"] .mg-swatch[data-mg-color="lime"]    { background: #3d550e; }
+:root[data-theme="light"] .mg-swatch[data-mg-color="orange"]  { background: #6b3a0a; }
 
 /* Builder layout: app-style sidebar (flush left) + flexible main pane.
    The pane fills the viewport below the sticky header. */
@@ -2040,5 +2053,573 @@ p {
   }
   .viewer-val-num {
     font-size: 1rem;
+  }
+}
+
+/* =========================================================================
+   Manage view — CMS for muscle groups and exercise library
+   ========================================================================= */
+
+.manage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.manage-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) 1fr;
+  gap: var(--s-4);
+  align-items: start;
+}
+
+.manage-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.manage-list-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.manage-list-divider {
+  height: 1px;
+  background: var(--border);
+  margin: var(--s-2) var(--s-2);
+}
+
+.manage-list-row {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  align-items: center;
+  gap: var(--s-3);
+  width: 100%;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: var(--s-2) var(--s-3);
+  text-align: left;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.1s ease, border-color 0.1s ease;
+}
+
+.manage-list-row:hover {
+  background: var(--surface);
+}
+
+.manage-list-row.active {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+}
+
+.manage-list-name {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.manage-list-meta {
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Add-row at the bottom of the sidebar list — ghost-styled, dashed border. */
+.manage-list-add {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  width: 100%;
+  background: transparent;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--s-2) var(--s-3);
+  margin-top: var(--s-2);
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.1s ease, border-color 0.1s ease, background 0.1s ease;
+}
+
+.manage-list-add:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: var(--surface);
+}
+
+.manage-list-add > span:first-child {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.mg-swatch {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  border: 1px solid color-mix(in srgb, var(--text) 15%, transparent);
+}
+
+.manage-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.manage-detail-head {
+  display: flex;
+  gap: var(--s-2);
+  align-items: center;
+}
+
+.manage-detail-name {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text-strong);
+  font-size: 18px;
+  font-weight: 600;
+  padding: var(--s-2) var(--s-3);
+}
+
+.manage-detail-name:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.manage-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+.manage-color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+  gap: var(--s-2);
+  max-width: 560px;
+}
+
+.manage-color-slot {
+  /* Override .mg-swatch's fixed 16px sizing so picker slots are square. */
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  min-width: 36px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+/* Each slot is split diagonally: dark variant top-left, bright variant bottom-right
+   — so users see both theme treatments at a glance. */
+.manage-color-slot[data-mg-color="rose"]    { background: linear-gradient(135deg, #5b1f3a 50%, #ffd1e0 50%); }
+.manage-color-slot[data-mg-color="blue"]    { background: linear-gradient(135deg, #173a55 50%, #c6e3ff 50%); }
+.manage-color-slot[data-mg-color="amber"]   { background: linear-gradient(135deg, #5a4a14 50%, #ffe9a8 50%); }
+.manage-color-slot[data-mg-color="ochre"]   { background: linear-gradient(135deg, #4a3a10 50%, #ffdf8a 50%); }
+.manage-color-slot[data-mg-color="violet"]  { background: linear-gradient(135deg, #3a2e57 50%, #d8c8ff 50%); }
+.manage-color-slot[data-mg-color="magenta"] { background: linear-gradient(135deg, #4a2255 50%, #efc6ff 50%); }
+.manage-color-slot[data-mg-color="pink"]    { background: linear-gradient(135deg, #55244a 50%, #ffc6ee 50%); }
+.manage-color-slot[data-mg-color="green"]   { background: linear-gradient(135deg, #1f5a3d 50%, #b6f0c8 50%); }
+.manage-color-slot[data-mg-color="mint"]    { background: linear-gradient(135deg, #145533 50%, #aeebbe 50%); }
+.manage-color-slot[data-mg-color="lime"]    { background: linear-gradient(135deg, #3d551f 50%, #d6f0a8 50%); }
+.manage-color-slot[data-mg-color="orange"]  { background: linear-gradient(135deg, #553a1f 50%, #ffd6a8 50%); }
+
+.manage-color-slot:hover {
+  transform: scale(1.06);
+}
+
+.manage-color-slot.active {
+  border-color: var(--text-strong);
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--accent);
+}
+
+.manage-mg-exercises {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-1);
+}
+
+@media (min-width: 900px) {
+  .manage-mg-exercises {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* --- Muscle-group header (inline editor above the exercise list) ------- */
+
+.manage-mg-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-3) var(--s-3) var(--s-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* Left accent stripe colored by the muscle group. */
+.manage-mg-header::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--surface-2);
+}
+
+.manage-mg-header[data-mg-color="rose"]::before    { background: #ffd1e0; }
+.manage-mg-header[data-mg-color="blue"]::before    { background: #c6e3ff; }
+.manage-mg-header[data-mg-color="amber"]::before   { background: #ffe9a8; }
+.manage-mg-header[data-mg-color="ochre"]::before   { background: #ffdf8a; }
+.manage-mg-header[data-mg-color="violet"]::before  { background: #d8c8ff; }
+.manage-mg-header[data-mg-color="magenta"]::before { background: #efc6ff; }
+.manage-mg-header[data-mg-color="pink"]::before    { background: #ffc6ee; }
+.manage-mg-header[data-mg-color="green"]::before   { background: #b6f0c8; }
+.manage-mg-header[data-mg-color="mint"]::before    { background: #aeebbe; }
+.manage-mg-header[data-mg-color="lime"]::before    { background: #d6f0a8; }
+.manage-mg-header[data-mg-color="orange"]::before  { background: #ffd6a8; }
+
+:root[data-theme="light"] .manage-mg-header[data-mg-color="rose"]::before    { background: #7a1c3a; }
+:root[data-theme="light"] .manage-mg-header[data-mg-color="blue"]::before    { background: #0c3c66; }
+:root[data-theme="light"] .manage-mg-header[data-mg-color="amber"]::before   { background: #6b5410; }
+:root[data-theme="light"] .manage-mg-header[data-mg-color="ochre"]::before   { background: #6b440e; }
+:root[data-theme="light"] .manage-mg-header[data-mg-color="violet"]::before  { background: #3f2c7a; }
+:root[data-theme="light"] .manage-mg-header[data-mg-color="magenta"]::before { background: #5a1e7a; }
+:root[data-theme="light"] .manage-mg-header[data-mg-color="pink"]::before    { background: #7a1e57; }
+:root[data-theme="light"] .manage-mg-header[data-mg-color="green"]::before   { background: #0e5a30; }
+:root[data-theme="light"] .manage-mg-header[data-mg-color="mint"]::before    { background: #0a5028; }
+:root[data-theme="light"] .manage-mg-header[data-mg-color="lime"]::before    { background: #3d550e; }
+:root[data-theme="light"] .manage-mg-header[data-mg-color="orange"]::before  { background: #6b3a0a; }
+
+.manage-mg-header-top {
+  display: flex;
+  gap: var(--s-2);
+  align-items: center;
+}
+
+.manage-mg-name {
+  flex: 1;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-strong);
+  font: inherit;
+  font-size: 20px;
+  font-weight: 600;
+  padding: var(--s-1) var(--s-2);
+  border-radius: var(--radius-sm);
+}
+
+.manage-mg-name:hover {
+  background: var(--surface-2);
+}
+
+.manage-mg-name:focus {
+  outline: none;
+  background: var(--surface-2);
+  border-color: var(--accent);
+}
+
+.manage-mg-color {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.manage-mg-color-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.manage-color-grid.inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+}
+
+.manage-color-grid.inline .manage-color-slot {
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}
+
+/* --- Exercises list (right pane) --------------------------------------- */
+
+.manage-exlayout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.manage-ex-toolbar {
+  display: flex;
+  gap: var(--s-2);
+  align-items: center;
+}
+
+.manage-ex-search {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: var(--s-2) var(--s-3);
+  font: inherit;
+}
+
+.manage-ex-search:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.manage-ex-filters {
+  /* uses .pill-row base */
+}
+
+.manage-ex-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.manage-ex-row {
+  display: grid;
+  grid-template-columns: 18px 1fr minmax(140px, 220px) auto;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-2) var(--s-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.1s ease, background 0.1s ease;
+}
+
+.manage-ex-row:hover {
+  border-color: var(--border-strong);
+  background: color-mix(in srgb, var(--surface) 70%, var(--surface-2) 30%);
+}
+
+.manage-ex-name {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-strong);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  padding: var(--s-1) var(--s-2);
+  border-radius: 4px;
+  min-width: 0;
+}
+
+.manage-ex-name:hover {
+  background: var(--surface-2);
+}
+
+.manage-ex-name:focus {
+  outline: none;
+  background: var(--surface-2);
+  border-color: var(--accent);
+}
+
+.manage-ex-mg-select {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: var(--s-1) var(--s-2);
+  font: inherit;
+  font-size: 13px;
+}
+
+@media (max-width: 720px) {
+  .manage-ex-row {
+    grid-template-columns: 16px 1fr auto;
+  }
+  .manage-ex-mg-select {
+    grid-column: 1 / -1;
+  }
+}
+
+/* --- Create-MG modal --------------------------------------------------- */
+
+.create-mg-form .form-row + .form-row {
+  margin-top: var(--s-2);
+}
+
+.create-mg-ex-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-tiny {
+  font-size: 12px;
+  padding: 2px var(--s-2);
+  min-height: 0;
+}
+
+.create-mg-ex-add {
+  display: flex;
+  gap: var(--s-2);
+  margin-bottom: var(--s-1);
+}
+
+.create-mg-ex-add input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: var(--s-2) var(--s-3);
+  font-size: 14px;
+}
+
+.create-mg-ex-add input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.create-mg-ex-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+}
+
+.create-mg-ex-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-1) var(--s-2);
+  cursor: pointer;
+}
+
+.create-mg-ex-row:hover {
+  background: var(--surface-2);
+}
+
+.create-mg-ex-row input[type="checkbox"] {
+  accent-color: var(--accent);
+}
+
+.create-mg-ex-name {
+  font-size: 14px;
+}
+
+.create-mg-ex-meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.create-mg-ex-meta.is-new {
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.create-mg-ex-empty {
+  padding: var(--s-3);
+  color: var(--muted);
+  text-align: center;
+  font-style: italic;
+  font-size: 13px;
+}
+
+.manage-mg-exercises li {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-1) var(--s-2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.manage-mg-exercises li > span {
+  flex: 1;
+}
+
+.manage-detail-actions {
+  display: flex;
+  gap: var(--s-2);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.manage-add-select,
+.manage-detail-select {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: var(--s-2) var(--s-3);
+  font: inherit;
+}
+
+.manage-add-select {
+  flex: 1;
+  min-width: 200px;
+}
+
+.manage-detail-select {
+  align-self: flex-start;
+  min-width: 220px;
+}
+
+.manage-empty {
+  color: var(--muted);
+  font-style: italic;
+  margin: 0;
+}
+
+.manage-hint {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  .manage-layout {
+    grid-template-columns: 1fr;
+  }
+  .manage-color-grid {
+    grid-template-columns: repeat(6, 1fr);
   }
 }
