@@ -1026,17 +1026,17 @@ p {
   --mg-default-fg: var(--text);
 }
 
-.exercise-box[data-mg="Brust"]              { --mg-bg: #5b1f3a; --mg-fg: #ffd1e0; }
-.exercise-box[data-mg="Rücken"]             { --mg-bg: #173a55; --mg-fg: #c6e3ff; }
-.exercise-box[data-mg="Mittlere Schulter"]  { --mg-bg: #5a4a14; --mg-fg: #ffe9a8; }
-.exercise-box[data-mg="Hintere Schulter"]   { --mg-bg: #4a3a10; --mg-fg: #ffdf8a; }
-.exercise-box[data-mg="Trapez"]             { --mg-bg: #3a2e57; --mg-fg: #d8c8ff; }
-.exercise-box[data-mg="Bizeps"]             { --mg-bg: #4a2255; --mg-fg: #efc6ff; }
-.exercise-box[data-mg="Trizeps"]            { --mg-bg: #55244a; --mg-fg: #ffc6ee; }
-.exercise-box[data-mg="Quads"]              { --mg-bg: #1f5a3d; --mg-fg: #b6f0c8; }
-.exercise-box[data-mg="Hamstrings"]         { --mg-bg: #145533; --mg-fg: #aeebbe; }
-.exercise-box[data-mg="Waden"]              { --mg-bg: #3d551f; --mg-fg: #d6f0a8; }
-.exercise-box[data-mg="Bauch"]              { --mg-bg: #553a1f; --mg-fg: #ffd6a8; }
+:where(.exercise-box, .viewer-exercise)[data-mg="Brust"]              { --mg-bg: #5b1f3a; --mg-fg: #ffd1e0; }
+:where(.exercise-box, .viewer-exercise)[data-mg="Rücken"]             { --mg-bg: #173a55; --mg-fg: #c6e3ff; }
+:where(.exercise-box, .viewer-exercise)[data-mg="Mittlere Schulter"]  { --mg-bg: #5a4a14; --mg-fg: #ffe9a8; }
+:where(.exercise-box, .viewer-exercise)[data-mg="Hintere Schulter"]   { --mg-bg: #4a3a10; --mg-fg: #ffdf8a; }
+:where(.exercise-box, .viewer-exercise)[data-mg="Trapez"]             { --mg-bg: #3a2e57; --mg-fg: #d8c8ff; }
+:where(.exercise-box, .viewer-exercise)[data-mg="Bizeps"]             { --mg-bg: #4a2255; --mg-fg: #efc6ff; }
+:where(.exercise-box, .viewer-exercise)[data-mg="Trizeps"]            { --mg-bg: #55244a; --mg-fg: #ffc6ee; }
+:where(.exercise-box, .viewer-exercise)[data-mg="Quads"]              { --mg-bg: #1f5a3d; --mg-fg: #b6f0c8; }
+:where(.exercise-box, .viewer-exercise)[data-mg="Hamstrings"]         { --mg-bg: #145533; --mg-fg: #aeebbe; }
+:where(.exercise-box, .viewer-exercise)[data-mg="Waden"]              { --mg-bg: #3d551f; --mg-fg: #d6f0a8; }
+:where(.exercise-box, .viewer-exercise)[data-mg="Bauch"]              { --mg-bg: #553a1f; --mg-fg: #ffd6a8; }
 
 /* Same palette as small badges/pills */
 .mg-badge[data-mg="Brust"], .mg-pill[data-mg="Brust"]                         { background: #5b1f3a; color: #ffd1e0; }
@@ -1054,17 +1054,17 @@ p {
 /* Muscle-group palette — light theme. Pastel tints with the dark hue from
    the dark palette as foreground, so colors read as the same "Brust" /
    "Rücken" identities, just inverted in luminance. */
-:root[data-theme="light"] .exercise-box[data-mg="Brust"]              { --mg-bg: #fce0ea; --mg-fg: #7a1c3a; }
-:root[data-theme="light"] .exercise-box[data-mg="Rücken"]             { --mg-bg: #d8e8fa; --mg-fg: #0c3c66; }
-:root[data-theme="light"] .exercise-box[data-mg="Mittlere Schulter"]  { --mg-bg: #fbeec1; --mg-fg: #6b5410; }
-:root[data-theme="light"] .exercise-box[data-mg="Hintere Schulter"]   { --mg-bg: #fbe5b8; --mg-fg: #6b440e; }
-:root[data-theme="light"] .exercise-box[data-mg="Trapez"]             { --mg-bg: #e6dcfb; --mg-fg: #3f2c7a; }
-:root[data-theme="light"] .exercise-box[data-mg="Bizeps"]             { --mg-bg: #f3dafc; --mg-fg: #5a1e7a; }
-:root[data-theme="light"] .exercise-box[data-mg="Trizeps"]            { --mg-bg: #fcdaee; --mg-fg: #7a1e57; }
-:root[data-theme="light"] .exercise-box[data-mg="Quads"]              { --mg-bg: #d3f1de; --mg-fg: #0e5a30; }
-:root[data-theme="light"] .exercise-box[data-mg="Hamstrings"]         { --mg-bg: #cdedd8; --mg-fg: #0a5028; }
-:root[data-theme="light"] .exercise-box[data-mg="Waden"]              { --mg-bg: #e7f1c5; --mg-fg: #3d550e; }
-:root[data-theme="light"] .exercise-box[data-mg="Bauch"]              { --mg-bg: #fbe2c4; --mg-fg: #6b3a0a; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Brust"]              { --mg-bg: #fce0ea; --mg-fg: #7a1c3a; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Rücken"]             { --mg-bg: #d8e8fa; --mg-fg: #0c3c66; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Mittlere Schulter"]  { --mg-bg: #fbeec1; --mg-fg: #6b5410; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Hintere Schulter"]   { --mg-bg: #fbe5b8; --mg-fg: #6b440e; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Trapez"]             { --mg-bg: #e6dcfb; --mg-fg: #3f2c7a; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Bizeps"]             { --mg-bg: #f3dafc; --mg-fg: #5a1e7a; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Trizeps"]            { --mg-bg: #fcdaee; --mg-fg: #7a1e57; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Quads"]              { --mg-bg: #d3f1de; --mg-fg: #0e5a30; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Hamstrings"]         { --mg-bg: #cdedd8; --mg-fg: #0a5028; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Waden"]              { --mg-bg: #e7f1c5; --mg-fg: #3d550e; }
+:root[data-theme="light"] :where(.exercise-box, .viewer-exercise)[data-mg="Bauch"]              { --mg-bg: #fbe2c4; --mg-fg: #6b3a0a; }
 
 :root[data-theme="light"] .mg-badge[data-mg="Brust"],
 :root[data-theme="light"] .mg-pill[data-mg="Brust"]                         { background: #fce0ea; color: #7a1c3a; }
