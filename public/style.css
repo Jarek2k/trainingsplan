@@ -116,6 +116,7 @@ body {
 body {
   min-height: 100vh;
   padding-bottom: var(--safe-bottom);
+  overflow-x: hidden;
 }
 
 input,
@@ -1800,9 +1801,6 @@ p {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   padding: var(--s-1) 0;
-  margin: 0 calc(var(--s-4) * -1);
-  padding-left: var(--s-4);
-  padding-right: var(--s-4);
   scroll-snap-type: x proximity;
 }
 
