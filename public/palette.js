@@ -4,16 +4,26 @@
 
 export const PALETTE = [
   { key: "rose",    label: "Rosé" },
-  { key: "blue",    label: "Blau" },
+  { key: "red",     label: "Rot" },
+  { key: "coral",   label: "Koralle" },
+  { key: "orange",  label: "Orange" },
   { key: "amber",   label: "Bernstein" },
   { key: "ochre",   label: "Ocker" },
-  { key: "violet",  label: "Violett" },
-  { key: "magenta", label: "Magenta" },
-  { key: "pink",    label: "Pink" },
+  { key: "yellow",  label: "Gelb" },
+  { key: "brown",   label: "Braun" },
+  { key: "lime",    label: "Limette" },
   { key: "green",   label: "Grün" },
   { key: "mint",    label: "Mint" },
-  { key: "lime",    label: "Limette" },
-  { key: "orange",  label: "Orange" },
+  { key: "teal",    label: "Petrol" },
+  { key: "cyan",    label: "Cyan" },
+  { key: "sky",     label: "Himmel" },
+  { key: "blue",    label: "Blau" },
+  { key: "indigo",  label: "Indigo" },
+  { key: "violet",  label: "Violett" },
+  { key: "purple",  label: "Lila" },
+  { key: "magenta", label: "Magenta" },
+  { key: "pink",    label: "Pink" },
+  { key: "slate",   label: "Schiefer" },
 ];
 
 export const PALETTE_KEYS = PALETTE.map((p) => p.key);
