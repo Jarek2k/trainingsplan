@@ -1431,6 +1431,16 @@ p {
   background: rgba(248, 113, 113, 0.08);
 }
 
+.btn.danger:not(.ghost) {
+  background: var(--bad);
+  border-color: var(--bad);
+  color: #fff;
+}
+
+.btn.danger:not(.ghost):hover {
+  filter: brightness(1.08);
+}
+
 /* Wochenvolumen: schmale Leiste zwischen Plan-Header und Tagen.
    Zeigt Summe der geplanten Sätze pro Muskelgruppe über alle Tage. */
 .builder-volume {
@@ -1652,7 +1662,6 @@ p {
   display: flex;
   flex-direction: column;
   gap: var(--s-2);
-  cursor: grab;
   user-select: none;
   box-shadow:
     inset 0 1px 0 color-mix(in srgb, white 10%, transparent),
@@ -1660,7 +1669,7 @@ p {
   transition: transform 0.1s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
-.exercise-box:active {
+.drag-handle:active {
   cursor: grabbing;
 }
 

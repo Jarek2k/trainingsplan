@@ -433,11 +433,21 @@ function renderDayColumn(plan, day, rerender, refreshVolume) {
   del.setAttribute("aria-label", "Tag entfernen");
   del.textContent = "✕";
   del.onclick = () => {
-    if (!confirm(`Trainingstag „${day.name}" mit ${day.exercises.length} Übung(en) entfernen?`)) return;
-    plan.days = plan.days.filter((d) => d.id !== day.id);
-    plan.updatedAt = new Date().toISOString();
-    scheduleSavePlans();
-    rerender();
+    const n = day.exercises.length;
+    openConfirmModal({
+      title: "Trainingstag entfernen",
+      message:
+        n === 0
+          ? `Trainingstag „${day.name}" entfernen?`
+          : `Trainingstag „${day.name}" mit ${n} Übung${n === 1 ? "" : "en"} entfernen?`,
+      confirmLabel: "Entfernen",
+      onConfirm: () => {
+        plan.days = plan.days.filter((d) => d.id !== day.id);
+        plan.updatedAt = new Date().toISOString();
+        scheduleSavePlans();
+        rerender();
+      },
+    });
   };
   head.appendChild(del);
   col.appendChild(head);
@@ -493,29 +503,9 @@ function renderExerciseBox(plan, day, ex, rerender, refreshVolume) {
   if (mg) box.dataset.mgColor = mg.colorKey;
   box.dataset.exerciseId = ex.id;
   box.dataset.dayId = day.id;
-  box.draggable = true;
+  // Draggable is on the handle only — see below — so click-drag inside inputs
+  // doesn't hijack text selection.
 
-  // Drag events on the entire box.
-  box.addEventListener("dragstart", (e) => {
-    state.builderDragging = { fromDayId: day.id, exerciseId: ex.id };
-    box.classList.add("dragging");
-    e.dataTransfer.effectAllowed = "move";
-    try {
-      e.dataTransfer.setData("text/plain", ex.id);
-    } catch {
-      // Some browsers throw on unusual MIME — non-fatal.
-    }
-    startDragAutoScroll();
-  });
-  box.addEventListener("dragend", () => {
-    state.builderDragging = null;
-    stopDragAutoScroll();
-    document.querySelectorAll(".dragging").forEach((el) => el.classList.remove("dragging"));
-    document.querySelectorAll(".drop-target").forEach((el) => el.classList.remove("drop-target"));
-    document.querySelectorAll(".drop-before, .drop-after").forEach((el) => {
-      el.classList.remove("drop-before", "drop-after");
-    });
-  });
   box.addEventListener("dragenter", () => {
     // Claim the indicator: clear any other box's drop classes so only one shows.
     document.querySelectorAll(".drop-before, .drop-after").forEach((el) => {
@@ -541,8 +531,34 @@ function renderExerciseBox(plan, day, ex, rerender, refreshVolume) {
   head.className = "exercise-box-head";
   const handle = document.createElement("span");
   handle.className = "drag-handle";
-  handle.setAttribute("aria-hidden", "true");
+  handle.setAttribute("aria-label", "Übung verschieben");
+  handle.title = "Ziehen zum Verschieben";
   handle.textContent = "⋮⋮";
+  handle.draggable = true;
+  handle.addEventListener("dragstart", (e) => {
+    state.builderDragging = { fromDayId: day.id, exerciseId: ex.id };
+    box.classList.add("dragging");
+    e.dataTransfer.effectAllowed = "move";
+    try {
+      e.dataTransfer.setData("text/plain", ex.id);
+      // Use the whole box as the drag-image so the ghost matches what the
+      // user is moving, not just the small handle glyph.
+      const r = box.getBoundingClientRect();
+      e.dataTransfer.setDragImage(box, e.clientX - r.left, e.clientY - r.top);
+    } catch {
+      // Some browsers throw on unusual MIME / setDragImage — non-fatal.
+    }
+    startDragAutoScroll();
+  });
+  handle.addEventListener("dragend", () => {
+    state.builderDragging = null;
+    stopDragAutoScroll();
+    document.querySelectorAll(".dragging").forEach((el) => el.classList.remove("dragging"));
+    document.querySelectorAll(".drop-target").forEach((el) => el.classList.remove("drop-target"));
+    document.querySelectorAll(".drop-before, .drop-after").forEach((el) => {
+      el.classList.remove("drop-before", "drop-after");
+    });
+  });
   head.appendChild(handle);
 
   const titles = document.createElement("button");
@@ -563,11 +579,17 @@ function renderExerciseBox(plan, day, ex, rerender, refreshVolume) {
   remove.setAttribute("aria-label", "Übung entfernen");
   remove.textContent = "✕";
   remove.onclick = () => {
-    if (!confirm(`„${ex.name}" entfernen?`)) return;
-    day.exercises = day.exercises.filter((e) => e.id !== ex.id);
-    plan.updatedAt = new Date().toISOString();
-    scheduleSavePlans();
-    rerender();
+    openConfirmModal({
+      title: "Übung entfernen",
+      message: `„${ex.name}" aus „${day.name}" entfernen?`,
+      confirmLabel: "Entfernen",
+      onConfirm: () => {
+        day.exercises = day.exercises.filter((e) => e.id !== ex.id);
+        plan.updatedAt = new Date().toISOString();
+        scheduleSavePlans();
+        rerender();
+      },
+    });
   };
   head.appendChild(remove);
   box.appendChild(head);
@@ -606,8 +628,17 @@ function field(label, key, ex, plan, mode, onChange) {
     scheduleSavePlans();
     if (onChange) onChange();
   });
-  // Don't start a drag when the user is interacting with an input.
-  inp.addEventListener("mousedown", (e) => e.stopPropagation());
+  // Auto-select existing value on focus, so a click immediately overwrites.
+  // Avoid stealing the user's manual selection if they click-drag within
+  // the field by deferring to next tick and only selecting when nothing
+  // is selected yet.
+  inp.addEventListener("focus", () => {
+    setTimeout(() => {
+      if (document.activeElement !== inp) return;
+      if (inp.selectionStart !== inp.selectionEnd) return;
+      inp.select();
+    }, 0);
+  });
   wrap.append(lab, inp);
   return wrap;
 }
@@ -686,12 +717,18 @@ function copyPlan(src, rerender) {
 }
 
 function deletePlan(plan, rerender) {
-  if (!confirm(`Plan „${plan.name}" wirklich löschen?`)) return;
-  state.plans.plans = state.plans.plans.filter((p) => p.id !== plan.id);
-  if (state.builderSelectedPlanId === plan.id) state.builderSelectedPlanId = null;
-  if (state.activePlanId === plan.id) setActivePlanId(null);
-  scheduleSavePlans();
-  rerender();
+  openConfirmModal({
+    title: "Plan löschen",
+    message: `Plan „${plan.name}" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.`,
+    confirmLabel: "Löschen",
+    onConfirm: () => {
+      state.plans.plans = state.plans.plans.filter((p) => p.id !== plan.id);
+      if (state.builderSelectedPlanId === plan.id) state.builderSelectedPlanId = null;
+      if (state.activePlanId === plan.id) setActivePlanId(null);
+      scheduleSavePlans();
+      rerender();
+    },
+  });
 }
 
 function renamePlanPrompt(plan, rerender) {
@@ -706,6 +743,23 @@ function renamePlanPrompt(plan, rerender) {
 }
 
 // --- Modals -----------------------------------------------------------------
+
+function openConfirmModal({ title, message, confirmLabel = "Löschen", onConfirm }) {
+  const body = document.createElement("div");
+  const p = document.createElement("p");
+  p.className = "modal-hint";
+  p.textContent = message;
+  body.appendChild(p);
+  const m = openModal({
+    title,
+    body,
+    confirmLabel,
+    confirmDisabled: false,
+    onConfirm,
+  });
+  const btn = m.modal.querySelector("[data-confirm]");
+  btn.classList.add("danger");
+}
 
 function openCreatePlanModal(rerender) {
   const body = document.createElement("div");
