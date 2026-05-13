@@ -279,11 +279,21 @@ function renderEditor(root, plan, rerender) {
 
   root.appendChild(header);
 
+  const volumeHost = document.createElement("div");
+  volumeHost.className = "builder-volume-host";
+  const refreshVolume = () => {
+    volumeHost.innerHTML = "";
+    const bar = renderVolumeBar(plan);
+    if (bar) volumeHost.appendChild(bar);
+  };
+  refreshVolume();
+  root.appendChild(volumeHost);
+
   const board = document.createElement("div");
   board.className = "builder-board" + (state.compactView ? " compact" : "");
 
   for (const day of plan.days) {
-    board.appendChild(renderDayColumn(plan, day, rerender));
+    board.appendChild(renderDayColumn(plan, day, rerender, refreshVolume));
   }
 
   if (plan.days.length < MAX_DAYS) {
@@ -293,7 +303,116 @@ function renderEditor(root, plan, rerender) {
   root.appendChild(board);
 }
 
-function renderDayColumn(plan, day, rerender) {
+function renderVolumeBar(plan) {
+  // Sum sets per muscle group across all days. Exercises without sets count as 0.
+  const totals = new Map(); // mgId -> sets
+  let total = 0;
+  for (const day of plan.days) {
+    for (const ex of day.exercises) {
+      const n = Number.isFinite(ex.sets) ? ex.sets : 0;
+      if (n <= 0) continue;
+      const key = ex.muscleGroupId || "__none";
+      totals.set(key, (totals.get(key) || 0) + n);
+      total += n;
+    }
+  }
+
+  const planDays = plan.days.length || 1;
+  const perWeek = clampPerWeek(plan.trainingsPerWeek, planDays);
+  const factor = perWeek / planDays;
+
+  const entries = [...totals.entries()]
+    .map(([mgId, sets]) => ({ mg: findMg(state.plans, mgId), sets }))
+    .sort((a, b) => b.sets - a.sets);
+
+  const wrap = document.createElement("div");
+  wrap.className = "builder-volume";
+
+  const label = document.createElement("span");
+  label.className = "builder-volume-label";
+  label.textContent = "Volumen";
+  wrap.appendChild(label);
+
+  const cycle = document.createElement("label");
+  cycle.className = "builder-volume-cycle";
+  cycle.title = "Wie oft du diesen Plan pro Kalenderwoche trainierst";
+  const cycleInput = document.createElement("input");
+  cycleInput.type = "number";
+  cycleInput.min = "1";
+  cycleInput.max = String(Math.max(planDays, 1));
+  cycleInput.inputMode = "numeric";
+  cycleInput.value = String(perWeek);
+  cycleInput.addEventListener("change", () => {
+    const next = clampPerWeek(parseInt(cycleInput.value, 10), planDays);
+    cycleInput.value = String(next);
+    if (next !== plan.trainingsPerWeek) {
+      plan.trainingsPerWeek = next;
+      plan.updatedAt = new Date().toISOString();
+      scheduleSavePlans();
+    }
+    const host = wrap.parentElement;
+    if (host) {
+      host.innerHTML = "";
+      const fresh = renderVolumeBar(plan);
+      if (fresh) host.appendChild(fresh);
+    }
+  });
+  const cycleUnit = document.createElement("span");
+  cycleUnit.textContent = "× Training";
+  cycle.append(cycleInput, cycleUnit);
+  wrap.appendChild(cycle);
+
+  if (total === 0) {
+    const hint = document.createElement("span");
+    hint.className = "builder-volume-hint";
+    hint.textContent = "Noch keine Sätze geplant";
+    wrap.appendChild(hint);
+    return wrap;
+  }
+
+  const list = document.createElement("div");
+  list.className = "builder-volume-list";
+  for (const { mg, sets } of entries) {
+    const pill = document.createElement("span");
+    pill.className = "mg-pill builder-volume-pill";
+    if (mg) pill.dataset.mgColor = mg.colorKey;
+    const shown = formatVolume(sets * factor);
+    const name = mg ? mg.name : "Ohne Muskelgruppe";
+    pill.title = buildVolumeTooltip(name, sets, perWeek, planDays, shown);
+    pill.innerHTML = `
+      <span class="builder-volume-name">${escape(name)}</span>
+      <span class="builder-volume-sets">${shown}</span>
+    `;
+    list.appendChild(pill);
+  }
+  wrap.appendChild(list);
+  return wrap;
+}
+
+function buildVolumeTooltip(name, sets, perWeek, planDays, shown) {
+  if (perWeek === planDays) {
+    return `${name}: ${sets} Sätze pro Woche\n(alle ${planDays} Trainingstage ergeben eine Kalenderwoche)`;
+  }
+  return `${name}: ${sets} Sätze pro Trainingszyklus\nDu trainierst ${perWeek}× von ${planDays} Tagen pro Kalenderwoche\n${sets} × ${perWeek}/${planDays} = ${shown} im Schnitt pro Woche`;
+}
+
+function clampPerWeek(v, planDays) {
+  const max = Math.max(planDays || 1, 1);
+  const n = parseInt(v, 10);
+  if (!Number.isFinite(n) || n < 1) return Math.min(max, planDays || 1);
+  if (n > max) return max;
+  return n;
+}
+
+function formatVolume(v) {
+  if (!Number.isFinite(v)) return "0";
+  const rounded = Math.round(v * 10) / 10;
+  return Number.isInteger(rounded)
+    ? String(rounded)
+    : rounded.toFixed(1).replace(".", ",");
+}
+
+function renderDayColumn(plan, day, rerender, refreshVolume) {
   const col = document.createElement("div");
   col.className = "builder-day";
   col.dataset.dayId = day.id;
@@ -328,7 +447,7 @@ function renderDayColumn(plan, day, rerender) {
   body.dataset.dayId = day.id;
 
   for (const ex of day.exercises) {
-    body.appendChild(renderExerciseBox(plan, day, ex, rerender));
+    body.appendChild(renderExerciseBox(plan, day, ex, rerender, refreshVolume));
   }
 
   // Drop-zone "tail" so users can drop at the very end of the column.
@@ -367,7 +486,7 @@ function renderAddDayColumn(plan, rerender) {
   return col;
 }
 
-function renderExerciseBox(plan, day, ex, rerender) {
+function renderExerciseBox(plan, day, ex, rerender, refreshVolume) {
   const mg = findMg(state.plans, ex.muscleGroupId);
   const box = document.createElement("article");
   box.className = "exercise-box";
@@ -455,7 +574,7 @@ function renderExerciseBox(plan, day, ex, rerender) {
 
   const inputs = document.createElement("div");
   inputs.className = "exercise-box-inputs";
-  inputs.appendChild(field("Sätze", "sets", ex, plan, "numeric"));
+  inputs.appendChild(field("Sätze", "sets", ex, plan, "numeric", refreshVolume));
   inputs.appendChild(field("Wdh.", "reps", ex, plan, "decimal"));
   inputs.appendChild(field("kg", "weight", ex, plan, "decimal"));
   box.appendChild(inputs);
@@ -463,7 +582,7 @@ function renderExerciseBox(plan, day, ex, rerender) {
   return box;
 }
 
-function field(label, key, ex, plan, mode) {
+function field(label, key, ex, plan, mode, onChange) {
   const wrap = document.createElement("label");
   wrap.className = "exercise-box-field";
   const lab = document.createElement("span");
@@ -485,6 +604,7 @@ function field(label, key, ex, plan, mode) {
     }
     plan.updatedAt = new Date().toISOString();
     scheduleSavePlans();
+    if (onChange) onChange();
   });
   // Don't start a drag when the user is interacting with an input.
   inp.addEventListener("mousedown", (e) => e.stopPropagation());

@@ -1431,6 +1431,97 @@ p {
   background: rgba(248, 113, 113, 0.08);
 }
 
+/* Wochenvolumen: schmale Leiste zwischen Plan-Header und Tagen.
+   Zeigt Summe der geplanten Sätze pro Muskelgruppe über alle Tage. */
+.builder-volume {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-2) var(--s-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  min-height: 0;
+  flex: 0 0 auto;
+}
+
+.builder-volume-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  flex: 0 0 auto;
+}
+
+.builder-volume-cycle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  flex: 0 0 auto;
+}
+
+.builder-volume-cycle input {
+  width: 44px;
+  padding: 2px 4px;
+  text-align: center;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-strong);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.builder-volume-cycle input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.builder-volume-hint {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.builder-volume-list {
+  display: flex;
+  gap: var(--s-2);
+  overflow-x: auto;
+  flex: 1;
+  min-width: 0;
+  scrollbar-width: thin;
+}
+
+.builder-volume-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.builder-volume-sets {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+}
+
+@media (max-width: 768px) {
+  .builder-volume {
+    flex-wrap: wrap;
+  }
+  .builder-volume-list {
+    flex-basis: 100%;
+  }
+}
+
 /* Day-column board: takes the remaining height of .builder-main so each
    column scrolls internally — the page itself never scrolls vertically. */
 .builder-board {
