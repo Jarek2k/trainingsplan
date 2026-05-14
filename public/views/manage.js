@@ -367,7 +367,10 @@ function renderExRow(ex, rerender) {
     sel.appendChild(opt);
   }
   sel.onchange = () => {
-    ex.muscleGroupId = sel.value || null;
+    const oldMgId = ex.muscleGroupId;
+    const newMgId = sel.value || null;
+    ex.muscleGroupId = newMgId;
+    syncPlanInstancesMg(ex.name, oldMgId, newMgId);
     scheduleSavePlans();
     rerender();
   };
@@ -587,15 +590,21 @@ function openCreateMgModal(rerender) {
       // Commit pending new exercises into the library (assigned to this group
       // if checked, otherwise left unassigned).
       for (const p of pendingNew) {
+        const newMgId = selectedExIds.has(p.id) ? mg.id : null;
         state.plans.exerciseLibrary.push({
           id: p.id,
           name: p.name,
-          muscleGroupId: selectedExIds.has(p.id) ? mg.id : null,
+          muscleGroupId: newMgId,
         });
+        if (newMgId) syncPlanInstancesMg(p.name, null, newMgId);
       }
       // Assign existing exercises that were checked.
       for (const ex of library) {
-        if (selectedExIds.has(ex.id)) ex.muscleGroupId = mg.id;
+        if (selectedExIds.has(ex.id)) {
+          const oldMgId = ex.muscleGroupId;
+          ex.muscleGroupId = mg.id;
+          syncPlanInstancesMg(ex.name, oldMgId, mg.id);
+        }
       }
       selectedFilter = mg.id;
       scheduleSavePlans();
@@ -639,6 +648,18 @@ function countPlanExercisesUsingMg(mgId) {
     }
   }
   return n;
+}
+
+function syncPlanInstancesMg(exerciseName, oldMgId, newMgId) {
+  for (const plan of state.plans.plans || []) {
+    for (const day of plan.days || []) {
+      for (const pex of day.exercises || []) {
+        if (pex.name === exerciseName && pex.muscleGroupId === oldMgId) {
+          pex.muscleGroupId = newMgId;
+        }
+      }
+    }
+  }
 }
 
 function countPlanExercisesUsingExerciseName(name) {
