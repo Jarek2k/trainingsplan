@@ -35,9 +35,14 @@ function renderModeActions(ctx) {
   ctx.modeActions.innerHTML = "";
   const back = document.createElement("button");
   back.type = "button";
-  back.className = "btn";
-  back.textContent = "Fertig";
-  back.title = "Zurück zum Planer";
+  back.className = "icon-btn round";
+  back.title = "Fertig";
+  back.setAttribute("aria-label", "Zurück zum Planer");
+  back.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  `;
   back.onclick = () => ctx.switchMode("edit");
   ctx.modeActions.appendChild(back);
 }

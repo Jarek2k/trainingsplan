@@ -191,6 +191,38 @@ p {
   font-size: 0.9rem;
 }
 
+.mode-actions .icon-btn.round {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.mode-actions .icon-btn.round:hover {
+  background: var(--surface-2);
+  color: var(--text-strong);
+  border-color: var(--border-strong);
+}
+
+.mode-actions .icon-btn.round svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+/* Empty save-status would otherwise add a second flex gap between mode
+   actions and the theme/logout cluster. Collapse it when there's no text. */
+.save-status:empty {
+  display: none;
+}
+
 @media (max-width: 540px) {
   .mode-actions .hide-mobile {
     display: none;
