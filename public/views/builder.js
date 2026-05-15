@@ -196,6 +196,7 @@ function openPlanMenu(anchor, plan, rerender) {
     }));
   }
   pop.appendChild(item("Umbenennen", () => renamePlanPrompt(plan, rerender)));
+  pop.appendChild(item("Exportieren", () => openExportModal(plan)));
   pop.appendChild(item("Kopieren", () => copyPlan(plan, rerender)));
   pop.appendChild(item("Löschen", () => deletePlan(plan, rerender)));
   document.body.appendChild(pop);
@@ -1185,6 +1186,195 @@ function currentPlan() {
   return (state.plans.plans || []).find(
     (p) => p.id === state.builderSelectedPlanId,
   );
+}
+
+// --- Plan export modal ------------------------------------------------------
+
+function openExportModal(plan) {
+  const formats = [
+    { key: "whatsapp", label: "WhatsApp", extension: "txt", mime: "text/plain", build: buildWhatsappExport },
+    { key: "markdown", label: "Markdown", extension: "md", mime: "text/markdown", build: buildMarkdownExport },
+    { key: "json", label: "JSON", extension: "json", mime: "application/json", build: buildJsonExport },
+  ];
+  let activeKey = "whatsapp";
+
+  const body = document.createElement("div");
+  body.className = "export-body";
+
+  const tabs = document.createElement("div");
+  tabs.className = "export-tabs";
+  body.appendChild(tabs);
+
+  const preview = document.createElement("textarea");
+  preview.className = "export-preview";
+  preview.readOnly = true;
+  preview.spellcheck = false;
+  body.appendChild(preview);
+
+  const actions = document.createElement("div");
+  actions.className = "export-extra-actions";
+
+  const copyBtn = document.createElement("button");
+  copyBtn.type = "button";
+  copyBtn.className = "btn secondary";
+  copyBtn.textContent = "In Zwischenablage";
+  copyBtn.onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(preview.value);
+    } catch {
+      preview.select();
+      document.execCommand("copy");
+    }
+    const prev = copyBtn.textContent;
+    copyBtn.textContent = "Kopiert ✓";
+    setTimeout(() => (copyBtn.textContent = prev), 1500);
+  };
+  actions.appendChild(copyBtn);
+
+  const dlBtn = document.createElement("button");
+  dlBtn.type = "button";
+  dlBtn.className = "btn";
+  dlBtn.textContent = "Herunterladen";
+  dlBtn.onclick = () => {
+    const f = formats.find((x) => x.key === activeKey);
+    const safe = plan.name.replace(/[\\/:*?"<>|]/g, "_").trim() || "plan";
+    downloadText(preview.value, `${safe}.${f.extension}`, f.mime);
+  };
+  actions.appendChild(dlBtn);
+
+  body.appendChild(actions);
+
+  const setActive = (key) => {
+    activeKey = key;
+    const f = formats.find((x) => x.key === key);
+    preview.value = f.build(plan);
+    for (const t of tabs.querySelectorAll(".export-tab")) {
+      t.classList.toggle("active", t.dataset.key === key);
+    }
+  };
+
+  for (const f of formats) {
+    const tab = document.createElement("button");
+    tab.type = "button";
+    tab.className = "export-tab" + (f.key === activeKey ? " active" : "");
+    tab.dataset.key = f.key;
+    tab.textContent = f.label;
+    tab.onclick = () => setActive(f.key);
+    tabs.appendChild(tab);
+  }
+  setActive(activeKey);
+
+  const m = openModal({
+    title: "Plan exportieren",
+    body,
+    confirmLabel: "Schließen",
+    confirmDisabled: false,
+    onConfirm: () => {},
+  });
+  m.modal.classList.add("export-modal");
+  const cancel = m.modal.querySelector("[data-cancel]");
+  if (cancel) cancel.style.display = "none";
+}
+
+function buildWhatsappExport(plan) {
+  const lines = [`*${plan.name}*`];
+  for (const day of plan.days) {
+    lines.push("");
+    lines.push(`*${day.name}*`);
+    if (day.exercises.length === 0) {
+      lines.push("_(keine Übungen)_");
+      continue;
+    }
+    for (const ex of day.exercises) {
+      lines.push(`• ${formatExerciseLine(ex)}`);
+    }
+  }
+  return lines.join("\n");
+}
+
+function buildMarkdownExport(plan) {
+  const lines = [`# ${plan.name}`];
+  for (const day of plan.days) {
+    lines.push("");
+    lines.push(`## ${day.name}`);
+    lines.push("");
+    if (day.exercises.length === 0) {
+      lines.push("_(keine Übungen)_");
+      continue;
+    }
+    for (const ex of day.exercises) {
+      lines.push(`- ${formatExerciseLine(ex)}`);
+    }
+  }
+  return lines.join("\n");
+}
+
+function buildJsonExport(plan) {
+  const referenced = new Set();
+  for (const day of plan.days) {
+    for (const ex of day.exercises) {
+      if (ex.muscleGroupId) referenced.add(ex.muscleGroupId);
+    }
+  }
+  const mgs = (state.plans.muscleGroups || [])
+    .filter((mg) => referenced.has(mg.id))
+    .map((mg) => ({ id: mg.id, name: mg.name, colorKey: mg.colorKey }));
+  const payload = {
+    kind: "trainingsplan/plan/v1",
+    exportedAt: new Date().toISOString(),
+    plan: {
+      id: plan.id,
+      name: plan.name,
+      createdAt: plan.createdAt,
+      updatedAt: plan.updatedAt,
+      trainingsPerWeek: plan.trainingsPerWeek,
+      days: plan.days.map((d) => ({
+        id: d.id,
+        name: d.name,
+        exercises: d.exercises.map((e) => ({
+          id: e.id,
+          name: e.name,
+          muscleGroupId: e.muscleGroupId,
+          sets: e.sets,
+          reps: e.reps,
+          weight: e.weight,
+        })),
+      })),
+    },
+    muscleGroups: mgs,
+  };
+  return JSON.stringify(payload, null, 2);
+}
+
+function formatExerciseLine(ex) {
+  const mg = findMg(state.plans, ex.muscleGroupId);
+  const mgPart = mg ? ` (${mg.name})` : "";
+  const sets = Number.isFinite(ex.sets) && ex.sets > 0 ? String(ex.sets) : null;
+  const reps = ex.reps != null && String(ex.reps).trim() !== "" ? String(ex.reps).trim() : null;
+  const weight = ex.weight != null && String(ex.weight).trim() !== ""
+    ? `${String(ex.weight).trim()} kg`
+    : null;
+
+  let setsReps = "";
+  if (sets && reps) setsReps = `${sets} × ${reps}`;
+  else if (sets) setsReps = `${sets} Sätze`;
+  else if (reps) setsReps = reps;
+
+  const stats = [setsReps, weight].filter(Boolean);
+  const statsPart = stats.length ? ` — ${stats.join(" @ ")}` : "";
+  return `${ex.name}${mgPart}${statsPart}`;
+}
+
+function downloadText(content, filename, mime) {
+  const blob = new Blob([content], { type: `${mime};charset=utf-8` });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
 // --- Plan compare modal -----------------------------------------------------

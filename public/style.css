@@ -1990,6 +1990,73 @@ p {
   font-style: italic;
 }
 
+/* Plan export modal */
+.modal.export-modal {
+  max-width: 640px;
+}
+
+.export-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.export-tabs {
+  display: flex;
+  gap: var(--s-1);
+  padding: 4px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+}
+
+.export-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 500;
+  padding: var(--s-2);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.export-tab:hover {
+  color: var(--text-strong);
+}
+
+.export-tab.active {
+  background: var(--surface);
+  color: var(--text-strong);
+  box-shadow: 0 1px 2px color-mix(in srgb, black 30%, transparent);
+}
+
+.export-preview {
+  width: 100%;
+  min-height: 320px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-strong);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: var(--s-3);
+  resize: vertical;
+}
+
+.export-preview:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.export-extra-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--s-2);
+}
+
 .exercise-box-head {
   display: flex;
   align-items: flex-start;
