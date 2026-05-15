@@ -2070,6 +2070,10 @@ p {
   gap: var(--s-2);
 }
 
+.create-plan-panel[hidden] {
+  display: none;
+}
+
 /* Plan import modal */
 .import-body {
   display: flex;
