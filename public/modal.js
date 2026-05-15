@@ -51,3 +51,20 @@ export function openModal({
 
   return { close, setConfirmEnabled, modal };
 }
+
+export function openConfirmModal({ title, message, confirmLabel = "Löschen", onConfirm }) {
+  const body = document.createElement("div");
+  const p = document.createElement("p");
+  p.className = "modal-hint";
+  p.textContent = message;
+  body.appendChild(p);
+  const m = openModal({
+    title,
+    body,
+    confirmLabel,
+    confirmDisabled: false,
+    onConfirm,
+  });
+  m.modal.querySelector("[data-confirm]").classList.add("danger");
+  return m;
+}

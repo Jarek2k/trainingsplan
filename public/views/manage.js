@@ -4,7 +4,7 @@
 // specific group filters and surfaces the group's own editor (name + color
 // + delete) above its exercises.
 
-import { openModal } from "../modal.js";
+import { openModal, openConfirmModal } from "../modal.js";
 import { scheduleSavePlans, shortId, state } from "../state.js";
 import { escape, findMg } from "../util.js";
 import { DEFAULT_COLOR_KEY, PALETTE } from "../palette.js";
@@ -288,11 +288,17 @@ function renderMgHeader(mg, rerender) {
 function deleteMg(mg, rerender) {
   const inLibrary = countExercisesInMg(mg.id);
   const inPlans = countPlanExercisesUsingMg(mg.id);
-  const msg = inLibrary || inPlans
+  const message = inLibrary || inPlans
     ? `„${mg.name}" wirklich löschen?\n\n${inLibrary} Bibliotheks-Übung(en) und ${inPlans} Plan-Übung(en) werden „ohne Muskelgruppe".`
     : `„${mg.name}" wirklich löschen?`;
-  if (!confirm(msg)) return;
+  openConfirmModal({
+    title: "Muskelgruppe löschen",
+    message,
+    onConfirm: () => doDeleteMg(mg, rerender),
+  });
+}
 
+function doDeleteMg(mg, rerender) {
   for (const ex of state.plans.exerciseLibrary || []) {
     if (ex.muscleGroupId === mg.id) ex.muscleGroupId = null;
   }
@@ -388,15 +394,20 @@ function renderExRow(ex, rerender) {
   del.textContent = "✕";
   del.onclick = () => {
     const used = countPlanExercisesUsingExerciseName(ex.name);
-    const msg = used
+    const message = used
       ? `„${ex.name}" aus der Bibliothek löschen?\n\n${used} Plan-Übung(en) mit gleichem Namen bleiben unverändert in den Plänen.`
       : `„${ex.name}" aus der Bibliothek löschen?`;
-    if (!confirm(msg)) return;
-    state.plans.exerciseLibrary = (state.plans.exerciseLibrary || []).filter(
-      (e) => e.id !== ex.id,
-    );
-    scheduleSavePlans();
-    rerender();
+    openConfirmModal({
+      title: "Übung löschen",
+      message,
+      onConfirm: () => {
+        state.plans.exerciseLibrary = (state.plans.exerciseLibrary || []).filter(
+          (e) => e.id !== ex.id,
+        );
+        scheduleSavePlans();
+        rerender();
+      },
+    });
   };
   li.appendChild(del);
 

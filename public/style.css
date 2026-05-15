@@ -1941,6 +1941,7 @@ p {
   color: var(--muted);
   font-size: 14px;
   margin-bottom: var(--s-2);
+  white-space: pre-line;
 }
 
 .pill-row {
