@@ -2057,6 +2057,19 @@ p {
   gap: var(--s-2);
 }
 
+/* Create-plan tabs (Leer / Importieren) */
+.create-plan-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.create-plan-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
 /* Plan import modal */
 .import-body {
   display: flex;

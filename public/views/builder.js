@@ -115,13 +115,6 @@ function renderSidebar(root, rerender) {
   newBtn.onclick = () => openCreatePlanModal(rerender);
   head.appendChild(newBtn);
 
-  const importBtn = document.createElement("button");
-  importBtn.className = "btn ghost";
-  importBtn.textContent = "Importieren";
-  importBtn.title = "Plan aus JSON importieren";
-  importBtn.onclick = () => openImportModal(rerender);
-  head.appendChild(importBtn);
-
   const cmpBtn = document.createElement("button");
   cmpBtn.className = "btn ghost";
   cmpBtn.textContent = "Vergleichen";
@@ -892,32 +885,118 @@ function renamePlanPrompt(plan, rerender) {
 // --- Modals -----------------------------------------------------------------
 
 function openCreatePlanModal(rerender) {
+  let activeTab = "blank"; // "blank" | "import"
+  let parsedImport = null;
+
   const body = document.createElement("div");
+  body.className = "create-plan-body";
   body.innerHTML = `
-    <p class="modal-hint">Wähle einen Namen für deinen neuen Trainingsplan.</p>
-    <input type="text" id="plan-name" placeholder="z.B. Push/Pull/Beine" autocomplete="off" />
+    <div class="export-tabs create-plan-tabs">
+      <button type="button" class="export-tab active" data-tab="blank">Leer erstellen</button>
+      <button type="button" class="export-tab" data-tab="import">Importieren</button>
+    </div>
+    <div class="create-plan-panel" data-panel="blank">
+      <p class="modal-hint">Wähle einen Namen für deinen neuen Trainingsplan.</p>
+      <input type="text" class="create-plan-name" placeholder="z.B. Push/Pull/Beine" autocomplete="off" />
+    </div>
+    <div class="create-plan-panel import-body" data-panel="import" hidden>
+      <p class="modal-hint">JSON eines exportierten Plans einfügen oder Datei wählen. Muskelgruppen werden über den Namen abgeglichen; unbekannte werden neu angelegt. Die Bibliothek bleibt unverändert.</p>
+      <input type="file" accept="application/json,.json" class="import-file" />
+      <textarea class="import-json" placeholder='{"kind":"trainingsplan/plan/v1", …}' rows="10" spellcheck="false"></textarea>
+      <p class="import-error" hidden></p>
+    </div>
   `;
+
+  const nameInp = body.querySelector(".create-plan-name");
+  const fileInp = body.querySelector(".import-file");
+  const textarea = body.querySelector(".import-json");
+  const errEl = body.querySelector(".import-error");
+  const panels = body.querySelectorAll(".create-plan-panel");
+  const tabBtns = body.querySelectorAll(".create-plan-tabs [data-tab]");
+
+  const updateConfirm = () => {
+    if (activeTab === "blank") {
+      m.setConfirmEnabled(nameInp.value.trim().length > 0);
+    } else {
+      m.setConfirmEnabled(!!parsedImport);
+    }
+  };
+
+  const setActiveTab = (tab) => {
+    activeTab = tab;
+    for (const btn of tabBtns) btn.classList.toggle("active", btn.dataset.tab === tab);
+    for (const p of panels) p.hidden = p.dataset.panel !== tab;
+    const confirmBtn = m.modal.querySelector("[data-confirm]");
+    confirmBtn.textContent = tab === "blank" ? "Erstellen" : "Importieren";
+    updateConfirm();
+    setTimeout(() => {
+      if (tab === "blank") nameInp.focus();
+      else textarea.focus();
+    }, 0);
+  };
+
+  nameInp.addEventListener("input", updateConfirm);
+  nameInp.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && nameInp.value.trim()) {
+      e.preventDefault();
+      m.modal.querySelector("[data-confirm]").click();
+    }
+  });
+
+  const validateImport = () => {
+    errEl.hidden = true;
+    errEl.textContent = "";
+    parsedImport = null;
+    const text = textarea.value.trim();
+    if (!text) {
+      updateConfirm();
+      return;
+    }
+    try {
+      parsedImport = parseImport(text);
+    } catch (e) {
+      errEl.textContent = e.message;
+      errEl.hidden = false;
+    }
+    updateConfirm();
+  };
+  textarea.addEventListener("input", validateImport);
+  fileInp.addEventListener("change", async () => {
+    const f = fileInp.files && fileInp.files[0];
+    if (!f) return;
+    try {
+      textarea.value = await f.text();
+      validateImport();
+    } catch {
+      errEl.textContent = "Datei konnte nicht gelesen werden.";
+      errEl.hidden = false;
+    }
+  });
+
+  for (const btn of tabBtns) btn.onclick = () => setActiveTab(btn.dataset.tab);
+
   const m = openModal({
     title: "Neuer Plan",
     body,
     confirmLabel: "Erstellen",
     confirmDisabled: true,
     onConfirm: () => {
-      const name = body.querySelector("#plan-name").value.trim();
-      if (!name) return false;
-      createPlan(name);
-      rerender();
+      if (activeTab === "blank") {
+        const name = nameInp.value.trim();
+        if (!name) return false;
+        createPlan(name);
+        rerender();
+      } else {
+        if (!parsedImport) return false;
+        const newPlan = applyImport(parsedImport);
+        state.builderSelectedPlanId = newPlan.id;
+        scheduleSavePlans();
+        rerender();
+      }
     },
   });
-  const inp = body.querySelector("#plan-name");
-  inp.addEventListener("input", () => m.setConfirmEnabled(inp.value.trim().length > 0));
-  inp.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && inp.value.trim()) {
-      e.preventDefault();
-      m.modal.querySelector("[data-confirm]").click();
-    }
-  });
-  inp.focus();
+
+  setActiveTab("blank");
 }
 
 function openAddDayModal(plan, rerender) {
@@ -1385,69 +1464,7 @@ function downloadText(content, filename, mime) {
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
-// --- Plan import modal ------------------------------------------------------
-
-function openImportModal(rerender) {
-  const body = document.createElement("div");
-  body.className = "import-body";
-  body.innerHTML = `
-    <p class="modal-hint">JSON eines exportierten Plans einfügen oder Datei wählen. Muskelgruppen werden über den Namen abgeglichen; unbekannte werden neu angelegt. Die Bibliothek bleibt unverändert.</p>
-    <input type="file" accept="application/json,.json" class="import-file" />
-    <textarea class="import-json" placeholder='{"kind":"trainingsplan/plan/v1", …}' rows="10" spellcheck="false"></textarea>
-    <p class="import-error" hidden></p>
-  `;
-
-  const fileInp = body.querySelector(".import-file");
-  const textarea = body.querySelector(".import-json");
-  const errEl = body.querySelector(".import-error");
-
-  let parsed = null;
-  const validate = () => {
-    errEl.hidden = true;
-    errEl.textContent = "";
-    parsed = null;
-    const text = textarea.value.trim();
-    if (!text) {
-      m.setConfirmEnabled(false);
-      return;
-    }
-    try {
-      parsed = parseImport(text);
-      m.setConfirmEnabled(true);
-    } catch (e) {
-      errEl.textContent = e.message;
-      errEl.hidden = false;
-      m.setConfirmEnabled(false);
-    }
-  };
-
-  textarea.addEventListener("input", validate);
-  fileInp.addEventListener("change", async () => {
-    const f = fileInp.files && fileInp.files[0];
-    if (!f) return;
-    try {
-      textarea.value = await f.text();
-      validate();
-    } catch {
-      errEl.textContent = "Datei konnte nicht gelesen werden.";
-      errEl.hidden = false;
-    }
-  });
-
-  const m = openModal({
-    title: "Plan importieren",
-    body,
-    confirmLabel: "Importieren",
-    confirmDisabled: true,
-    onConfirm: () => {
-      if (!parsed) return false;
-      const newPlan = applyImport(parsed);
-      state.builderSelectedPlanId = newPlan.id;
-      scheduleSavePlans();
-      rerender();
-    },
-  });
-}
+// --- Plan import helpers (used by openCreatePlanModal "Importieren"-tab) ----
 
 function parseImport(text) {
   let raw;
