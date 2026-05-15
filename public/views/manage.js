@@ -4,7 +4,7 @@
 // specific group filters and surfaces the group's own editor (name + color
 // + delete) above its exercises.
 
-import { openModal, openConfirmModal } from "../modal.js";
+import { openModal, openConfirmModal, openAlertModal } from "../modal.js";
 import { scheduleSavePlans, shortId, state } from "../state.js";
 import { escape, findMg } from "../util.js";
 import { DEFAULT_COLOR_KEY, PALETTE } from "../palette.js";
@@ -521,7 +521,10 @@ function openCreateMgModal(rerender) {
       library.find((e) => e.name === name) ||
       pendingNew.find((e) => e.name === name)
     ) {
-      alert(`„${name}" existiert bereits.`);
+      openAlertModal({
+        title: "Name vergeben",
+        message: `„${name}" existiert bereits.`,
+      });
       return;
     }
     const id = shortId("le_");
@@ -598,7 +601,10 @@ function openCreateMgModal(rerender) {
       const name = nameInp.value.trim();
       if (!name) return false;
       if (mgs.find((mg) => mg.name === name)) {
-        alert("Eine Muskelgruppe mit diesem Namen existiert bereits.");
+        openAlertModal({
+          title: "Name vergeben",
+          message: "Eine Muskelgruppe mit diesem Namen existiert bereits.",
+        });
         return false;
       }
       const mg = { id: shortId("mg_"), name, colorKey };

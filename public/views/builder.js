@@ -9,7 +9,7 @@ import {
   setCompactView,
   shortId,
 } from "../state.js";
-import { openModal } from "../modal.js";
+import { openModal, openConfirmModal } from "../modal.js";
 import { escape, findMg } from "../util.js";
 
 const MAX_DAYS = 7;
@@ -850,34 +850,37 @@ function deletePlan(plan, rerender) {
 }
 
 function renamePlanPrompt(plan, rerender) {
-  const next = prompt("Neuer Name für den Plan:", plan.name);
-  if (next == null) return;
-  const v = next.trim();
-  if (!v || v === plan.name) return;
-  plan.name = v;
-  plan.updatedAt = new Date().toISOString();
-  scheduleSavePlans();
-  rerender();
+  const body = document.createElement("div");
+  body.innerHTML = `<input type="text" id="plan-rename" autocomplete="off" />`;
+  const inp = body.querySelector("#plan-rename");
+  inp.value = plan.name;
+  const m = openModal({
+    title: "Plan umbenennen",
+    body,
+    confirmLabel: "Speichern",
+    confirmDisabled: false,
+    onConfirm: () => {
+      const v = inp.value.trim();
+      if (!v) return false;
+      if (v !== plan.name) {
+        plan.name = v;
+        plan.updatedAt = new Date().toISOString();
+        scheduleSavePlans();
+        rerender();
+      }
+    },
+  });
+  inp.addEventListener("input", () => m.setConfirmEnabled(inp.value.trim().length > 0));
+  inp.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && inp.value.trim()) {
+      e.preventDefault();
+      m.modal.querySelector("[data-confirm]").click();
+    }
+  });
+  setTimeout(() => inp.select(), 0);
 }
 
 // --- Modals -----------------------------------------------------------------
-
-function openConfirmModal({ title, message, confirmLabel = "Löschen", onConfirm }) {
-  const body = document.createElement("div");
-  const p = document.createElement("p");
-  p.className = "modal-hint";
-  p.textContent = message;
-  body.appendChild(p);
-  const m = openModal({
-    title,
-    body,
-    confirmLabel,
-    confirmDisabled: false,
-    onConfirm,
-  });
-  const btn = m.modal.querySelector("[data-confirm]");
-  btn.classList.add("danger");
-}
 
 function openCreatePlanModal(rerender) {
   const body = document.createElement("div");

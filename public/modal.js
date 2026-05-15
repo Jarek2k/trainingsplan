@@ -68,3 +68,21 @@ export function openConfirmModal({ title, message, confirmLabel = "Löschen", on
   m.modal.querySelector("[data-confirm]").classList.add("danger");
   return m;
 }
+
+export function openAlertModal({ title, message, confirmLabel = "OK" }) {
+  const body = document.createElement("div");
+  const p = document.createElement("p");
+  p.className = "modal-hint";
+  p.textContent = message;
+  body.appendChild(p);
+  const m = openModal({
+    title,
+    body,
+    confirmLabel,
+    confirmDisabled: false,
+    onConfirm: () => {},
+  });
+  const cancel = m.modal.querySelector("[data-cancel]");
+  if (cancel) cancel.style.display = "none";
+  return m;
+}
