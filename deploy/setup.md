@@ -167,7 +167,7 @@ Wenn sich die Caddyfile ändert: den Block in `/etc/caddy/Caddyfile` manuell anp
 
 ## Backups
 
-Live-Daten liegen unter `/srv/trainingsplan/app/server/data/plans.json` — eine simple JSON-Datei. Backup z. B. per Cron:
+Live-Daten liegen unter `/srv/trainingsplan/app/server/data/users/<hash>.json` — eine Datei pro eingeloggtem Nutzer. `data/template.json` ist das (read-only) Seed für neue Accounts. Backup einfach das ganze `data/`-Verzeichnis:
 
 ```bash
 sudo -u trainingsplan tar -czf /tmp/trainingsplan-$(date +%F).tgz \
