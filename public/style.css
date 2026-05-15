@@ -2057,6 +2057,44 @@ p {
   gap: var(--s-2);
 }
 
+/* Plan import modal */
+.import-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.import-file {
+  font: inherit;
+  color: var(--muted);
+}
+
+.import-json {
+  width: 100%;
+  min-height: 220px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-strong);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: var(--s-3);
+  resize: vertical;
+}
+
+.import-json:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.import-error {
+  margin: 0;
+  color: var(--bad);
+  font-size: 14px;
+  white-space: pre-line;
+}
+
 .exercise-box-head {
   display: flex;
   align-items: flex-start;

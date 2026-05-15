@@ -11,6 +11,7 @@ import {
 } from "../state.js";
 import { openModal, openConfirmModal } from "../modal.js";
 import { escape, findMg } from "../util.js";
+import { PALETTE_KEYS, DEFAULT_COLOR_KEY } from "../palette.js";
 
 const MAX_DAYS = 7;
 const SUGGESTED_DAY_NAMES = [
@@ -113,6 +114,13 @@ function renderSidebar(root, rerender) {
   newBtn.textContent = "+ Neuer Plan";
   newBtn.onclick = () => openCreatePlanModal(rerender);
   head.appendChild(newBtn);
+
+  const importBtn = document.createElement("button");
+  importBtn.className = "btn ghost";
+  importBtn.textContent = "Importieren";
+  importBtn.title = "Plan aus JSON importieren";
+  importBtn.onclick = () => openImportModal(rerender);
+  head.appendChild(importBtn);
 
   const cmpBtn = document.createElement("button");
   cmpBtn.className = "btn ghost";
@@ -1375,6 +1383,144 @@ function downloadText(content, filename, mime) {
   a.click();
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+// --- Plan import modal ------------------------------------------------------
+
+function openImportModal(rerender) {
+  const body = document.createElement("div");
+  body.className = "import-body";
+  body.innerHTML = `
+    <p class="modal-hint">JSON eines exportierten Plans einfügen oder Datei wählen. Muskelgruppen werden über den Namen abgeglichen; unbekannte werden neu angelegt. Die Bibliothek bleibt unverändert.</p>
+    <input type="file" accept="application/json,.json" class="import-file" />
+    <textarea class="import-json" placeholder='{"kind":"trainingsplan/plan/v1", …}' rows="10" spellcheck="false"></textarea>
+    <p class="import-error" hidden></p>
+  `;
+
+  const fileInp = body.querySelector(".import-file");
+  const textarea = body.querySelector(".import-json");
+  const errEl = body.querySelector(".import-error");
+
+  let parsed = null;
+  const validate = () => {
+    errEl.hidden = true;
+    errEl.textContent = "";
+    parsed = null;
+    const text = textarea.value.trim();
+    if (!text) {
+      m.setConfirmEnabled(false);
+      return;
+    }
+    try {
+      parsed = parseImport(text);
+      m.setConfirmEnabled(true);
+    } catch (e) {
+      errEl.textContent = e.message;
+      errEl.hidden = false;
+      m.setConfirmEnabled(false);
+    }
+  };
+
+  textarea.addEventListener("input", validate);
+  fileInp.addEventListener("change", async () => {
+    const f = fileInp.files && fileInp.files[0];
+    if (!f) return;
+    try {
+      textarea.value = await f.text();
+      validate();
+    } catch {
+      errEl.textContent = "Datei konnte nicht gelesen werden.";
+      errEl.hidden = false;
+    }
+  });
+
+  const m = openModal({
+    title: "Plan importieren",
+    body,
+    confirmLabel: "Importieren",
+    confirmDisabled: true,
+    onConfirm: () => {
+      if (!parsed) return false;
+      const newPlan = applyImport(parsed);
+      state.builderSelectedPlanId = newPlan.id;
+      scheduleSavePlans();
+      rerender();
+    },
+  });
+}
+
+function parseImport(text) {
+  let raw;
+  try {
+    raw = JSON.parse(text);
+  } catch {
+    throw new Error("Ungültiges JSON.");
+  }
+  if (!raw || typeof raw !== "object") throw new Error("Erwarte JSON-Objekt.");
+  if (raw.kind !== "trainingsplan/plan/v1") {
+    throw new Error(`Unbekanntes Format (${raw.kind || "ohne kind-Feld"}). Erwartet: trainingsplan/plan/v1`);
+  }
+  if (!raw.plan || typeof raw.plan !== "object") throw new Error("Feld 'plan' fehlt.");
+  if (typeof raw.plan.name !== "string" || !raw.plan.name.trim()) {
+    throw new Error("Plan-Name fehlt.");
+  }
+  if (!Array.isArray(raw.plan.days)) throw new Error("Plan-Tage fehlen.");
+  for (const day of raw.plan.days) {
+    if (!day || typeof day.name !== "string") throw new Error("Ein Tag hat keinen Namen.");
+    if (!Array.isArray(day.exercises)) throw new Error(`Tag „${day.name}" hat keine Übungs-Liste.`);
+    for (const ex of day.exercises) {
+      if (!ex || typeof ex.name !== "string" || !ex.name.trim()) {
+        throw new Error(`Tag „${day.name}" enthält eine Übung ohne Namen.`);
+      }
+    }
+  }
+  const mgs = Array.isArray(raw.muscleGroups) ? raw.muscleGroups : [];
+  return { plan: raw.plan, mgs };
+}
+
+function applyImport({ plan, mgs }) {
+  // Name-match MGs against existing; create new for unknowns. Library untouched.
+  const norm = (s) => String(s || "").trim().toLowerCase();
+  const localMgs = state.plans.muscleGroups;
+  const mgIdMap = new Map(); // import-mg.id → local-mg.id
+  for (const im of mgs) {
+    if (!im || typeof im.name !== "string" || !im.name.trim()) continue;
+    const match = localMgs.find((m) => norm(m.name) === norm(im.name));
+    if (match) {
+      mgIdMap.set(im.id, match.id);
+    } else {
+      const colorKey = PALETTE_KEYS.includes(im.colorKey) ? im.colorKey : DEFAULT_COLOR_KEY;
+      const created = { id: shortId("mg_"), name: im.name.trim(), colorKey };
+      localMgs.push(created);
+      mgIdMap.set(im.id, created.id);
+    }
+  }
+
+  const now = new Date().toISOString();
+  const newPlan = {
+    id: shortId("p_"),
+    name: plan.name.trim(),
+    createdAt: now,
+    updatedAt: now,
+    days: plan.days.map((d) => ({
+      id: shortId("d_"),
+      name: d.name.trim() || "Tag",
+      exercises: d.exercises.map((ex) => ({
+        id: shortId("e_"),
+        name: ex.name.trim(),
+        muscleGroupId: ex.muscleGroupId ? mgIdMap.get(ex.muscleGroupId) || null : null,
+        sets: Number.isFinite(ex.sets) ? ex.sets : null,
+        reps: ex.reps != null && String(ex.reps).trim() !== "" ? String(ex.reps) : null,
+        weight: ex.weight != null && String(ex.weight).trim() !== "" ? String(ex.weight) : null,
+      })),
+    })),
+  };
+  if (Number.isFinite(plan.trainingsPerWeek)) {
+    newPlan.trainingsPerWeek = plan.trainingsPerWeek;
+  }
+
+  state.plans.plans.push(newPlan);
+  return newPlan;
 }
 
 // --- Plan compare modal -----------------------------------------------------
