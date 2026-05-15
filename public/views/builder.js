@@ -113,6 +113,15 @@ function renderSidebar(root, rerender) {
   newBtn.textContent = "+ Neuer Plan";
   newBtn.onclick = () => openCreatePlanModal(rerender);
   head.appendChild(newBtn);
+
+  const cmpBtn = document.createElement("button");
+  cmpBtn.className = "btn ghost";
+  cmpBtn.textContent = "Vergleichen";
+  cmpBtn.disabled = plans.length < 2;
+  cmpBtn.title = plans.length < 2 ? "Mindestens 2 Pläne nötig" : "Pläne vergleichen";
+  cmpBtn.onclick = () => openCompareModal();
+  head.appendChild(cmpBtn);
+
   root.appendChild(head);
 
   const title = document.createElement("div");
@@ -1173,6 +1182,244 @@ function currentPlan() {
   return (state.plans.plans || []).find(
     (p) => p.id === state.builderSelectedPlanId,
   );
+}
+
+// --- Plan compare modal -----------------------------------------------------
+
+function openCompareModal() {
+  const plans = state.plans.plans || [];
+  if (plans.length < 2) return;
+
+  const sel = new Map(
+    plans.map((p) => [
+      p.id,
+      {
+        selected: false,
+        perWeek: clampPerWeek(p.trainingsPerWeek, p.days.length || 1),
+      },
+    ]),
+  );
+
+  const body = document.createElement("div");
+  body.className = "compare-body";
+
+  const hint = document.createElement("p");
+  hint.className = "modal-hint";
+  hint.textContent = "Pläne wählen (mind. 2) und Trainings pro Woche festlegen.";
+  body.appendChild(hint);
+
+  const picker = document.createElement("div");
+  picker.className = "compare-picker";
+  for (const p of plans) {
+    picker.appendChild(buildCompareRow(p, sel, () => refresh()));
+  }
+  body.appendChild(picker);
+
+  const result = document.createElement("div");
+  result.className = "compare-result";
+  body.appendChild(result);
+
+  const refresh = () => {
+    const chosen = plans.filter((p) => sel.get(p.id).selected);
+    result.innerHTML = "";
+    if (chosen.length < 2) {
+      const empty = document.createElement("p");
+      empty.className = "compare-empty";
+      empty.textContent = "Wähle mindestens 2 Pläne zum Vergleichen.";
+      result.appendChild(empty);
+      return;
+    }
+    result.appendChild(buildCompareTable(chosen, sel));
+  };
+  refresh();
+
+  const m = openModal({
+    title: "Pläne vergleichen",
+    body,
+    confirmLabel: "Schließen",
+    confirmDisabled: false,
+    onConfirm: () => {},
+  });
+  m.modal.classList.add("compare-modal");
+  const cancel = m.modal.querySelector("[data-cancel]");
+  if (cancel) cancel.style.display = "none";
+}
+
+function buildCompareRow(plan, sel, onChange) {
+  const row = document.createElement("label");
+  row.className = "compare-row";
+
+  const cb = document.createElement("input");
+  cb.type = "checkbox";
+  cb.addEventListener("change", () => {
+    sel.get(plan.id).selected = cb.checked;
+    onChange();
+  });
+  row.appendChild(cb);
+
+  const name = document.createElement("span");
+  name.className = "compare-row-name";
+  name.textContent = plan.name;
+  row.appendChild(name);
+
+  const planDays = plan.days.length || 1;
+  const perWeek = document.createElement("input");
+  perWeek.type = "number";
+  perWeek.min = "1";
+  perWeek.max = String(planDays);
+  perWeek.inputMode = "numeric";
+  perWeek.value = String(sel.get(plan.id).perWeek);
+  perWeek.className = "compare-row-perweek";
+  perWeek.addEventListener("change", () => {
+    const v = clampPerWeek(parseInt(perWeek.value, 10), planDays);
+    perWeek.value = String(v);
+    sel.get(plan.id).perWeek = v;
+    onChange();
+  });
+  // Clicking the number input shouldn't toggle the checkbox via label.
+  perWeek.addEventListener("click", (e) => e.preventDefault());
+  row.appendChild(perWeek);
+
+  const unit = document.createElement("span");
+  unit.className = "compare-row-unit";
+  unit.textContent = `×/Woche · ${planDays} Tag${planDays === 1 ? "" : "e"}`;
+  row.appendChild(unit);
+
+  return row;
+}
+
+function buildCompareTable(chosenPlans, sel) {
+  const perPlan = chosenPlans.map((plan) => ({
+    plan,
+    perWeek: sel.get(plan.id).perWeek,
+    volumes: computeWeeklyMgVolume(plan, sel.get(plan.id).perWeek),
+  }));
+
+  const mgKeys = new Map();
+  for (const { volumes } of perPlan) {
+    for (const k of volumes.keys()) {
+      if (!mgKeys.has(k)) mgKeys.set(k, true);
+    }
+  }
+
+  const rows = [...mgKeys.keys()].map((key) => {
+    const values = perPlan.map(({ volumes }) =>
+      volumes.has(key) ? volumes.get(key) : null,
+    );
+    const numeric = values.filter((v) => v != null);
+    const max = numeric.length ? Math.max(...numeric) : 0;
+    return { key, values, max };
+  });
+  rows.sort((a, b) => b.max - a.max);
+
+  const table = document.createElement("table");
+  table.className = "compare-table";
+
+  const thead = document.createElement("thead");
+  const trh = document.createElement("tr");
+  const thMg = document.createElement("th");
+  thMg.textContent = "Muskelgruppe";
+  trh.appendChild(thMg);
+  for (const { plan, perWeek } of perPlan) {
+    const th = document.createElement("th");
+    th.innerHTML = `
+      <div class="compare-th-inner">
+        <span class="compare-th-name">${escape(plan.name)}</span>
+        <span class="compare-th-cycle">${perWeek}×/Woche</span>
+      </div>
+    `;
+    trh.appendChild(th);
+  }
+  thead.appendChild(trh);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  for (const row of rows) {
+    const tr = document.createElement("tr");
+    const tdLabel = document.createElement("td");
+    if (row.key === "__none") {
+      tdLabel.textContent = "Ohne Muskelgruppe";
+      tdLabel.classList.add("compare-cell-none");
+    } else {
+      const mg = findMg(state.plans, row.key);
+      if (mg) {
+        const pill = document.createElement("span");
+        pill.className = "mg-pill";
+        pill.dataset.mgColor = mg.colorKey;
+        pill.textContent = mg.name;
+        tdLabel.appendChild(pill);
+      } else {
+        tdLabel.textContent = row.key;
+      }
+    }
+    tr.appendChild(tdLabel);
+
+    for (let i = 0; i < row.values.length; i++) {
+      const td = document.createElement("td");
+      const v = row.values[i];
+      if (v == null) {
+        td.textContent = "—";
+        td.classList.add("compare-cell-missing");
+      } else {
+        td.textContent = formatVolume(v);
+        if (row.values.length === 2) {
+          const other = row.values[1 - i];
+          if (other == null) td.classList.add("compare-cell-only");
+          else if (v > other) td.classList.add("compare-cell-higher");
+          else if (v < other) td.classList.add("compare-cell-lower");
+        } else if (v === row.max && row.max > 0) {
+          td.classList.add("compare-cell-higher");
+        }
+      }
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+  table.appendChild(tbody);
+
+  const tfoot = document.createElement("tfoot");
+  const trf = document.createElement("tr");
+  const tdSum = document.createElement("td");
+  tdSum.textContent = "Summe / Woche";
+  trf.appendChild(tdSum);
+  const sums = perPlan.map(({ volumes }) => {
+    let s = 0;
+    for (const v of volumes.values()) s += v;
+    return s;
+  });
+  const maxSum = Math.max(...sums);
+  for (let i = 0; i < sums.length; i++) {
+    const td = document.createElement("td");
+    td.textContent = formatVolume(sums[i]);
+    if (sums.length === 2) {
+      const other = sums[1 - i];
+      if (sums[i] > other) td.classList.add("compare-cell-higher");
+      else if (sums[i] < other) td.classList.add("compare-cell-lower");
+    } else if (sums[i] === maxSum && maxSum > 0) {
+      td.classList.add("compare-cell-higher");
+    }
+    trf.appendChild(td);
+  }
+  tfoot.appendChild(trf);
+  table.appendChild(tfoot);
+
+  return table;
+}
+
+function computeWeeklyMgVolume(plan, perWeek) {
+  const planDays = plan.days.length || 1;
+  const factor = clampPerWeek(perWeek, planDays) / planDays;
+  const out = new Map();
+  for (const day of plan.days) {
+    for (const ex of day.exercises) {
+      const n = Number.isFinite(ex.sets) ? ex.sets : 0;
+      if (n <= 0) continue;
+      const key = ex.muscleGroupId || "__none";
+      out.set(key, (out.get(key) || 0) + n);
+    }
+  }
+  for (const [k, v] of out) out.set(k, v * factor);
+  return out;
 }
 
 // --- Drag auto-scroll -------------------------------------------------------
