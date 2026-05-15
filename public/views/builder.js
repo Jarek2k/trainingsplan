@@ -427,8 +427,62 @@ function renderDayColumn(plan, day, rerender, refreshVolume) {
   col.className = "builder-day";
   col.dataset.dayId = day.id;
 
+  col.addEventListener("dragover", (e) => {
+    if (state.builderDragging?.type !== "day") return;
+    if (state.builderDragging.dayId === day.id) return;
+    e.preventDefault();
+    const rect = col.getBoundingClientRect();
+    const before = e.clientX < rect.left + rect.width / 2;
+    document.querySelectorAll(".builder-day.drop-left, .builder-day.drop-right").forEach((el) => {
+      if (el !== col) el.classList.remove("drop-left", "drop-right");
+    });
+    col.classList.toggle("drop-left", before);
+    col.classList.toggle("drop-right", !before);
+  });
+  col.addEventListener("dragleave", (e) => {
+    if (state.builderDragging?.type !== "day") return;
+    if (col.contains(e.relatedTarget)) return;
+    col.classList.remove("drop-left", "drop-right");
+  });
+  col.addEventListener("drop", (e) => {
+    if (state.builderDragging?.type !== "day") return;
+    e.preventDefault();
+    const before = col.classList.contains("drop-left");
+    col.classList.remove("drop-left", "drop-right");
+    handleDropOnDay(plan, day, before, rerender);
+  });
+
   const head = document.createElement("div");
   head.className = "builder-day-head";
+
+  const handle = document.createElement("span");
+  handle.className = "drag-handle day-drag-handle";
+  handle.setAttribute("aria-label", "Tag verschieben");
+  handle.title = "Ziehen zum Verschieben";
+  handle.textContent = "⋮⋮";
+  handle.draggable = true;
+  handle.addEventListener("dragstart", (e) => {
+    state.builderDragging = { type: "day", dayId: day.id };
+    col.classList.add("dragging");
+    e.dataTransfer.effectAllowed = "move";
+    try {
+      e.dataTransfer.setData("text/plain", day.id);
+      const r = col.getBoundingClientRect();
+      e.dataTransfer.setDragImage(col, e.clientX - r.left, e.clientY - r.top);
+    } catch {
+      // Some browsers throw on unusual MIME / setDragImage — non-fatal.
+    }
+    startDragAutoScroll();
+  });
+  handle.addEventListener("dragend", () => {
+    state.builderDragging = null;
+    stopDragAutoScroll();
+    document.querySelectorAll(".dragging").forEach((el) => el.classList.remove("dragging"));
+    document.querySelectorAll(".drop-left, .drop-right").forEach((el) => {
+      el.classList.remove("drop-left", "drop-right");
+    });
+  });
+  head.appendChild(handle);
 
   const name = document.createElement("button");
   name.className = "builder-day-name";
@@ -436,6 +490,18 @@ function renderDayColumn(plan, day, rerender, refreshVolume) {
   name.title = "Tag umbenennen";
   name.onclick = () => openRenameDayModal(day, rerender);
   head.appendChild(name);
+
+  const dup = document.createElement("button");
+  dup.className = "icon-btn";
+  dup.title = "Tag duplizieren";
+  dup.setAttribute("aria-label", "Tag duplizieren");
+  dup.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>`;
+  if (plan.days.length >= MAX_DAYS) {
+    dup.disabled = true;
+    dup.title = `Maximal ${MAX_DAYS} Trainingstage`;
+  }
+  dup.onclick = () => duplicateDay(plan, day, rerender);
+  head.appendChild(dup);
 
   const del = document.createElement("button");
   del.className = "icon-btn";
@@ -475,7 +541,7 @@ function renderDayColumn(plan, day, rerender, refreshVolume) {
   tail.className = "builder-drop-tail";
   tail.dataset.dayId = day.id;
   tail.addEventListener("dragover", (e) => {
-    if (!state.builderDragging) return;
+    if (state.builderDragging?.type !== "exercise") return;
     e.preventDefault();
     tail.classList.add("drop-target");
   });
@@ -517,13 +583,14 @@ function renderExerciseBox(plan, day, ex, rerender, refreshVolume) {
   // doesn't hijack text selection.
 
   box.addEventListener("dragenter", () => {
+    if (state.builderDragging?.type !== "exercise") return;
     // Claim the indicator: clear any other box's drop classes so only one shows.
     document.querySelectorAll(".drop-before, .drop-after").forEach((el) => {
       if (el !== box) el.classList.remove("drop-before", "drop-after");
     });
   });
   box.addEventListener("dragover", (e) => {
-    if (!state.builderDragging) return;
+    if (state.builderDragging?.type !== "exercise") return;
     e.preventDefault();
     const rect = box.getBoundingClientRect();
     const before = e.clientY < rect.top + rect.height / 2;
@@ -531,6 +598,7 @@ function renderExerciseBox(plan, day, ex, rerender, refreshVolume) {
     box.classList.toggle("drop-after", !before);
   });
   box.addEventListener("drop", (e) => {
+    if (state.builderDragging?.type !== "exercise") return;
     e.preventDefault();
     const before = box.classList.contains("drop-before");
     box.classList.remove("drop-before", "drop-after");
@@ -546,7 +614,7 @@ function renderExerciseBox(plan, day, ex, rerender, refreshVolume) {
   handle.textContent = "⋮⋮";
   handle.draggable = true;
   handle.addEventListener("dragstart", (e) => {
-    state.builderDragging = { fromDayId: day.id, exerciseId: ex.id };
+    state.builderDragging = { type: "exercise", fromDayId: day.id, exerciseId: ex.id };
     box.classList.add("dragging");
     e.dataTransfer.effectAllowed = "move";
     try {
@@ -655,9 +723,40 @@ function field(label, key, ex, plan, mode, onChange) {
 
 // --- Drag-and-drop handlers -------------------------------------------------
 
+function handleDropOnDay(plan, targetDay, before, rerender) {
+  const drag = state.builderDragging;
+  if (!drag || drag.type !== "day") return;
+  if (drag.dayId === targetDay.id) return;
+  const fromIdx = plan.days.findIndex((d) => d.id === drag.dayId);
+  if (fromIdx < 0) return;
+  const [moved] = plan.days.splice(fromIdx, 1);
+  let toIdx = plan.days.findIndex((d) => d.id === targetDay.id);
+  if (toIdx < 0) toIdx = plan.days.length;
+  if (!before) toIdx += 1;
+  plan.days.splice(toIdx, 0, moved);
+  plan.updatedAt = new Date().toISOString();
+  scheduleSavePlans();
+  rerender();
+}
+
+function duplicateDay(plan, day, rerender) {
+  if (plan.days.length >= MAX_DAYS) return;
+  const idx = plan.days.findIndex((d) => d.id === day.id);
+  if (idx < 0) return;
+  const copy = {
+    id: shortId("d_"),
+    name: day.name,
+    exercises: day.exercises.map((e) => ({ ...e, id: shortId("e_") })),
+  };
+  plan.days.splice(idx + 1, 0, copy);
+  plan.updatedAt = new Date().toISOString();
+  scheduleSavePlans();
+  rerender();
+}
+
 function handleDropOnBox(plan, targetDay, targetEx, before, rerender) {
   const drag = state.builderDragging;
-  if (!drag) return;
+  if (!drag || drag.type !== "exercise") return;
   const moved = takeExercise(plan, drag.fromDayId, drag.exerciseId);
   if (!moved) return;
   let idx = targetDay.exercises.findIndex((e) => e.id === targetEx.id);
@@ -671,7 +770,7 @@ function handleDropOnBox(plan, targetDay, targetEx, before, rerender) {
 
 function handleDropOnTail(plan, targetDay, rerender) {
   const drag = state.builderDragging;
-  if (!drag) return;
+  if (!drag || drag.type !== "exercise") return;
   const moved = takeExercise(plan, drag.fromDayId, drag.exerciseId);
   if (!moved) return;
   targetDay.exercises.push(moved);
