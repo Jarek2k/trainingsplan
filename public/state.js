@@ -22,6 +22,9 @@ export const state = {
   // When set, the viewer is in tracking-detail mode for this exercise.
   viewerExerciseId: null,
   builderDragging: null, // transient: { fromDayId, exerciseId } | null
+  // Transient: which exercise rows are expanded on mobile (Set of ex.id).
+  // Persisted only across rerenders, NOT across reloads.
+  builderExpanded: new Set(),
   compactView: readCompactView(), // UI-only, persisted in localStorage
 
   saveTimer: null,

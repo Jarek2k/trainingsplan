@@ -1284,14 +1284,21 @@ p {
   }
   .builder-day-body {
     overflow-y: visible;
+    /* Without this, flex:1 + basis:0 collapses the body to 0px and the
+       exercise boxes overflow into nothing. Use content height instead. */
+    flex: 0 0 auto;
+    min-height: auto;
   }
   /* Plan-header on mobile: title on one row, actions wrap below. */
   .builder-plan-header {
     flex-wrap: wrap;
+    padding: var(--s-2) var(--s-3);
+    gap: var(--s-2);
   }
   .builder-plan-name {
     flex: 1 1 100%;
     font-size: 18px;
+    padding: 4px var(--s-2);
   }
   .builder-plan-actions {
     flex: 1 1 100%;
@@ -1308,6 +1315,125 @@ p {
   /* "+ Trainingstag" placeholder column reads as a full-width card. */
   .builder-add-day {
     width: 100%;
+  }
+
+  /* --- Sidebar tighter on mobile -------------------------------------- */
+  .builder-sidebar {
+    padding: var(--s-2) var(--s-3);
+    gap: var(--s-2);
+  }
+  .builder-sidebar-head {
+    flex-direction: row;
+    gap: var(--s-2);
+  }
+  .builder-sidebar-head .btn {
+    flex: 1;
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+  .builder-sidebar-title {
+    padding: 0;
+    margin-top: var(--s-1);
+  }
+  .builder-plan-row {
+    min-height: 36px;
+  }
+  .builder-plan-label {
+    padding: 6px var(--s-2);
+    font-size: 14px;
+  }
+  /* No hover on touch — show menu button always. */
+  .builder-plan-menu {
+    opacity: 1;
+    width: 28px;
+    height: 28px;
+  }
+
+  /* --- Day card tighter ----------------------------------------------- */
+  .builder-day {
+    padding: var(--s-2) var(--s-3);
+    gap: var(--s-1);
+  }
+  .builder-day-head {
+    padding-bottom: var(--s-1);
+  }
+
+  /* --- Sticky plan-header + volume bar above the day list ------------- */
+  .builder-sticky-top {
+    position: sticky;
+    top: 64px;              /* clear the app-header */
+    z-index: 5;
+    background: var(--bg);
+    margin: calc(-1 * var(--s-4)) calc(-1 * var(--s-4)) 0;
+    padding: var(--s-2) var(--s-4);
+    gap: var(--s-2);
+  }
+
+  /* --- Exercise box: collapsed-by-default on mobile.
+     Tap on title expands inline (state.builderExpanded). The .compact toggle
+     overrides this — see .builder-board.compact rules below. */
+  .exercise-box {
+    padding: 8px 10px;
+    gap: 4px;
+  }
+  .exercise-box-titles {
+    padding: 0;
+    margin: 0;
+  }
+  .exercise-box-name {
+    font-size: 13px;
+    line-height: 1.2;
+  }
+  /* Collapsed (default): title + small MG hint inline on one line, no inputs.
+     Slim row — fits 6-8 exercises per screen on a typical phone. */
+  .exercise-box:not(.expanded) {
+    padding: 6px 10px;
+    gap: 0;
+    min-height: 32px;
+  }
+  .exercise-box:not(.expanded) .exercise-box-name {
+    display: inline;
+  }
+  .exercise-box:not(.expanded) .exercise-box-mg {
+    display: inline;
+    margin: 0 0 0 6px;
+    font-size: 10px;
+    opacity: 0.65;
+  }
+  .exercise-box:not(.expanded) .exercise-box-mg::before {
+    content: "· ";
+    margin-right: 2px;
+    opacity: 0.7;
+  }
+  .exercise-box:not(.expanded) .exercise-box-inputs {
+    display: none;
+  }
+  /* Expanded: shows the standard layout with inputs. */
+  .exercise-box.expanded .exercise-box-inputs {
+    gap: 6px;
+  }
+  .exercise-box.expanded .exercise-box-field span {
+    font-size: 10px;
+    opacity: 0.7;
+  }
+  .exercise-box.expanded .exercise-box-field input {
+    padding: 4px 6px;
+    font-size: 14px;
+  }
+  .exercise-box-head .icon-btn {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    min-height: 28px;
+    padding: 0;
+  }
+  /* Hide the X on collapsed rows — looks noisy. Available on expand. */
+  .exercise-box:not(.expanded) .exercise-box-head .icon-btn {
+    display: none;
+  }
+  /* Hide drag handle on collapsed rows — DnD on touch doesn't work anyway. */
+  .exercise-box:not(.expanded) .drag-handle {
+    display: none;
   }
 }
 
@@ -1480,6 +1606,12 @@ p {
 }
 
 /* Plan header (active plan) */
+.builder-sticky-top {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
 .builder-plan-header {
   display: flex;
   align-items: center;
@@ -1626,6 +1758,12 @@ p {
   }
   .builder-volume-list {
     flex-basis: 100%;
+    flex-wrap: wrap;        /* pills wrap to multiple rows */
+    overflow-x: visible;    /* no horizontal scrollbar */
+    scrollbar-width: none;
+  }
+  .builder-volume-list::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -1696,6 +1834,25 @@ p {
 
 .builder-day-body::-webkit-scrollbar {
   display: none;
+}
+
+/* Mobile overrides — placed AFTER the desktop rules above so they actually win
+   the cascade. The earlier mobile @media block stays for the other selectors
+   (sidebar, plan-header, exercise-box) which aren't redefined later. */
+@media (max-width: 768px) {
+  .builder-board {
+    overflow-x: visible;
+    overflow-y: visible;
+  }
+  .builder-day {
+    flex: 0 0 auto;      /* don't force 260px on the column-main-axis */
+    max-height: none;
+  }
+  .builder-day-body {
+    flex: 0 0 auto;
+    min-height: auto;
+    overflow-y: visible; /* no inner scroll — day grows with content */
+  }
 }
 
 .builder-drop-tail {

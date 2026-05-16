@@ -299,7 +299,11 @@ function renderEditor(root, plan, rerender) {
   actions.appendChild(delBtn);
   header.appendChild(actions);
 
-  root.appendChild(header);
+  // Plan-header + volume bar stick together at the top while the day list
+  // scrolls underneath (see CSS .builder-sticky-top on mobile).
+  const stickyTop = document.createElement("div");
+  stickyTop.className = "builder-sticky-top";
+  stickyTop.appendChild(header);
 
   const volumeHost = document.createElement("div");
   volumeHost.className = "builder-volume-host";
@@ -309,7 +313,8 @@ function renderEditor(root, plan, rerender) {
     if (bar) volumeHost.appendChild(bar);
   };
   refreshVolume();
-  root.appendChild(volumeHost);
+  stickyTop.appendChild(volumeHost);
+  root.appendChild(stickyTop);
 
   const board = document.createElement("div");
   board.className = "builder-board" + (state.compactView ? " compact" : "");
@@ -588,6 +593,7 @@ function renderExerciseBox(plan, day, ex, rerender, refreshVolume) {
   const mg = findMg(state.plans, ex.muscleGroupId);
   const box = document.createElement("article");
   box.className = "exercise-box";
+  if (state.builderExpanded.has(ex.id)) box.classList.add("expanded");
   if (mg) box.dataset.mgColor = mg.colorKey;
   box.dataset.exerciseId = ex.id;
   box.dataset.dayId = day.id;
@@ -654,13 +660,29 @@ function renderExerciseBox(plan, day, ex, rerender, refreshVolume) {
   const titles = document.createElement("button");
   titles.type = "button";
   titles.className = "exercise-box-titles";
-  titles.title = "Übung ersetzen";
-  titles.setAttribute("aria-label", `${ex.name} ersetzen`);
   titles.innerHTML = `
     <div class="exercise-box-name">${escape(ex.name)}</div>
     <div class="exercise-box-mg">${escape(mg ? mg.name : "—")}</div>
   `;
-  titles.onclick = () => openReplaceExerciseModal(plan, day, ex, rerender);
+  titles.onclick = () => {
+    // Mobile: tap title toggles expand/collapse. Desktop: opens replace modal.
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      if (state.builderExpanded.has(ex.id)) state.builderExpanded.delete(ex.id);
+      else state.builderExpanded.add(ex.id);
+      rerender();
+      return;
+    }
+    openReplaceExerciseModal(plan, day, ex, rerender);
+  };
+  titles.title = window.matchMedia("(max-width: 768px)").matches
+    ? "Ein-/Ausklappen"
+    : "Übung ersetzen";
+  titles.setAttribute(
+    "aria-label",
+    window.matchMedia("(max-width: 768px)").matches
+      ? `${ex.name} ein- oder ausklappen`
+      : `${ex.name} ersetzen`,
+  );
   head.appendChild(titles);
 
   const remove = document.createElement("button");
@@ -1259,14 +1281,18 @@ function openCustomExerciseModal(plan, day, rerender, opts = {}) {
 }
 
 function addLibraryExercise(plan, day, libEntry) {
+  const id = shortId("e_");
   day.exercises.push({
-    id: shortId("e_"),
+    id,
     name: libEntry.name,
     muscleGroupId: libEntry.muscleGroupId || null,
     sets: null,
     reps: null,
     weight: null,
   });
+  // Auto-expand newly added exercises on mobile so the user can fill values
+  // immediately without an extra tap.
+  state.builderExpanded.add(id);
   plan.updatedAt = new Date().toISOString();
   scheduleSavePlans();
 }
