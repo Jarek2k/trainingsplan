@@ -2694,6 +2694,114 @@ p {
   flex: 0 0 auto;
 }
 
+/* Eye toggle — always visible in plan rows. Inactive (privat) reads as muted
+   and shows a crossed-out eye; active (sichtbar) lights up. */
+.builder-plan-eye {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  margin-right: var(--s-1);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  opacity: 0.45;
+  cursor: pointer;
+  transition: opacity 0.12s ease, color 0.12s ease, background 0.12s ease;
+}
+
+.builder-plan-eye svg {
+  width: 16px;
+  height: 16px;
+}
+
+.builder-plan-eye:hover {
+  opacity: 1;
+  background: var(--surface-3);
+}
+
+.builder-plan-eye.active {
+  color: var(--accent);
+  opacity: 1;
+}
+
+.builder-plan-eye.active:hover {
+  background: var(--surface-3);
+}
+
+/* Shared-plans section in the sidebar — same row layout as own plans, plus a
+   small "von <owner>" hint under the name. */
+.builder-shared-list .builder-plan-label {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  padding: 6px var(--s-3);
+}
+
+.builder-shared-owner {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+/* --- Shared-plan preview ----------------------------------------------- */
+
+.builder-shared-preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.builder-shared-header {
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+.builder-shared-title-block {
+  flex: 1;
+  min-width: 0;
+}
+
+.builder-shared-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.builder-shared-title {
+  margin: 4px 0 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-strong);
+  letter-spacing: -0.01em;
+}
+
+.builder-shared-board {
+  /* Reuse .builder-board layout (horizontal columns on desktop, stacked on
+     mobile). No DnD or scroll snapping needed — content is read-only. */
+}
+
+/* Read-only "input" pill — matches the shape of the editable input but
+   without the box-input border, so the day card still looks coherent. */
+.exercise-box-readonly {
+  background: var(--box-input-bg);
+  border: 1px solid var(--box-input-border);
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 13px;
+  text-align: center;
+  color: inherit;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+}
+
 /* =========================================================================
    Viewer — read-only training view
    ========================================================================= */

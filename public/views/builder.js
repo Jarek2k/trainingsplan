@@ -9,6 +9,7 @@ import {
   setActivePlanId,
   setCompactView,
   shortId,
+  loadSharedPlans,
 } from "../state.js";
 import { openModal, openConfirmModal } from "../modal.js";
 import { escape, findMg } from "../util.js";
@@ -57,6 +58,21 @@ export function render(root, ctx) {
   }
 
   renderSidebar(sidebar, rerender);
+
+  // Shared-preview takes priority over own-plan selection.
+  if (state.builderSelectedShared) {
+    const shared = state.sharedPlans.find(
+      (s) =>
+        s.plan.id === state.builderSelectedShared.planId &&
+        s.owner.email === state.builderSelectedShared.ownerEmail,
+    );
+    if (shared) {
+      renderSharedPreview(main, shared, rerender);
+      return;
+    }
+    // Stale selection — drop and fall through.
+    state.builderSelectedShared = null;
+  }
 
   const selected = plans.find((p) => p.id === selectedId);
   if (!selected) renderEmptyState(main, rerender);
@@ -137,6 +153,56 @@ function renderSidebar(root, rerender) {
     list.appendChild(renderPlanRow(p, rerender));
   }
   root.appendChild(list);
+
+  // Shared-plans section: only render when at least one shared plan is
+  // available from another user. The owner's own plans never appear here.
+  const shared = state.sharedPlans || [];
+  if (shared.length > 0) {
+    const sharedTitle = document.createElement("div");
+    sharedTitle.className = "builder-sidebar-title";
+    sharedTitle.textContent = "Geteilte Pläne";
+    root.appendChild(sharedTitle);
+
+    const sharedList = document.createElement("ul");
+    sharedList.className = "builder-plan-list builder-shared-list";
+    for (const s of shared) {
+      sharedList.appendChild(renderSharedRow(s, rerender));
+    }
+    root.appendChild(sharedList);
+  }
+}
+
+function renderSharedRow(shared, rerender) {
+  const li = document.createElement("li");
+  const sel = state.builderSelectedShared;
+  const isSelected =
+    sel && sel.planId === shared.plan.id && sel.ownerEmail === shared.owner.email;
+  li.className = "builder-plan-row builder-shared-row" + (isSelected ? " active" : "");
+
+  const label = document.createElement("button");
+  label.className = "builder-plan-label";
+  const subtitle = shared.mine
+    ? "dein Plan"
+    : `von ${ownerDisplay(shared.owner.email)}`;
+  label.innerHTML = `
+    <span class="builder-plan-label-text">${escape(shared.plan.name)}</span>
+    <span class="builder-shared-owner">${escape(subtitle)}</span>
+  `;
+  label.onclick = () => {
+    state.builderSelectedShared = {
+      planId: shared.plan.id,
+      ownerEmail: shared.owner.email,
+    };
+    rerender();
+  };
+  li.appendChild(label);
+  return li;
+}
+
+function ownerDisplay(email) {
+  if (!email) return "—";
+  const at = email.indexOf("@");
+  return at > 0 ? email.slice(0, at) : email;
 }
 
 function renderPlanRow(plan, rerender) {
@@ -153,9 +219,30 @@ function renderPlanRow(plan, rerender) {
   `;
   label.onclick = () => {
     state.builderSelectedPlanId = plan.id;
+    state.builderSelectedShared = null;
     rerender();
   };
   li.appendChild(label);
+
+  // Eye toggle — always visible, single click changes share-state. Filled
+  // eye = sichtbar, durchgestrichenes Auge = privat.
+  const eye = document.createElement("button");
+  eye.type = "button";
+  eye.className = "builder-plan-eye" + (plan.shared ? " active" : "");
+  eye.setAttribute("aria-pressed", plan.shared ? "true" : "false");
+  eye.title = plan.shared ? "Sichtbar für Freunde — Klick: privat" : "Privat — Klick: sichtbar machen";
+  eye.setAttribute("aria-label", eye.title);
+  eye.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>
+  `;
+  eye.onclick = (e) => {
+    e.stopPropagation();
+    togglePlanShared(plan, rerender);
+  };
+  li.appendChild(eye);
 
   const menu = document.createElement("button");
   menu.className = "builder-plan-menu";
@@ -856,6 +943,16 @@ function copyPlan(src, rerender) {
   state.plans.plans.push(copy);
   state.builderSelectedPlanId = copy.id;
   savePlans();
+  rerender();
+}
+
+async function togglePlanShared(plan, rerender) {
+  plan.shared = !plan.shared;
+  // Note: we deliberately don't bump plan.updatedAt — sharing is a meta flag,
+  // not a content change. Otherwise the plan would jump to the top of the
+  // sidebar list (which sorts by updatedAt).
+  await savePlans();
+  await loadSharedPlans();
   rerender();
 }
 
@@ -1566,6 +1663,152 @@ function applyImport({ plan, mgs }) {
 
   state.plans.plans.push(newPlan);
   return newPlan;
+}
+
+// --- Shared-plan preview ----------------------------------------------------
+
+function renderSharedPreview(root, shared, rerender) {
+  const { plan, muscleGroups, owner } = shared;
+  // Build a lookup from the shared payload's mg-ids to their definition.
+  const mgById = new Map((muscleGroups || []).map((m) => [m.id, m]));
+
+  const wrap = document.createElement("div");
+  wrap.className = "builder-shared-preview";
+
+  // Header: name, owner, action buttons.
+  const header = document.createElement("div");
+  header.className = "builder-plan-header builder-shared-header";
+
+  const titleBlock = document.createElement("div");
+  titleBlock.className = "builder-shared-title-block";
+  const eyebrow = shared.mine
+    ? "Geteilter Plan · dein Plan"
+    : `Geteilter Plan · von ${ownerDisplay(owner.email)}`;
+  titleBlock.innerHTML = `
+    <div class="builder-shared-eyebrow">${escape(eyebrow)}</div>
+    <h2 class="builder-shared-title">${escape(plan.name)}</h2>
+  `;
+  header.appendChild(titleBlock);
+
+  const actions = document.createElement("div");
+  actions.className = "builder-plan-actions";
+
+  if (shared.mine) {
+    // Owner is looking at their own shared plan — show "Privat machen" as the
+    // primary action. Cloning your own plan makes no sense.
+    const unshareBtn = document.createElement("button");
+    unshareBtn.className = "btn";
+    unshareBtn.textContent = "Privat machen";
+    unshareBtn.onclick = () => {
+      const ownPlan = (state.plans.plans || []).find((p) => p.id === plan.id);
+      if (!ownPlan) return;
+      state.builderSelectedShared = null;
+      togglePlanShared(ownPlan, rerender);
+    };
+    actions.appendChild(unshareBtn);
+  } else {
+    const cloneBtn = document.createElement("button");
+    cloneBtn.className = "btn";
+    cloneBtn.textContent = "In meine Pläne übernehmen";
+    cloneBtn.onclick = () => cloneSharedPlan(shared, rerender);
+    actions.appendChild(cloneBtn);
+  }
+
+  const backBtn = document.createElement("button");
+  backBtn.className = "btn ghost";
+  backBtn.textContent = "Schließen";
+  backBtn.onclick = () => {
+    state.builderSelectedShared = null;
+    rerender();
+  };
+  actions.appendChild(backBtn);
+
+  header.appendChild(actions);
+  wrap.appendChild(header);
+
+  // Day-by-day read-only display.
+  const board = document.createElement("div");
+  board.className = "builder-board builder-shared-board";
+  for (const day of plan.days || []) {
+    const col = document.createElement("article");
+    col.className = "builder-day";
+
+    const head = document.createElement("div");
+    head.className = "builder-day-head";
+    const name = document.createElement("div");
+    name.className = "builder-day-name";
+    name.textContent = day.name || "Tag";
+    head.appendChild(name);
+    col.appendChild(head);
+
+    const body = document.createElement("div");
+    body.className = "builder-day-body";
+
+    for (const ex of day.exercises || []) {
+      const box = document.createElement("article");
+      box.className = "exercise-box";
+      const mg = ex.muscleGroupId ? mgById.get(ex.muscleGroupId) : null;
+      if (mg) box.dataset.mgColor = mg.colorKey;
+
+      const exHead = document.createElement("div");
+      exHead.className = "exercise-box-head";
+      const titles = document.createElement("div");
+      titles.className = "exercise-box-titles";
+      titles.innerHTML = `
+        <div class="exercise-box-name">${escape(ex.name)}</div>
+        <div class="exercise-box-mg">${escape(mg ? mg.name : "—")}</div>
+      `;
+      exHead.appendChild(titles);
+      box.appendChild(exHead);
+
+      const inputs = document.createElement("div");
+      inputs.className = "exercise-box-inputs";
+      for (const [label, value] of [
+        ["Sätze", ex.sets],
+        ["Wdh.", ex.reps],
+        ["kg", ex.weight],
+      ]) {
+        const field = document.createElement("div");
+        field.className = "exercise-box-field";
+        field.innerHTML = `
+          <span>${escape(label)}</span>
+          <div class="exercise-box-readonly">${escape(value == null || value === "" ? "—" : String(value))}</div>
+        `;
+        inputs.appendChild(field);
+      }
+      box.appendChild(inputs);
+      body.appendChild(box);
+    }
+    col.appendChild(body);
+    board.appendChild(col);
+  }
+  wrap.appendChild(board);
+
+  root.appendChild(wrap);
+}
+
+function cloneSharedPlan(shared, rerender) {
+  const body = document.createElement("div");
+  const p = document.createElement("p");
+  p.className = "modal-hint";
+  p.textContent = `„${shared.plan.name}" von ${ownerDisplay(shared.owner.email)} als eigenständige Kopie in deine Pläne übernehmen? Änderungen beim Original ändern deine Kopie nicht.`;
+  body.appendChild(p);
+  openModal({
+    title: "Plan übernehmen",
+    body,
+    confirmLabel: "Übernehmen",
+    confirmDisabled: false,
+    onConfirm: () => {
+      const newPlan = applyImport({
+        plan: shared.plan,
+        mgs: shared.muscleGroups || [],
+      });
+      state.builderSelectedShared = null;
+      state.builderSelectedPlanId = newPlan.id;
+      savePlans();
+      rerender();
+    },
+  });
 }
 
 // --- Plan compare modal -----------------------------------------------------

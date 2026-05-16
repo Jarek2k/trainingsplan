@@ -178,6 +178,10 @@ function migratePlans(parsed) {
 
   // Plan exercises: same — replace `muscleGroup` name with `muscleGroupId`.
   for (const plan of data.plans) {
+    // Visibility for the shared-plans pool. Default = private.
+    if (plan.shared !== true) {
+      if (plan.shared !== false) { plan.shared = false; changed = true; }
+    }
     if (!Array.isArray(plan.days)) continue;
     for (const day of plan.days) {
       if (!Array.isArray(day.exercises)) continue;
@@ -257,6 +261,76 @@ async function writeUserPlans(email, body) {
   const pretty = JSON.stringify(parsed, null, 2);
   await fsp.mkdir(USERS_DIR, { recursive: true });
   await writeAtomic(userFilePath(email), pretty);
+}
+
+// Collect every plan with `shared: true` across all users. Returns the plan
+// shell, the muscle groups it references (with colors), minimal owner info,
+// and a `mine` flag so the client can distinguish the requester's own
+// entries. Logs are never included.
+async function readAllSharedPlans(requesterEmail) {
+  const requesterKey = userKey(requesterEmail);
+  let files;
+  try {
+    files = await fsp.readdir(USERS_DIR);
+  } catch (err) {
+    if (err.code === "ENOENT") return [];
+    throw err;
+  }
+
+  const out = [];
+  for (const file of files) {
+    if (!file.endsWith(".json")) continue;
+    const hash = file.slice(0, -5);
+    const isMine = hash === requesterKey;
+
+    let raw;
+    try {
+      raw = await fsp.readFile(path.join(USERS_DIR, file), "utf8");
+    } catch {
+      continue;
+    }
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      continue;
+    }
+    if (!Array.isArray(parsed.plans)) continue;
+
+    const allMgs = Array.isArray(parsed.muscleGroups) ? parsed.muscleGroups : [];
+    const mgById = new Map(allMgs.map((m) => [m.id, m]));
+    const ownerEmail = parsed.email || null;
+    // Owner must still be allowlisted — otherwise their plans shouldn't surface.
+    if (!ownerEmail || !(await allowlist.isAllowed(ownerEmail))) continue;
+
+    for (const plan of parsed.plans) {
+      if (plan.shared !== true) continue;
+      const referenced = new Set();
+      for (const day of plan.days || []) {
+        for (const ex of day.exercises || []) {
+          if (ex.muscleGroupId) referenced.add(ex.muscleGroupId);
+        }
+      }
+      const muscleGroups = [...referenced]
+        .map((id) => mgById.get(id))
+        .filter(Boolean)
+        .map((m) => ({ id: m.id, name: m.name, colorKey: m.colorKey }));
+      out.push({
+        plan: {
+          id: plan.id,
+          name: plan.name,
+          createdAt: plan.createdAt,
+          updatedAt: plan.updatedAt,
+          trainingsPerWeek: plan.trainingsPerWeek,
+          days: plan.days || [],
+        },
+        muscleGroups,
+        owner: { email: ownerEmail },
+        mine: isMine,
+      });
+    }
+  }
+  return out;
 }
 
 // One-shot bootstrap migration from the single-tenant layout:
@@ -555,6 +629,12 @@ const server = http.createServer(async (req, res) => {
         }
       }
       return send(res, 405, "method not allowed");
+    }
+    if (pathname === "/api/plans/shared" && req.method === "GET") {
+      const list = await readAllSharedPlans(session.email);
+      return send(res, 200, JSON.stringify(list), {
+        "Content-Type": MIME[".json"],
+      });
     }
     if (pathname === "/api/plans" && req.method === "GET") {
       const data = await readUserPlans(session.email);

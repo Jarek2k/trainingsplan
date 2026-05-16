@@ -15,6 +15,12 @@ export const state = {
   // The plan currently open in the builder. Transient, NOT persisted — picking
   // a different plan to edit must not change which plan is "active" for training.
   builderSelectedPlanId: null,
+  // When set, the builder shows the shared-plan preview view instead of the
+  // editor. Shape: { planId, ownerEmail }. Transient.
+  builderSelectedShared: null,
+  // Shared plans pool from /api/plans/shared. Loaded once at startup and after
+  // toggling share-state. Shape: [{ plan, muscleGroups, owner: { email } }, ...]
+  sharedPlans: [],
   // "view" (default, read-only training view) | "edit" (builder)
   mode: "view",
   // Currently selected day in viewer (transient).
@@ -123,6 +129,19 @@ export async function loadPlans() {
   } else {
     state.activePlanId = null;
     state.plans.activePlanId = null;
+  }
+}
+
+// --- Shared plans pool -----------------------------------------------------
+
+export async function loadSharedPlans() {
+  try {
+    const res = await fetch("/api/plans/shared");
+    if (!res.ok) throw new Error(`shared load failed: ${res.status}`);
+    state.sharedPlans = await res.json();
+  } catch (err) {
+    console.error(err);
+    state.sharedPlans = [];
   }
 }
 

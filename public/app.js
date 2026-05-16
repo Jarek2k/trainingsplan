@@ -5,6 +5,7 @@
 import {
   getTheme,
   loadPlans,
+  loadSharedPlans,
   onSaveStatus,
   setMode,
   setTheme,
@@ -188,6 +189,11 @@ loadPlans()
   .then(() => {
     wireSaveStatus();
     render();
+    // Shared-plans pool — non-blocking. When done, rerender so the section
+    // shows up in the builder sidebar if anything is in there.
+    loadSharedPlans().then(() => {
+      if (state.mode === "edit") render();
+    });
   })
   .catch((err) => {
     console.error(err);
