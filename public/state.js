@@ -130,6 +130,9 @@ export function scheduleSavePlans() {
 }
 
 export async function savePlans() {
+  // Cancel any pending debounced save — we're flushing now.
+  clearTimeout(state.saveTimer);
+  state.saveTimer = null;
   if (state.saving) {
     state.pendingSave = true;
     return;
@@ -141,6 +144,7 @@ export async function savePlans() {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(state.plans),
+      keepalive: true,
     });
     if (!res.ok) throw new Error(`save plans failed: ${res.status}`);
     emit("gespeichert", "saved");

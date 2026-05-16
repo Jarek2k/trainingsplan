@@ -5,6 +5,7 @@
 import {
   state,
   scheduleSavePlans,
+  savePlans,
   setActivePlanId,
   setCompactView,
   shortId,
@@ -832,7 +833,7 @@ function copyPlan(src, rerender) {
   };
   state.plans.plans.push(copy);
   state.builderSelectedPlanId = copy.id;
-  scheduleSavePlans();
+  savePlans();
   rerender();
 }
 
@@ -845,7 +846,7 @@ function deletePlan(plan, rerender) {
       state.plans.plans = state.plans.plans.filter((p) => p.id !== plan.id);
       if (state.builderSelectedPlanId === plan.id) state.builderSelectedPlanId = null;
       if (state.activePlanId === plan.id) setActivePlanId(null);
-      scheduleSavePlans();
+      savePlans();
       rerender();
     },
   });
@@ -985,12 +986,13 @@ function openCreatePlanModal(rerender) {
         const name = nameInp.value.trim();
         if (!name) return false;
         createPlan(name);
+        savePlans();
         rerender();
       } else {
         if (!parsedImport) return false;
         const newPlan = applyImport(parsedImport);
         state.builderSelectedPlanId = newPlan.id;
-        scheduleSavePlans();
+        savePlans();
         rerender();
       }
     },
