@@ -3,56 +3,65 @@
 // defined in style.css via [data-mg-color="<key>"] selectors.
 //
 // Sorted as a continuous hue sweep with light→deep shades grouped together:
-// reds → oranges → browns → yellows → olives → greens → teals → blues
+// reds → oranges → yellows → limes → greens → teals → blues
 // → indigos/violets → magentas → pinks → neutral.
 
 export const PALETTE = [
   // Reds
-  { key: "crimson", label: "Karmin" },
-  { key: "red",     label: "Rot" },
-  { key: "coral",   label: "Koralle" },
+  { key: "crimson",    label: "Karmin" },
+  { key: "red",        label: "Rot" },
+  { key: "coral",      label: "Koralle" },
   // Oranges
-  { key: "peach",   label: "Pfirsich" },
-  { key: "orange",  label: "Orange" },
-  { key: "rust",    label: "Rost" },
-  // Browns
-  { key: "tan",     label: "Hellbraun" },
-  { key: "brown",   label: "Braun" },
-  // Ambers / Yellows / Golds
-  { key: "amber",   label: "Bernstein" },
-  { key: "ochre",   label: "Ocker" },
-  { key: "gold",    label: "Gold" },
-  { key: "yellow",  label: "Gelb" },
-  { key: "mustard", label: "Senf" },
-  // Olives / Limes
-  { key: "olive",   label: "Oliv" },
-  { key: "lime",    label: "Limette" },
+  { key: "peach",      label: "Pfirsich" },
+  { key: "tangerine",  label: "Mandarine" },
+  { key: "orange",     label: "Orange" },
+  // Yellows / Golds
+  { key: "amber",      label: "Bernstein" },
+  { key: "gold",       label: "Gold" },
+  { key: "yellow",     label: "Gelb" },
+  // Limes / Olives
+  { key: "chartreuse", label: "Chartreuse" },
+  { key: "olive",      label: "Oliv" },
+  { key: "lime",       label: "Limette" },
   // Greens
-  { key: "green",   label: "Grün" },
-  { key: "forest",  label: "Waldgrün" },
-  { key: "mint",    label: "Mint" },
+  { key: "emerald",    label: "Smaragd" },
+  { key: "green",      label: "Grün" },
+  { key: "forest",     label: "Waldgrün" },
+  { key: "mint",       label: "Mint" },
   // Teals / Cyans
-  { key: "teal",    label: "Petrol" },
-  { key: "aqua",    label: "Aqua" },
-  { key: "cyan",    label: "Cyan" },
+  { key: "teal",       label: "Petrol" },
+  { key: "aqua",       label: "Aqua" },
+  { key: "cyan",       label: "Cyan" },
   // Blues
-  { key: "sky",     label: "Himmel" },
-  { key: "blue",    label: "Blau" },
-  { key: "navy",    label: "Marine" },
+  { key: "azure",      label: "Azur" },
+  { key: "sky",        label: "Himmel" },
+  { key: "blue",       label: "Blau" },
+  { key: "navy",       label: "Marine" },
   // Indigos / Violets / Purples
-  { key: "indigo",  label: "Indigo" },
-  { key: "violet",  label: "Violett" },
-  { key: "purple",  label: "Lila" },
-  { key: "plum",    label: "Pflaume" },
+  { key: "indigo",     label: "Indigo" },
+  { key: "violet",     label: "Violett" },
+  { key: "lavender",   label: "Lavendel" },
+  { key: "purple",     label: "Lila" },
+  { key: "plum",       label: "Pflaume" },
   // Magentas / Pinks / Roses
-  { key: "magenta", label: "Magenta" },
-  { key: "fuchsia", label: "Fuchsie" },
-  { key: "pink",    label: "Pink" },
-  { key: "rose",    label: "Rosé" },
-  { key: "blush",   label: "Zartrosa" },
+  { key: "magenta",    label: "Magenta" },
+  { key: "fuchsia",    label: "Fuchsie" },
+  { key: "pink",       label: "Pink" },
+  { key: "rose",       label: "Rosé" },
+  { key: "blush",      label: "Zartrosa" },
   // Neutral
-  { key: "slate",   label: "Schiefer" },
+  { key: "slate",      label: "Schiefer" },
 ];
 
 export const PALETTE_KEYS = PALETTE.map((p) => p.key);
 export const DEFAULT_COLOR_KEY = "rose";
+
+// Migration: keys retired in the rainbow refresh. Existing data referencing
+// them is rewritten to the listed replacement on next load (see state.js).
+export const LEGACY_COLOR_MAP = {
+  rust:    "tangerine",
+  tan:     "azure",
+  brown:   "chartreuse",
+  ochre:   "amber",
+  mustard: "olive",
+};

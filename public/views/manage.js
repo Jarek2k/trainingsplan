@@ -271,6 +271,7 @@ function renderMgHeader(mg, rerender) {
     sw.className = "manage-color-slot" + (slot.key === mg.colorKey ? " active" : "");
     sw.dataset.mgColor = slot.key;
     sw.title = slot.label;
+    sw.textContent = "Aa";
     sw.setAttribute("aria-label", `Farbe: ${slot.label}`);
     sw.onclick = () => {
       mg.colorKey = slot.key;
@@ -456,6 +457,7 @@ function openCreateMgModal(rerender) {
     sw.className = "manage-color-slot" + (slot.key === colorKey ? " active" : "");
     sw.dataset.mgColor = slot.key;
     sw.title = slot.label;
+    sw.textContent = "Aa";
     sw.setAttribute("aria-label", `Farbe: ${slot.label}`);
     sw.onclick = () => {
       colorKey = slot.key;

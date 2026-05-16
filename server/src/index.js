@@ -132,7 +132,7 @@ const DEFAULT_MG_COLOR = {
   "Brust": "rose",
   "Rücken": "blue",
   "Mittlere Schulter": "amber",
-  "Hintere Schulter": "ochre",
+  "Hintere Schulter": "gold",
   "Trapez": "violet",
   "Bizeps": "magenta",
   "Trizeps": "pink",

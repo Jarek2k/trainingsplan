@@ -1,6 +1,8 @@
 // Global app state + persistence for the Builder.
 // Mutate state.plans in place, then call scheduleSavePlans() to debounce a PUT.
 
+import { LEGACY_COLOR_MAP, PALETTE_KEYS, DEFAULT_COLOR_KEY } from "./palette.js";
+
 const SAVE_DEBOUNCE_MS = 600;
 
 export const state = {
@@ -96,6 +98,16 @@ export async function loadPlans() {
   if (!Array.isArray(state.plans.exerciseLibrary)) state.plans.exerciseLibrary = [];
   if (!Array.isArray(state.plans.muscleGroups)) state.plans.muscleGroups = [];
   if (!Array.isArray(state.plans.logs)) state.plans.logs = [];
+
+  // Migrate retired colorKeys (rainbow palette refresh).
+  let mgsDirty = false;
+  const known = new Set(PALETTE_KEYS);
+  for (const mg of state.plans.muscleGroups) {
+    if (!mg.colorKey || known.has(mg.colorKey)) continue;
+    mg.colorKey = LEGACY_COLOR_MAP[mg.colorKey] || DEFAULT_COLOR_KEY;
+    mgsDirty = true;
+  }
+  if (mgsDirty) scheduleSavePlans();
 
   // Resolve activePlanId: server is source of truth, but fall back gracefully.
   const list = state.plans.plans;
