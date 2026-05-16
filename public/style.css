@@ -3439,32 +3439,6 @@ p {
   padding: var(--s-1) 0 var(--s-2);
 }
 
-.tracking-back {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  background: var(--surface-2);
-  color: var(--text);
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  font: inherit;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition:
-    background 120ms ease,
-    transform 120ms ease;
-}
-
-.tracking-back:hover {
-  background: var(--surface-3);
-}
-
-.tracking-back:active {
-  transform: scale(0.97);
-}
-
 .tracking-title {
   flex: 1;
   min-width: 0;
@@ -3689,9 +3663,5 @@ p {
   .tracking-set-field input {
     padding: 9px 10px;
     font-size: 1.05rem;
-  }
-  .tracking-back {
-    padding: 7px 12px;
-    font-size: 0.85rem;
   }
 }

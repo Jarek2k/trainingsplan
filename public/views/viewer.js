@@ -13,7 +13,19 @@ import {
   removeLastSet,
 } from "../logs.js";
 
+// ESC handler for the tracking detail view. Module-scope so we can detach it
+// before every render — leaving the view via Fertig or any state change kills
+// the old listener.
+let trackingEscHandler = null;
+function detachTrackingEsc() {
+  if (trackingEscHandler) {
+    document.removeEventListener("keydown", trackingEscHandler);
+    trackingEscHandler = null;
+  }
+}
+
 export function render(root, ctx) {
+  detachTrackingEsc();
   root.innerHTML = "";
   renderModeActions(ctx);
 
@@ -306,20 +318,19 @@ function renderTracking(root, plan, day, ex, ctx) {
   wrap.className = "viewer tracking";
   if (mg) wrap.dataset.mgColor = mg.colorKey;
 
-  // Header: back + exercise name + muscle group.
-  const header = document.createElement("div");
-  header.className = "tracking-header";
-
-  const back = document.createElement("button");
-  back.type = "button";
-  back.className = "tracking-back";
-  back.setAttribute("aria-label", "Zurück zur Tagesübersicht");
-  back.innerHTML = `<span aria-hidden="true">←</span><span>Zurück</span>`;
-  back.onclick = () => {
+  const closeTracking = () => {
     state.viewerExerciseId = null;
     render(root, ctx);
   };
-  header.appendChild(back);
+
+  // ESC closes the detail view, mirroring how modals behave.
+  trackingEscHandler = (e) => {
+    if (e.key === "Escape") closeTracking();
+  };
+  document.addEventListener("keydown", trackingEscHandler);
+
+  const header = document.createElement("div");
+  header.className = "tracking-header";
 
   const titleWrap = document.createElement("div");
   titleWrap.className = "tracking-title";
@@ -390,10 +401,7 @@ function renderTracking(root, plan, day, ex, ctx) {
   done.type = "button";
   done.className = "tracking-done";
   done.textContent = "Fertig";
-  done.onclick = () => {
-    state.viewerExerciseId = null;
-    render(root, ctx);
-  };
+  done.onclick = closeTracking;
   wrap.appendChild(done);
 
   root.appendChild(wrap);
