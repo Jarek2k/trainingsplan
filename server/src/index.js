@@ -30,6 +30,7 @@ const {
   buildSetCookie,
   setCookies,
 } = require("./auth.js");
+const allowlist = require("./allowlist.js");
 
 const PORT = Number(process.env.PORT) || 5173;
 const PROJECT_ROOT = path.resolve(__dirname, "..", "..");
@@ -41,9 +42,15 @@ const TEMPLATE_FILE = path.join(DATA_DIR, "template.json");
 // Legacy paths — kept only for the one-shot boot migration.
 const LEGACY_TEMPLATE_FILE = path.join(DATA_DIR, "plan.json");
 const LEGACY_PLANS_FILE = path.join(DATA_DIR, "plans.json");
+const ALLOWLIST_FILE = path.join(DATA_DIR, "allowlist.json");
 const MIGRATION_OWNER_EMAIL = (
   process.env.MIGRATION_OWNER_EMAIL || "jarekgster@googlemail.com"
 ).toLowerCase();
+
+allowlist.configure({
+  file: ALLOWLIST_FILE,
+  envEmails: process.env.ALLOWED_EMAILS || "",
+});
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -368,7 +375,7 @@ async function handleAuthCallback(req, res, url) {
     return redirect(res, "/?auth_error=failed", clearTemp);
   }
 
-  if (!result.email || !auth.isAllowed(result.email)) {
+  if (!result.email || !(await allowlist.isAllowed(result.email))) {
     return redirect(res, "/?auth_error=not-allowed", clearTemp);
   }
 
@@ -479,14 +486,75 @@ const server = http.createServer(async (req, res) => {
     // Defense-in-depth: allowlist is checked at OAuth callback, but old cookies
     // would otherwise remain valid for 30 days after a user is revoked.
     const session = getSession(req);
-    if (!session || !auth.isAllowed(session.email)) {
+    if (!session || !(await allowlist.isAllowed(session.email))) {
       return denyUnauthenticated(req, res, url);
     }
 
     if (pathname === "/api/me" && req.method === "GET") {
-      return send(res, 200, JSON.stringify({ email: session.email }), {
+      const admin = await allowlist.isAdmin(session.email);
+      return send(res, 200, JSON.stringify({ email: session.email, isAdmin: admin }), {
         "Content-Type": MIME[".json"],
       });
+    }
+
+    if (pathname === "/api/admin/allowlist") {
+      if (!(await allowlist.isAdmin(session.email))) {
+        return send(res, 403, JSON.stringify({ error: "forbidden" }), {
+          "Content-Type": MIME[".json"],
+        });
+      }
+      if (req.method === "GET") {
+        const users = await allowlist.list();
+        return send(res, 200, JSON.stringify({ users }), { "Content-Type": MIME[".json"] });
+      }
+      if (req.method === "POST") {
+        const body = await readBody(req);
+        let parsed;
+        try { parsed = JSON.parse(body); } catch { return send(res, 400, "invalid json"); }
+        try {
+          const users = await allowlist.add(parsed.email, !!parsed.isAdmin, session.email);
+          return send(res, 201, JSON.stringify({ users }), { "Content-Type": MIME[".json"] });
+        } catch (err) {
+          return send(res, 400, JSON.stringify({ error: err.message }), {
+            "Content-Type": MIME[".json"],
+          });
+        }
+      }
+      return send(res, 405, "method not allowed");
+    }
+
+    const adminUserMatch = pathname.match(/^\/api\/admin\/allowlist\/(.+)$/);
+    if (adminUserMatch) {
+      if (!(await allowlist.isAdmin(session.email))) {
+        return send(res, 403, JSON.stringify({ error: "forbidden" }), {
+          "Content-Type": MIME[".json"],
+        });
+      }
+      const targetEmail = decodeURIComponent(adminUserMatch[1]);
+      if (req.method === "DELETE") {
+        try {
+          const users = await allowlist.remove(targetEmail);
+          return send(res, 200, JSON.stringify({ users }), { "Content-Type": MIME[".json"] });
+        } catch (err) {
+          return send(res, 400, JSON.stringify({ error: err.message }), {
+            "Content-Type": MIME[".json"],
+          });
+        }
+      }
+      if (req.method === "PATCH") {
+        const body = await readBody(req);
+        let parsed;
+        try { parsed = JSON.parse(body); } catch { return send(res, 400, "invalid json"); }
+        try {
+          const users = await allowlist.setAdmin(targetEmail, !!parsed.isAdmin);
+          return send(res, 200, JSON.stringify({ users }), { "Content-Type": MIME[".json"] });
+        } catch (err) {
+          return send(res, 400, JSON.stringify({ error: err.message }), {
+            "Content-Type": MIME[".json"],
+          });
+        }
+      }
+      return send(res, 405, "method not allowed");
     }
     if (pathname === "/api/plans" && req.method === "GET") {
       const data = await readUserPlans(session.email);
@@ -512,13 +580,13 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-migrateToPerUser()
+Promise.all([migrateToPerUser(), allowlist.list()])
   .then(() => {
     server.listen(PORT, () => {
       console.log(`trainingsplan running on http://localhost:${PORT}`);
     });
   })
   .catch((err) => {
-    console.error("Migration fehlgeschlagen:", err);
+    console.error("Bootstrap fehlgeschlagen:", err);
     process.exit(1);
   });

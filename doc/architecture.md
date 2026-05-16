@@ -135,14 +135,14 @@ Eine flache JSON-Datei. Alle Top-Level-Keys sind global, kein User-Scope.
 2. `arctic` baut Google-Auth-URL, setzt `oauth_state` + `oauth_verifier` als kurzlebige Cookies, redirected zu Google.
 3. Google ruft `/auth/google/callback?code=…&state=…` ab.
 4. Server vergleicht `state`, ruft `arctic.validateAuthorizationCode()`, decodiert `id_token` → `email`.
-5. **Allowlist-Check** (`ALLOWED_EMAILS` env, comma-separated, lowercased). Nicht-Allowlisted → Interstitial.
+5. **Allowlist-Check** (siehe Abschnitt unten). Nicht-Allowlisted → Interstitial.
 6. Bei OK: HMAC-signiertes Session-Cookie `session=<base64url(email|expiry)>.<sig>` mit 30-Tage-TTL, `HttpOnly` + `SameSite=Lax`.
 
 Logout: `POST /auth/logout` → Cookie-Cleanup mit `Max-Age=0`.
 
 **Per-Request-Gate:** [server/src/index.js:368](server/src/index.js) — `getSession()` verifiziert HMAC + Expiry. Kein gültiges Cookie → 401 für `/api/*`, sonst Redirect zu `/auth/google`.
 
-**Wichtig:** Die Allowlist wird heute **nur am OAuth-Callback** geprüft. Ein bestehendes Session-Cookie bleibt 30 Tage gültig, selbst wenn die Email zwischenzeitlich aus `ALLOWED_EMAILS` entfernt wurde.
+Der Allowlist-Check läuft sowohl am OAuth-Callback als auch auf **jedem** `/api/*`-Call (Defense-in-Depth). Ein bestehendes Session-Cookie eines aus der Allowlist entfernten Nutzers schlägt sofort fehl, nicht erst nach 30 Tagen.
 
 ## API
 
@@ -201,6 +201,22 @@ ALLOWED_EMAILS=jarekgster@googlemail.com,friend@example.com
 COOKIE_SECURE=false   # in production unset → default true
 PORT=5173             # optional
 ```
+
+`ALLOWED_EMAILS` ist nur der Seed: wenn `server/data/allowlist.json` fehlt, wird sie aus dieser Variable initialisiert (alle Emails als Admin). Danach wird die Datei zum Source-of-Truth, gepflegt via „Zugriff verwalten"-Modal im Profilmenü; die Env-Variable ist dann irrelevant.
+
+## Allowlist
+
+```jsonc
+// server/data/allowlist.json
+{
+  "users": [
+    { "email": "owner@…", "isAdmin": true, "addedAt": "ISO", "addedBy": "env" },
+    { "email": "friend@…", "isAdmin": false, "addedAt": "ISO", "addedBy": "owner@…" }
+  ]
+}
+```
+
+`isAllowed`/`isAdmin`-Checks laden mit In-Memory-Cache, Schreibvorgänge serialisiert über Promise-Chain-Mutex. Letzter Admin kann sich nicht selbst löschen oder degradieren. API: `GET/POST/DELETE/PATCH /api/admin/allowlist[/<email>]`, alle admin-gated.
 
 ## Deployment
 
@@ -266,4 +282,3 @@ HTML5-DnD funktioniert nicht auf Touch-Devices. Aktuell ist die App desktop-firs
 
 - `deploy/setup.md` updaten sobald Datenpfad pro Nutzer aufgeteilt ist (Backup-Hinweis).
 - Logs-Rotation / Größen-Monitoring sobald History-Feature live ist.
-- Allowlist-Check auf API-Calls (siehe Multi-User-PR 1).

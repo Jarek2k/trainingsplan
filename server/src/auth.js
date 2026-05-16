@@ -18,16 +18,6 @@ function createAuth(env) {
     if (!env[key]) throw new Error(`Fehlende Umgebungsvariable: ${key}`);
   }
 
-  const allowed = new Set(
-    (env.ALLOWED_EMAILS || "")
-      .split(",")
-      .map((s) => s.trim().toLowerCase())
-      .filter(Boolean),
-  );
-  if (allowed.size === 0) {
-    console.warn("WARNUNG: ALLOWED_EMAILS ist leer — niemand kann sich einloggen.");
-  }
-
   const google = new Google(
     env.GOOGLE_CLIENT_ID,
     env.GOOGLE_CLIENT_SECRET,
@@ -41,10 +31,6 @@ function createAuth(env) {
     SESSION_COOKIE,
     SESSION_TTL_MS,
     cookieSecure,
-
-    isAllowed(email) {
-      return allowed.has(email.toLowerCase());
-    },
 
     startAuth() {
       const state = generateState();

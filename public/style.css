@@ -2157,6 +2157,141 @@ p {
   white-space: pre-line;
 }
 
+/* Allowlist admin modal */
+.modal.admin-modal {
+  max-width: 560px;
+}
+
+.admin-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.admin-count {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 360px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--s-2);
+}
+
+.admin-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-1) var(--s-2);
+  border-radius: var(--radius-sm);
+}
+
+.admin-row:hover {
+  background: var(--surface-2);
+}
+
+.admin-row-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+.admin-row-email {
+  color: var(--text-strong);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.admin-row-self,
+.admin-row-badge {
+  flex: 0 0 auto;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface-3);
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.admin-row-badge.is-admin {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+}
+
+.admin-row-menu {
+  flex: 0 0 auto;
+  background: transparent;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-row-menu:hover {
+  background: var(--surface-3);
+  color: var(--text-strong);
+}
+
+.admin-row-popover {
+  min-width: 200px;
+}
+
+.admin-add {
+  display: flex;
+  gap: var(--s-2);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.admin-add-email {
+  flex: 1;
+  min-width: 200px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-strong);
+  padding: 6px 10px;
+  font: inherit;
+}
+
+.admin-add-email:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.admin-add-admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.admin-error {
+  margin: 0;
+  color: var(--bad);
+  font-size: 14px;
+}
+
 .exercise-box-head {
   display: flex;
   align-items: flex-start;
