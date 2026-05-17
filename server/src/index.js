@@ -254,6 +254,30 @@ async function readUserPlans(email) {
   return pretty;
 }
 
+// When an admin corrects a user's email, the data file (named after the email
+// hash) must follow. No-op when the user never logged in / has no file yet.
+async function renameUserFile(oldEmail, newEmail) {
+  const oldPath = userFilePath(oldEmail);
+  const newPath = userFilePath(newEmail);
+  if (oldPath === newPath) return;
+  return withUserLock(userKey(oldEmail), async () => {
+    let raw;
+    try {
+      raw = await fsp.readFile(oldPath, "utf8");
+    } catch (err) {
+      if (err.code === "ENOENT") return;
+      throw err;
+    }
+    let parsed;
+    try { parsed = JSON.parse(raw); } catch { parsed = {}; }
+    parsed.email = String(newEmail).toLowerCase();
+    parsed.updatedAt = new Date().toISOString();
+    await fsp.mkdir(USERS_DIR, { recursive: true });
+    await writeAtomic(newPath, JSON.stringify(parsed, null, 2));
+    await fsp.unlink(oldPath);
+  });
+}
+
 async function writeUserPlans(email, body) {
   const parsed = JSON.parse(body);
   parsed.email = email;
@@ -302,6 +326,7 @@ async function readAllSharedPlans(requesterEmail) {
     const ownerEmail = parsed.email || null;
     // Owner must still be allowlisted — otherwise their plans shouldn't surface.
     if (!ownerEmail || !(await allowlist.isAllowed(ownerEmail))) continue;
+    const ownerDisplayName = await allowlist.getDisplayName(ownerEmail);
 
     for (const plan of parsed.plans) {
       if (plan.shared !== true) continue;
@@ -325,7 +350,7 @@ async function readAllSharedPlans(requesterEmail) {
           days: plan.days || [],
         },
         muscleGroups,
-        owner: { email: ownerEmail },
+        owner: { email: ownerEmail, displayName: ownerDisplayName },
         mine: isMine,
       });
     }
@@ -586,7 +611,12 @@ const server = http.createServer(async (req, res) => {
         let parsed;
         try { parsed = JSON.parse(body); } catch { return send(res, 400, "invalid json"); }
         try {
-          const users = await allowlist.add(parsed.email, !!parsed.isAdmin, session.email);
+          const users = await allowlist.add(
+            parsed.email,
+            !!parsed.isAdmin,
+            session.email,
+            parsed.displayName,
+          );
           return send(res, 201, JSON.stringify({ users }), { "Content-Type": MIME[".json"] });
         } catch (err) {
           return send(res, 400, JSON.stringify({ error: err.message }), {
@@ -620,7 +650,27 @@ const server = http.createServer(async (req, res) => {
         let parsed;
         try { parsed = JSON.parse(body); } catch { return send(res, 400, "invalid json"); }
         try {
-          const users = await allowlist.setAdmin(targetEmail, !!parsed.isAdmin);
+          let users;
+          let activeEmail = targetEmail;
+          const wantsEmailChange =
+            "email" in parsed &&
+            String(parsed.email || "").trim().toLowerCase() !== activeEmail.toLowerCase();
+          if (wantsEmailChange) {
+            if (activeEmail.toLowerCase() === session.email.toLowerCase()) {
+              throw new Error("Eigene Email kann hier nicht geändert werden.");
+            }
+            const newEmail = String(parsed.email).trim().toLowerCase();
+            users = await allowlist.changeEmail(activeEmail, newEmail);
+            await renameUserFile(activeEmail, newEmail);
+            activeEmail = newEmail;
+          }
+          if ("isAdmin" in parsed) {
+            users = await allowlist.setAdmin(activeEmail, !!parsed.isAdmin);
+          }
+          if ("displayName" in parsed) {
+            users = await allowlist.setDisplayName(activeEmail, parsed.displayName);
+          }
+          if (!users) users = await allowlist.list();
           return send(res, 200, JSON.stringify({ users }), { "Content-Type": MIME[".json"] });
         } catch (err) {
           return send(res, 400, JSON.stringify({ error: err.message }), {

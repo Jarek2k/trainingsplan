@@ -183,7 +183,7 @@ function renderSharedRow(shared, rerender) {
   label.className = "builder-plan-label";
   const subtitle = shared.mine
     ? "dein Plan"
-    : `von ${ownerDisplay(shared.owner.email)}`;
+    : `von ${ownerDisplay(shared.owner)}`;
   label.innerHTML = `
     <span class="builder-plan-label-text">${escape(shared.plan.name)}</span>
     <span class="builder-shared-owner">${escape(subtitle)}</span>
@@ -199,7 +199,10 @@ function renderSharedRow(shared, rerender) {
   return li;
 }
 
-function ownerDisplay(email) {
+function ownerDisplay(owner) {
+  if (!owner) return "—";
+  if (owner.displayName) return owner.displayName;
+  const email = owner.email || "";
   if (!email) return "—";
   const at = email.indexOf("@");
   return at > 0 ? email.slice(0, at) : email;
@@ -1683,7 +1686,7 @@ function renderSharedPreview(root, shared, rerender) {
   titleBlock.className = "builder-shared-title-block";
   const eyebrow = shared.mine
     ? "Geteilter Plan · dein Plan"
-    : `Geteilter Plan · von ${ownerDisplay(owner.email)}`;
+    : `Geteilter Plan · von ${ownerDisplay(owner)}`;
   titleBlock.innerHTML = `
     <div class="builder-shared-eyebrow">${escape(eyebrow)}</div>
     <h2 class="builder-shared-title">${escape(plan.name)}</h2>
@@ -1791,7 +1794,7 @@ function cloneSharedPlan(shared, rerender) {
   const body = document.createElement("div");
   const p = document.createElement("p");
   p.className = "modal-hint";
-  p.textContent = `„${shared.plan.name}" von ${ownerDisplay(shared.owner.email)} als eigenständige Kopie in deine Pläne übernehmen? Änderungen beim Original ändern deine Kopie nicht.`;
+  p.textContent = `„${shared.plan.name}" von ${ownerDisplay(shared.owner)} als eigenständige Kopie in deine Pläne übernehmen? Änderungen beim Original ändern deine Kopie nicht.`;
   body.appendChild(p);
   openModal({
     title: "Plan übernehmen",

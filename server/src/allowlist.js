@@ -4,7 +4,13 @@
 // Schema:
 //   {
 //     "users": [
-//       { "email": "...", "isAdmin": true, "addedAt": "ISO", "addedBy": "env" | "<email>" }
+//       {
+//         "email": "...",
+//         "isAdmin": true,
+//         "displayName": "Jarek",          // optional, vom Admin gepflegt
+//         "addedAt": "ISO",
+//         "addedBy": "env" | "<email>"
+//       }
 //     ]
 //   }
 //
@@ -65,6 +71,7 @@ async function writeData(data) {
 }
 
 const norm = (s) => String(s || "").trim().toLowerCase();
+const MAX_DISPLAY_NAME = 40;
 
 async function list() {
   return (await readData()).users;
@@ -81,18 +88,21 @@ async function isAdmin(email) {
   return data.users.some((u) => u.email === e && u.isAdmin);
 }
 
-function add(email, asAdmin, addedBy) {
+function add(email, asAdmin, addedBy, displayName) {
   return withLock(async () => {
     const data = await readData();
     const e = norm(email);
     if (!e || !e.includes("@")) throw new Error("Ungültige Email.");
     if (data.users.find((u) => u.email === e)) throw new Error("Email ist bereits in der Liste.");
-    data.users.push({
+    const entry = {
       email: e,
       isAdmin: !!asAdmin,
       addedAt: new Date().toISOString(),
       addedBy: norm(addedBy),
-    });
+    };
+    const name = String(displayName || "").trim().slice(0, MAX_DISPLAY_NAME);
+    if (name) entry.displayName = name;
+    data.users.push(entry);
     await writeData(data);
     return data.users;
   });
@@ -130,4 +140,53 @@ function setAdmin(email, isAdminFlag) {
   });
 }
 
-module.exports = { configure, list, isAllowed, isAdmin, add, remove, setAdmin };
+function setDisplayName(email, name) {
+  return withLock(async () => {
+    const data = await readData();
+    const e = norm(email);
+    const u = data.users.find((x) => x.email === e);
+    if (!u) throw new Error("Email nicht in der Liste.");
+    const trimmed = String(name || "").trim().slice(0, MAX_DISPLAY_NAME);
+    if (trimmed) u.displayName = trimmed;
+    else delete u.displayName;
+    await writeData(data);
+    return data.users;
+  });
+}
+
+async function getDisplayName(email) {
+  const data = await readData();
+  const u = data.users.find((x) => x.email === norm(email));
+  return u && u.displayName ? u.displayName : null;
+}
+
+function changeEmail(oldEmail, newEmail) {
+  return withLock(async () => {
+    const data = await readData();
+    const oldE = norm(oldEmail);
+    const newE = norm(newEmail);
+    if (!newE || !newE.includes("@")) throw new Error("Ungültige Email.");
+    if (oldE === newE) return data.users;
+    const u = data.users.find((x) => x.email === oldE);
+    if (!u) throw new Error("Email nicht in der Liste.");
+    if (data.users.find((x) => x.email === newE)) {
+      throw new Error("Neue Email ist bereits in der Liste.");
+    }
+    u.email = newE;
+    await writeData(data);
+    return data.users;
+  });
+}
+
+module.exports = {
+  configure,
+  list,
+  isAllowed,
+  isAdmin,
+  add,
+  remove,
+  setAdmin,
+  setDisplayName,
+  getDisplayName,
+  changeEmail,
+};

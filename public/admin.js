@@ -1,23 +1,27 @@
 // Admin-Modal "Zugriff verwalten". Erreichbar nur für Allowlist-Admins,
 // aufgerufen aus dem Profilmenü in app.js.
 
-import { openModal } from "./modal.js";
+import { openModal, openConfirmModal } from "./modal.js";
 import { escape } from "./util.js";
 
 export function openAllowlistModal({ currentEmail }) {
   const body = document.createElement("div");
   body.className = "admin-body";
   body.innerHTML = `
-    <p class="modal-hint">Wer hier eingetragen ist, darf sich mit seiner Google-Email einloggen. Admins können diese Liste pflegen.</p>
+    <p class="modal-hint">Wer hier eingetragen ist, darf sich mit seiner Google-Email einloggen. Klick auf einen Eintrag öffnet die Bearbeitung.</p>
     <p class="admin-count" hidden></p>
     <div class="admin-list" hidden></div>
     <div class="admin-add">
-      <input type="email" class="admin-add-email" placeholder="freund@example.com" autocomplete="off" />
-      <label class="admin-add-admin">
-        <input type="checkbox" class="admin-add-admin-cb" />
-        <span>Als Admin</span>
-      </label>
-      <button type="button" class="btn admin-add-btn">Hinzufügen</button>
+      <h3 class="admin-add-title">Neuen Zugriff hinzufügen</h3>
+      <div class="admin-add-grid">
+        <input type="email" class="admin-add-email" placeholder="email@example.com" autocomplete="off" aria-label="Email" />
+        <input type="text" class="admin-add-name" placeholder="Anzeigename (optional)" maxlength="40" autocomplete="off" aria-label="Anzeigename" />
+        <label class="admin-add-admin">
+          <input type="checkbox" class="admin-add-admin-cb" />
+          <span>Admin</span>
+        </label>
+        <button type="button" class="btn admin-add-btn">Hinzufügen</button>
+      </div>
     </div>
     <p class="admin-error" hidden></p>
   `;
@@ -25,6 +29,7 @@ export function openAllowlistModal({ currentEmail }) {
   const list = body.querySelector(".admin-list");
   const count = body.querySelector(".admin-count");
   const emailInp = body.querySelector(".admin-add-email");
+  const nameInp = body.querySelector(".admin-add-name");
   const adminCb = body.querySelector(".admin-add-admin-cb");
   const addBtn = body.querySelector(".admin-add-btn");
   const errEl = body.querySelector(".admin-error");
@@ -50,29 +55,28 @@ export function openAllowlistModal({ currentEmail }) {
   }
 
   function renderList(users) {
-    closeRowMenu();
     list.innerHTML = "";
     for (const u of users) {
-      const row = document.createElement("div");
+      const row = document.createElement("button");
+      row.type = "button";
       row.className = "admin-row";
       const isSelf = u.email === currentEmail;
+      const nameLine = u.displayName
+        ? `<span class="admin-row-name">${escape(u.displayName)}</span>`
+        : `<span class="admin-row-name is-empty">Kein Name</span>`;
       row.innerHTML = `
         <div class="admin-row-main">
-          <span class="admin-row-email">${escape(u.email)}</span>
-          ${isSelf ? `<span class="admin-row-self">du</span>` : ""}
-          ${u.isAdmin ? `<span class="admin-row-badge is-admin">Admin</span>` : ""}
+          <div class="admin-row-text">
+            ${nameLine}
+            <span class="admin-row-email">${escape(u.email)}</span>
+          </div>
+          <div class="admin-row-badges">
+            ${isSelf ? `<span class="admin-row-self">du</span>` : ""}
+            ${u.isAdmin ? `<span class="admin-row-badge is-admin">Admin</span>` : ""}
+          </div>
         </div>
-        <button type="button" class="admin-row-menu" aria-label="Aktionen" title="Aktionen">⋯</button>
       `;
-      const menuBtn = row.querySelector(".admin-row-menu");
-      menuBtn.onclick = (e) => {
-        e.stopPropagation();
-        if (document.querySelector(".admin-row-popover")) {
-          closeRowMenu();
-          return;
-        }
-        openRowMenu(menuBtn, u);
-      };
+      row.onclick = () => openEditDialog(u);
       list.appendChild(row);
     }
     list.hidden = false;
@@ -84,90 +88,111 @@ export function openAllowlistModal({ currentEmail }) {
     count.hidden = false;
   }
 
-  function openRowMenu(anchor, user) {
-    closeRowMenu();
-    const pop = document.createElement("div");
-    pop.className = "popover admin-row-popover";
-    const r = anchor.getBoundingClientRect();
-    pop.style.top = `${r.bottom + 4}px`;
-    pop.style.left = `${Math.max(8, r.right - 220)}px`;
-
-    const toggleBtn = document.createElement("button");
-    toggleBtn.type = "button";
-    toggleBtn.className = "popover-item";
-    toggleBtn.innerHTML = `
-      <svg class="popover-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-      </svg>
-      <span>${user.isAdmin ? "Admin-Rolle entziehen" : "Zum Admin machen"}</span>
+  function openEditDialog(user) {
+    const isSelf = user.email === currentEmail;
+    const body = document.createElement("div");
+    body.className = "admin-edit-body";
+    body.innerHTML = `
+      <label class="admin-edit-field">
+        <span class="admin-edit-label">Email</span>
+        <input type="email" class="admin-edit-input admin-edit-email" autocomplete="off" />
+        ${isSelf ? `<span class="admin-edit-hint">Eigene Email kann hier nicht geändert werden.</span>` : ""}
+      </label>
+      <label class="admin-edit-field">
+        <span class="admin-edit-label">Anzeigename</span>
+        <input type="text" class="admin-edit-input admin-edit-name" maxlength="40" autocomplete="off" placeholder="z. B. Tom" />
+        <span class="admin-edit-hint">Wird statt der Email gezeigt, wenn der Nutzer Pläne öffentlich teilt.</span>
+      </label>
+      <label class="admin-edit-toggle">
+        <input type="checkbox" class="admin-edit-admin-cb" />
+        <span>Als Admin</span>
+      </label>
+      <p class="admin-edit-error" hidden></p>
+      <div class="admin-edit-danger">
+        <button type="button" class="btn-link admin-edit-remove">Aus Allowlist entfernen</button>
+      </div>
     `;
-    toggleBtn.onclick = () => {
-      closeRowMenu();
-      patchAdmin(user.email, !user.isAdmin);
-    };
-    pop.appendChild(toggleBtn);
 
-    const sep = document.createElement("div");
-    sep.className = "popover-separator";
-    pop.appendChild(sep);
+    const emailIn = body.querySelector(".admin-edit-email");
+    const nameIn = body.querySelector(".admin-edit-name");
+    const adminCbEdit = body.querySelector(".admin-edit-admin-cb");
+    const dlgErr = body.querySelector(".admin-edit-error");
+    const removeBtn = body.querySelector(".admin-edit-remove");
 
-    const removeBtn = document.createElement("button");
-    removeBtn.type = "button";
-    removeBtn.className = "popover-item danger";
-    removeBtn.innerHTML = `
-      <svg class="popover-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
-      </svg>
-      <span>Entfernen</span>
-    `;
+    emailIn.value = user.email;
+    nameIn.value = user.displayName || "";
+    adminCbEdit.checked = !!user.isAdmin;
+    if (isSelf) emailIn.disabled = true;
+
+    function dlgShowError(msg) {
+      dlgErr.textContent = msg;
+      dlgErr.hidden = false;
+    }
+    function dlgClearError() {
+      dlgErr.hidden = true;
+      dlgErr.textContent = "";
+    }
+
+    const m = openModal({
+      title: "Eintrag bearbeiten",
+      body,
+      confirmLabel: "Speichern",
+      confirmDisabled: false,
+      onConfirm: () => {
+        dlgClearError();
+        const newEmail = emailIn.value.trim().toLowerCase();
+        if (!newEmail || !newEmail.includes("@")) {
+          dlgShowError("Ungültige Email.");
+          return false;
+        }
+        savePatch(user.email, {
+          email: newEmail,
+          displayName: nameIn.value,
+          isAdmin: adminCbEdit.checked,
+        }).then((ok) => {
+          if (ok) m.close();
+          else if (lastError) dlgShowError(lastError);
+        });
+        return false; // we close manually after async success
+      },
+    });
+
     removeBtn.onclick = () => {
-      closeRowMenu();
-      removeUser(user.email);
+      m.close();
+      openConfirmModal({
+        title: "Eintrag entfernen",
+        message: `„${user.email}" verliert sofort den Zugriff. Eigene Pläne und Daten bleiben erhalten, sind aber nicht mehr erreichbar.`,
+        confirmLabel: "Entfernen",
+        onConfirm: () => removeUser(user.email),
+      });
     };
-    pop.appendChild(removeBtn);
 
-    document.body.appendChild(pop);
-
-    const outside = (e) => {
-      if (pop.contains(e.target) || anchor.contains(e.target)) return;
-      closeRowMenu();
-    };
-    const esc = (e) => {
-      if (e.key === "Escape") closeRowMenu();
-    };
     setTimeout(() => {
-      document.addEventListener("click", outside, true);
-      document.addEventListener("keydown", esc);
+      if (!isSelf) emailIn.focus();
+      else nameIn.focus();
     }, 0);
-    pop._cleanup = () => {
-      document.removeEventListener("click", outside, true);
-      document.removeEventListener("keydown", esc);
-    };
   }
 
-  function closeRowMenu() {
-    const pop = document.querySelector(".admin-row-popover");
-    if (!pop) return;
-    if (pop._cleanup) pop._cleanup();
-    pop.remove();
-  }
-
-  async function patchAdmin(email, isAdmin) {
+  let lastError = null;
+  async function savePatch(originalEmail, payload) {
+    lastError = null;
     clearError();
     try {
       const res = await fetch(
-        `/api/admin/allowlist/${encodeURIComponent(email)}`,
+        `/api/admin/allowlist/${encodeURIComponent(originalEmail)}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ isAdmin }),
+          body: JSON.stringify(payload),
         },
       );
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Fehler beim Aktualisieren.");
+      if (!res.ok) throw new Error(data.error || "Fehler beim Speichern.");
       renderList(data.users);
+      return true;
     } catch (e) {
-      showError(e.message);
+      lastError = e.message;
+      return false;
     }
   }
 
@@ -194,11 +219,16 @@ export function openAllowlistModal({ currentEmail }) {
       const res = await fetch("/api/admin/allowlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, isAdmin: adminCb.checked }),
+        body: JSON.stringify({
+          email,
+          isAdmin: adminCb.checked,
+          displayName: nameInp.value,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Fehler beim Hinzufügen.");
       emailInp.value = "";
+      nameInp.value = "";
       adminCb.checked = false;
       renderList(data.users);
     } catch (e) {
@@ -206,12 +236,14 @@ export function openAllowlistModal({ currentEmail }) {
     }
   };
 
-  emailInp.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      addBtn.click();
-    }
-  });
+  for (const inp of [emailInp, nameInp]) {
+    inp.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        addBtn.click();
+      }
+    });
+  }
 
   const m = openModal({
     title: "Zugriff verwalten",
