@@ -32,6 +32,13 @@ export const state = {
   // Persisted only across rerenders, NOT across reloads.
   builderExpanded: new Set(),
   compactView: readCompactView(), // UI-only, persisted in localStorage
+  // Deload display mode. When set, the viewer renders weights + set counts
+  // scaled down by these percentages. Transient — never persisted, never
+  // mutates state.plans. Shape: { weightPct, volumePct } | null.
+  deload: null,
+  // Exercise ids whose original (pre-deload) values are revealed inline.
+  // Toggled per-exercise via a click in the deload day overview. Transient.
+  deloadRevealed: new Set(),
 
   saveTimer: null,
   saving: false,
@@ -84,6 +91,39 @@ export function setTheme(theme) {
   } catch {
     // ignore — non-fatal
   }
+}
+
+// --- Deload (view-only) ----------------------------------------------------
+
+export function setDeload(params) {
+  state.deloadRevealed.clear();
+  if (!params) {
+    state.deload = null;
+    return;
+  }
+  state.deload = {
+    weightPct: clampPct(params.weightPct, 50),
+    volumePct: clampPct(params.volumePct, 50),
+  };
+}
+
+export function clearDeload() {
+  state.deload = null;
+  state.deloadRevealed.clear();
+}
+
+export function toggleDeloadReveal(exerciseId) {
+  if (state.deloadRevealed.has(exerciseId)) {
+    state.deloadRevealed.delete(exerciseId);
+  } else {
+    state.deloadRevealed.add(exerciseId);
+  }
+}
+
+function clampPct(v, fallback) {
+  const n = Number(v);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(10, Math.min(100, Math.round(n)));
 }
 
 // --- Save status pub/sub ---------------------------------------------------

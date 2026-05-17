@@ -2,7 +2,14 @@
 // switched via horizontal pill tabs. Tapping an exercise opens an inline
 // tracking view (sets with planned values pre-filled, editable).
 
-import { scheduleSavePlans, setActivePlanId, state } from "../state.js";
+import {
+  clearDeload,
+  scheduleSavePlans,
+  setActivePlanId,
+  setDeload,
+  state,
+  toggleDeloadReveal,
+} from "../state.js";
 import { escape, findMg } from "../util.js";
 import {
   addSet,
@@ -12,6 +19,8 @@ import {
   hasTodayLog,
   removeLastSet,
 } from "../logs.js";
+import { computeDeloadView, computeWeeklyVolume, deloadKey } from "../deload.js";
+import { openModal } from "../modal.js";
 
 // ESC handler for the tracking detail view. Module-scope so we can detach it
 // before every render — leaving the view via Fertig or any state change kills
@@ -103,6 +112,33 @@ function renderModeActions(ctx) {
     ctx.modeActions.appendChild(select);
   }
 
+  // Deload button — toggles the deload view (transient, view-only).
+  if (active) {
+    const deloadBtn = document.createElement("button");
+    const isActive = !!state.deload;
+    deloadBtn.className = "icon-btn round" + (isActive ? " active" : "");
+    deloadBtn.type = "button";
+    // Trending-down arrow inside a circle — reads as "reduced load".
+    deloadBtn.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/>
+        <polyline points="17 18 23 18 23 12"/>
+      </svg>
+    `;
+    deloadBtn.title = isActive ? "Deload deaktivieren" : "Deload-Anzeige aktivieren";
+    deloadBtn.setAttribute("aria-label", deloadBtn.title);
+    deloadBtn.setAttribute("aria-pressed", isActive ? "true" : "false");
+    deloadBtn.onclick = () => {
+      if (state.deload) {
+        clearDeload();
+        ctx.switchMode("view");
+      } else {
+        openDeloadDialog(ctx);
+      }
+    };
+    ctx.modeActions.appendChild(deloadBtn);
+  }
+
   // Edit button
   if (active) {
     const edit = document.createElement("button");
@@ -118,6 +154,112 @@ function renderModeActions(ctx) {
     edit.onclick = () => ctx.switchMode("edit");
     ctx.modeActions.appendChild(edit);
   }
+}
+
+function openDeloadDialog(ctx) {
+  const current = state.deload || { weightPct: 50, volumePct: 50 };
+
+  const body = document.createElement("div");
+  body.className = "deload-form";
+  body.innerHTML = `
+    <p class="modal-hint">Reduzierte Anzeige für eine Deload-Woche. Verändert nur die Anzeige — dein Plan bleibt unverändert.</p>
+    <div class="deload-grid">
+      <label class="deload-field">
+        <span class="deload-field-label">Gewicht</span>
+        <div class="deload-input-wrap">
+          <input id="deload-weight" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" value="${current.weightPct}" />
+          <span>%</span>
+        </div>
+      </label>
+      <label class="deload-field">
+        <span class="deload-field-label">Volumen</span>
+        <div class="deload-input-wrap">
+          <input id="deload-volume" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" value="${current.volumePct}" />
+          <span>%</span>
+        </div>
+      </label>
+    </div>
+  `;
+
+  const wInp = body.querySelector("#deload-weight");
+  const vInp = body.querySelector("#deload-volume");
+
+  openModal({
+    title: "Deload aktivieren",
+    body,
+    confirmLabel: "Aktivieren",
+    confirmDisabled: false,
+    onConfirm: () => {
+      setDeload({ weightPct: Number(wInp.value), volumePct: Number(vInp.value) });
+      ctx.switchMode("view");
+    },
+  });
+
+  setTimeout(() => wInp.focus(), 0);
+}
+
+function openDeloadOverview(plan) {
+  const deloadView = computeDeloadView(plan, state.deload);
+  const originalVol = computeWeeklyVolume(plan, null);
+  const reducedVol = computeWeeklyVolume(plan, deloadView);
+
+  const body = document.createElement("div");
+  body.className = "deload-overview";
+
+  const hint = document.createElement("p");
+  hint.className = "modal-hint";
+  hint.textContent = "Tatsächliche Sätze pro Muskelgruppe diese Woche — Plan → Deload.";
+  body.appendChild(hint);
+
+  // Sort by original volume desc, so the biggest movers sit at the top.
+  const mgs = state.plans.muscleGroups || [];
+  const rows = [];
+  for (const mg of mgs) {
+    const orig = originalVol.get(mg.id) || 0;
+    if (orig <= 0) continue;
+    const reduced = reducedVol.get(mg.id) || 0;
+    rows.push({ mg, orig, reduced });
+  }
+  rows.sort((a, b) => b.orig - a.orig);
+
+  const list = document.createElement("ul");
+  list.className = "deload-overview-list";
+  for (const { mg, orig, reduced } of rows) {
+    const pct = orig > 0 ? Math.round((reduced / orig) * 100) : 0;
+    const delta = pct - 100; // negative = reduction
+    const li = document.createElement("li");
+    li.className = "deload-overview-row";
+    li.dataset.mgColor = mg.colorKey;
+    li.innerHTML = `
+      <span class="deload-overview-name">${escape(mg.name)}</span>
+      <span class="deload-overview-vals">
+        <span class="deload-overview-orig">${escape(fmtSets(orig))}</span>
+        <span class="deload-overview-arrow" aria-hidden="true">→</span>
+        <span class="deload-overview-new">${escape(fmtSets(reduced))}</span>
+        <span class="deload-overview-unit">Sätze</span>
+      </span>
+      <span class="deload-overview-delta">${delta > 0 ? "+" : ""}${delta}%</span>
+    `;
+    list.appendChild(li);
+  }
+  body.appendChild(list);
+
+  const m = openModal({
+    title: "Deload-Übersicht",
+    body,
+    confirmLabel: "Schließen",
+    confirmDisabled: false,
+    onConfirm: () => {},
+  });
+  // Single-action modal: hide confirm, relabel cancel.
+  m.modal.querySelector("[data-confirm]").style.display = "none";
+  m.modal.querySelector("[data-cancel]").textContent = "Schließen";
+}
+
+function fmtSets(n) {
+  // 16 → "16", 13.6 → "13,6"
+  if (Math.abs(n - Math.round(n)) < 0.05) return String(Math.round(n));
+  return n.toFixed(1).replace(".", ",");
 }
 
 // --- Empty / picker --------------------------------------------------------
@@ -180,6 +322,23 @@ function renderPlan(root, plan, ctx) {
   const wrap = document.createElement("div");
   wrap.className = "viewer";
 
+  // Deload banner — sits at the very top because deload is a week-level
+  // mode, not specific to the visible day. Tap opens a weekly volume
+  // breakdown per muscle group.
+  if (state.deload) {
+    const banner = document.createElement("button");
+    banner.type = "button";
+    banner.className = "deload-banner";
+    banner.innerHTML = `
+      <span class="deload-banner-tag">Deload</span>
+      <span class="deload-banner-meta">${escape(String(state.deload.weightPct))}% Gewicht · ${escape(String(state.deload.volumePct))}% Volumen</span>
+      <span class="deload-banner-cta" aria-hidden="true">›</span>
+    `;
+    banner.setAttribute("aria-label", "Deload-Übersicht anzeigen");
+    banner.onclick = () => openDeloadOverview(plan);
+    wrap.appendChild(banner);
+  }
+
   const title = document.createElement("h1");
   title.className = "viewer-plan-name";
   title.textContent = plan.name;
@@ -232,6 +391,10 @@ function renderPlan(root, plan, ctx) {
   const dayEl = document.createElement("section");
   dayEl.className = "viewer-day";
 
+  const deloadView = state.deload
+    ? computeDeloadView(plan, state.deload)
+    : null;
+
   if (day.exercises.length === 0) {
     const p = document.createElement("p");
     p.className = "viewer-day-empty";
@@ -239,7 +402,7 @@ function renderPlan(root, plan, ctx) {
     dayEl.appendChild(p);
   } else {
     for (const ex of day.exercises) {
-      dayEl.appendChild(renderExercise(ex, plan, day, root, ctx));
+      dayEl.appendChild(renderExercise(ex, plan, day, root, ctx, deloadView));
     }
   }
   wrap.appendChild(dayEl);
@@ -247,16 +410,32 @@ function renderPlan(root, plan, ctx) {
   root.appendChild(wrap);
 }
 
-function renderExercise(ex, plan, day, root, ctx) {
+function renderExercise(ex, plan, day, root, ctx, deloadView) {
   const mg = findMg(state.plans, ex.muscleGroupId);
+  const dl = deloadView ? deloadView.get(deloadKey(day.id, ex.id)) : null;
+  const paused = !!(dl && dl.paused);
+  const inDeload = !!deloadView;
+  const revealed = inDeload && state.deloadRevealed.has(ex.id);
+
+  // In deload mode, tracking detail (with input mask) doesn't fit. The row
+  // becomes a tap-to-reveal: click toggles whether the original (pre-deload)
+  // values are shown inline next to the new ones.
   const row = document.createElement("button");
   row.type = "button";
-  row.className = "viewer-exercise";
+  row.className =
+    "viewer-exercise" +
+    (paused ? " paused" : "") +
+    (revealed ? " revealed" : "");
   if (mg) row.dataset.mgColor = mg.colorKey;
-  row.onclick = () => {
-    state.viewerExerciseId = ex.id;
-    render(root, ctx);
-  };
+  row.onclick = inDeload
+    ? () => {
+        toggleDeloadReveal(ex.id);
+        render(root, ctx);
+      }
+    : () => {
+        state.viewerExerciseId = ex.id;
+        render(root, ctx);
+      };
 
   const left = document.createElement("div");
   left.className = "viewer-exercise-main";
@@ -272,6 +451,12 @@ function renderExercise(ex, plan, day, root, ctx) {
     mark.textContent = "✓";
     name.appendChild(mark);
   }
+  if (paused) {
+    const pause = document.createElement("span");
+    pause.className = "viewer-exercise-pause";
+    pause.textContent = "Pause";
+    name.appendChild(pause);
+  }
   left.appendChild(name);
 
   if (mg) {
@@ -282,22 +467,47 @@ function renderExercise(ex, plan, day, root, ctx) {
   }
   row.appendChild(left);
 
+  // Deloaded values take priority; otherwise show plan values.
+  const setsVal = dl ? (paused ? "—" : dl.reducedSets || "—") : ex.sets;
+  const repsVal = dl ? dl.reps : ex.reps;
+  const weightVal = dl ? (paused ? "—" : dl.weight) : ex.weight;
+
+  // Originals only when the row is "revealed" — default is the clean deload
+  // view, click toggles the comparison.
+  const showOrig = revealed && dl;
+  const setsOrig =
+    showOrig && (paused || dl.originalSets !== dl.reducedSets)
+      ? dl.originalSets
+      : null;
+  const weightOrig =
+    showOrig && dl.originalWeight != null && (paused || dl.originalWeight !== dl.weight)
+      ? dl.originalWeight
+      : null;
+
   const vals = document.createElement("div");
   vals.className = "viewer-exercise-vals";
-  vals.appendChild(valChip(ex.sets, "Sätze"));
-  vals.appendChild(valChip(ex.reps, "Wdh."));
-  vals.appendChild(valChip(ex.weight, "kg"));
+  vals.appendChild(valChip(setsVal, "Sätze", setsOrig));
+  vals.appendChild(valChip(repsVal, "Wdh."));
+  vals.appendChild(valChip(weightVal, "kg", weightOrig));
   row.appendChild(vals);
 
   return row;
 }
 
-function valChip(value, unit) {
+function valChip(value, unit, original) {
   const chip = document.createElement("div");
-  chip.className = "viewer-val";
+  chip.className = "viewer-val" + (original != null ? " changed" : "");
   const v = value == null || value === "" ? "—" : String(value);
+  // Old value sits to the LEFT of the current value, muted + smaller. The
+  // chip stays a single row tall — no second line, no taller cards.
+  const origHtml = original != null
+    ? `<span class="viewer-val-orig" title="Plan: ${escape(String(original))}">${escape(String(original))}</span>`
+    : "";
   chip.innerHTML = `
-    <span class="viewer-val-num">${escape(v)}</span>
+    <div class="viewer-val-line">
+      ${origHtml}
+      <span class="viewer-val-num">${escape(v)}</span>
+    </div>
     <span class="viewer-val-unit">${escape(unit)}</span>
   `;
   return chip;
